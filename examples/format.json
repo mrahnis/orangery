@@ -1,0 +1,23 @@
+{
+	"options": {
+		"header": 0
+	},
+	"column_map": {
+		"point": "Point",
+		"t": "Timestamp",
+		"x": "Easting",
+		"y": "Northing",
+		"z": "Elevation",
+		"code": "Code",
+		"comment": "Comment"
+	},
+	"codes": {
+		"marker": ["BASE","BM"],
+		"control": ["JST","JEND"],
+		"view": ["XS"],
+		"breakline": ["TRE","TW","WSE"]
+	},
+	"group": {
+		"source": "comment"
+	}
+}

@@ -1,0 +1,60 @@
+{
+	"sections": [
+		{
+			"reverse": true,
+			"z_adjust": 0.000
+		},
+		{
+			"reverse": false,
+			"z_adjust": 0.000
+		}
+	],
+	"plot": {
+		"name": "XS-7",
+		"fill": true,
+		"close": true,
+		"annotate": true
+	},
+	"materials": [
+		{
+			"name": "skip",
+			"density": 0,
+			"fines": 0
+		},
+		{
+			"name": "terrace: silt",
+			"density": 87,
+			"fines": 85
+		},
+		{
+			"name": "terrace slump: silt",
+			"density": 87,
+			"fines": 85			
+		},
+		{
+			"name": "bar toe: sand",
+			"density": 100,
+			"fines": 10			
+		},
+		{
+			"name": "bar tread: sand",
+			"density": 100,
+			"fines": 10			
+		},
+		{
+			"name": "channel: gravel",
+			"density": 100,
+			"fines": 0			
+		},
+		{
+			"name": "overbank: sand",
+			"density": 100,
+			"fines": 3			
+		},
+		{
+			"name": "overbank: silt/clay",
+			"density": 87,
+			"fines": 85			
+		}
+	]
+}
