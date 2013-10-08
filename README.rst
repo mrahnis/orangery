@@ -9,11 +9,11 @@ Dependencies
 
 Orangery 0.1 depends on:
 
-* Python 2.7
-* numpy
-* pandas
-* matplotlib
-* shapely
+* `Python 2.7`_
+* NumPy_
+* pandas_
+* matplotlib_
+* Shapely_
 
 Installation
 ============
@@ -26,7 +26,7 @@ To install from the source distribution execute the setup script in the orangery
 
 	$python setup.py install
 
-Windows users may install using the .msi installer.
+Windows users may install using the .msi installer from the GitHub project `release page`_.
 
 License
 =======
@@ -37,3 +37,11 @@ Documentation
 =============
 
 In development.
+
+.. _Python 2.7: http://www.python.org
+.. _NumPy: http://www.numpy.org
+.. _pandas: http://pandas.pydata.org
+.. _matplotlib: http://matplotlib.org
+.. _Shapely: https://github.com/Toblerity/Shapely
+
+.. _release page: https://github.com/mrahnis/orangery/releases
