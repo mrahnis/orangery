@@ -54,5 +54,4 @@ class Section:
 
 	def convert(self):
 		# convert to LineString
-		self.line = asLineString(
-			self.projection[['d','z']].view(np.float).reshape((self.projection.size, 2)))
+		self.line = asLineString(zip(self.projection['d'],self.projection['z']))
