@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='orangery',
-	version='0.1.1',
+	version='0.2',
 	author='Michael Rahnis',
 	author_email='michael.rahnis@fandm.edu',
 	description='Python library to support analysis of topographic cross-sections',
