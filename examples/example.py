@@ -1,39 +1,52 @@
+"""
+Plots a map of a survey and a single cross-section from that survey.
+"""
+
+import json
+import matplotlib.pyplot as plt
 import orangery as o
 
-file1 = 'data/file_2004.csv'
-file2 = 'data/file_2010.csv'
-analysis_json = 'analysis.json'
+filename = 'data/file_2004.csv'
 format_json = 'format.json'
 
 # load the configuration
-analysis = o.Configuration(analysis_json)
-format = o.Configuration(format_json)
+format = json.load(open(format_json, 'r'))
+
+xs_name = 'XS-7'
 
 # load the survey data
-s1 = o.Survey(file1, format.data)
-s2 = o.Survey(file2, format.data)
+s = o.Survey(filename, format)
 
-s1.plot()
+# make a map of both surveys
+fig1 = plt.figure()
+ax1 = fig1.add_subplot(111)
+s.plot(ax=ax1, marker='o', markersize=4, linestyle='none', label='2004')
+ax1.set_aspect(1)
+ax1.set_xlabel('Easting (ft)')
+ax1.set_ylabel('Northing (ft)')
+ax1.grid(True)
+ax1.legend(loc='best')
+plt.show(block=False)
 
 # select a group of points, in this case a cross section
-group = analysis.data['plot']['name']
-
-xs1 = o.group(s1.data, s1.chains, group)
-xs2 = o.group(s2.data, s2.chains, group)
+xs_pts = o.group(s.data, s.code_table, group=xs_name)
 
 # get the endpoints of the group
-p1, p2 = o.endpoints(xs1, analysis.data['sections'][0]['reverse'])
-
-# get the benchmarks for a file
-# print o.benchmarks(s2.data, s2.chains, format.data)
+p1, p2 = o.endpoints(xs_pts, reverse=True)
 
 # make the sections
-xs2004 = o.Section(xs1, p1, p2, analysis.data['sections'][0])
-xs2010 = o.Section(xs2, p1, p2, analysis.data['sections'][1])
+xs = o.Section(xs_pts, p1, p2, reverse=True)
 
-# calculate the change
-chg = o.Change(xs2004, xs2010, analysis.data)
+# plot a single cross-section
+exag = 2
 
-chg.plot()
-chg.segment()
-# chg.save()
+title = 'Cross-section {0}'.format(xs_name)
+fig2 = plt.figure()
+ax2 = fig2.add_subplot(111)
+xs.plot(ax=ax2, linestyle='-', label='2004')
+ax2.set_aspect(exag)
+ax2.set_xlabel('Distance (ft)')
+ax2.set_ylabel('Elevation (ft), {0}x exageration'.format(exag))
+plt.title(title)
+plt.legend(loc='best')
+plt.show(block=True)

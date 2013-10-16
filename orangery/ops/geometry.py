@@ -101,9 +101,9 @@ def project_points(points, p1, p2):
 	for i in points.index:
 		p3 = Point(points.loc[i, 'x'], points.loc[i, 'y'], points.loc[i, 'z'])
 		pp = project2(p1, p2, p3)
-		ppoints.append((i, pp['point'].x, pp['point'].y, pp['point'].z, pp['d'], pp['offset'], pp['u']))	
+		ppoints.append((pp['point'].x, pp['point'].y, pp['point'].z, pp['d'], pp['offset'], pp['u']))	
 
-	return array(ppoints, dtype=[('idx', object), ('x', float), ('y', float), ('z', float), ('d', float), ('offset', float), ('u', float)])
+	return pnd.DataFrame(ppoints, columns=['x','y','z','d','offset','u'])
 
 def cut_by_distance(line, distance):
 	"""
@@ -130,13 +130,10 @@ def cut_by_distance(line, distance):
 				LineString(coords[i:])]
 		if pd > distance:
 			cp = line.interpolate(distance)
-			# have to round to a reasonable precision, else actual cuts will occur at slightly different points on each line and polygonize won't work
-			# additionally there may be a bug in shapely polygonize causing it to return no polygons at all
+
 			return [
-				#LineString(coords[:i] + [(cp.x, cp.y)]),
-				#LineString([(cp.x, cp.y)] + coords[i:])]
-				LineString(coords[:i] + [(round(cp.x, 10), round(cp.y, 10))]),
-				LineString([(round(cp.x, 10), round(cp.y, 10))] + coords[i:])]
+				LineString(coords[:i] + [(cp.x, cp.y)]),
+				LineString([(cp.x, cp.y)] + coords[i:])]
 
 def cut_by_point(line, pt):
 	"""
@@ -166,7 +163,7 @@ def cut_by_point(line, pt):
 			break
 	else:
 		print 'loop fell through without finding the point'
-		# could return LineString(line) and get rid of the test at the beginning for d outside the line's length since this is essentially the same
+
 	return cutline
 
 def cut_by_distances(line, intersections):

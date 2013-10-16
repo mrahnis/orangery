@@ -11,25 +11,25 @@ def pointname(df, name):
 	"""
 	print 'not implemented'
 
-def group(df, chains, group):
+def group(df, code_table, group):
 	"""
-	Given a DataFrame return the survey records belonging to a group
+	Given a DataFrame return the survey records belonging to a given group
 
 	Parameters
 	----------
 	df : DataFrame of survey data records
-	chains : DataFrame of survey date record properties
+	code_table : DataFrame of survey date record properties
 	group : string, name of the group to select
 
 	Returns
 	-------
 	DataFrame
 	"""
-	recs = df[chains['group'] == group]
+	recs = df[code_table['group'] == group]
 	result = df.take(recs.index)
 	return result
 
-def endpoints(df, reverse):
+def endpoints(df, reverse=False):
 	"""
 	Given a DataFrame return the first and last survey records
 
@@ -50,14 +50,14 @@ def endpoints(df, reverse):
 	else:
 		return p1, p2
 
-def controls(df, chains, format):
+def controls(df, code_table, format):
 	"""
 	Given a DataFrame return survey records with control codes
 
 	Parameters
 	----------
 	df : a DataFrame of survey data records
-	chains : a DataFrame of survey date record properties
+	code_table : a DataFrame of survey date record properties
 	format : a dict that describes the survey format
 
 	Returns
@@ -65,18 +65,18 @@ def controls(df, chains, format):
 	DataFrame
 	"""
 
-	recs = df[chains['control'].isin(format['codes']['control'])]
+	recs = df[code_table['control'].isin(format['codes']['control'])]
 	result = df.take(recs.index)
 	return result
 
-def benchmarks(df, chains, format):
+def benchmarks(df, code_table, format):
 	"""
 	Given a DataFrame return survey records with benchmark codes
 
 	Parameters
 	----------
 	df : a DataFrame of survey data records
-	chains : a DataFrame of survey date record properties
+	code_table : a DataFrame of survey date record properties
 	format : a dict that describes the survey format
 
 	Returns
@@ -84,6 +84,6 @@ def benchmarks(df, chains, format):
 	DataFrame
 	"""
 
-	recs = df[chains['marker'].isin(format['codes']['marker'])]
+	recs = df[code_table['marker'].isin(format['codes']['marker'])]
 	result = df.take(recs.index)
 	return result

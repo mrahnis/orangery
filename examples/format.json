@@ -1,7 +1,4 @@
 {
-	"options": {
-		"header": 0
-	},
 	"column_map": {
 		"point": "Point",
 		"t": "Timestamp",
