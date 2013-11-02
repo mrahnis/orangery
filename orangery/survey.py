@@ -8,11 +8,11 @@ class Survey:
 	"""
 	A Survey dataset.
 
-	Parameters
-	----------
-	filename : string, the path to the file to read
-	format : dict, describes the survey data
-	kwargs: dict, keyword arguments passed to pandas.read_csv
+		Parameters
+		----------
+		filename : string, the path to the file to read
+		format : dict, describes the survey data
+		kwargs: dict, keyword arguments passed to pandas.read_csv
 
 	"""
 	def __init__(self, filename, format, **kwargs):
@@ -33,4 +33,7 @@ class Survey:
 			raise
 
 	def plot(self, **kwargs):
+		"""
+		Plot the x, y values of the data. Keyword arguments are passed to Pandas.
+		"""
 		return self.data.plot('x','y', **kwargs)

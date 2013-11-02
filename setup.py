@@ -1,7 +1,20 @@
 from setuptools import setup, find_packages
 
+
+# Parse the version from the shapely module
+for line in open('orangery/__init__.py', 'r'):
+    if line.find("__version__") >= 0:
+        version = line.split("=")[1].strip()
+        version = version.strip('"')
+        version = version.strip("'")
+        continue
+
+open('VERSION.txt', 'wb').write(version)
+
+
+
 setup(name='orangery',
-	version='0.2.0',
+	version=version,
 	author='Michael Rahnis',
 	author_email='michael.rahnis@fandm.edu',
 	description='Python library to support analysis of topographic cross-sections',
