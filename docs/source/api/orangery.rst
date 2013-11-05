@@ -9,10 +9,18 @@ orangery Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`change` Module
+:mod:`survey` Module
 --------------------
 
-.. automodule:: orangery.change
+.. automodule:: orangery.core.survey
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`evaluation` Module
+--------------------
+
+.. automodule:: orangery.core.evaluation
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,23 +28,7 @@ orangery Package
 :mod:`filter` Module
 --------------------
 
-.. automodule:: orangery.filter
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`section` Module
----------------------
-
-.. automodule:: orangery.section
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`survey` Module
---------------------
-
-.. automodule:: orangery.survey
+.. automodule:: orangery.core.filter
     :members:
     :undoc-members:
     :show-inheritance:
