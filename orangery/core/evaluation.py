@@ -3,19 +3,6 @@ import pandas as pnd
 
 import orangery.ops.geometry as og
 
-def _assign_material(p, low, high):
-	prompt = 'Enter a material no. for area {0}: '.format(p)
-	err = 'Input must be an integer number between %d and %d.' % (low, high)
-	while True:
-		try:
-			m = int(raw_input(prompt))
-			if low <= m <= high:
-				return m
-			else:
-				print err
-		except ValueError:
-			print err
-
 class Change:
 	"""
 	An analysis of the change between two Section objects.
@@ -37,6 +24,20 @@ class Change:
 			raise
 
 	def segment(self, materials_p):
+
+
+		def __assign_material(p, low, high):
+			prompt = 'Enter a material no. for area {0}: '.format(p)
+			err = 'Input must be an integer number between %d and %d.' % (low, high)
+			while True:
+				try:
+					m = int(raw_input(prompt))
+					if low <= m <= high:
+						return m
+					else:
+						print err
+				except ValueError:
+					print err
 
 		# materials list and array to track assignment of material to polygon
 		materials = materials_p['materials']
@@ -65,7 +66,7 @@ class Change:
 		
 		for i, poly in enumerate(self.cutfill):
 			# m = int(raw_input('Enter material no. for area {0}: '.format(i)))
-			m = _assign_material(i, 0, len(materials)-1)
+			m = __assign_material(i, 0, len(materials)-1)
 			assignments.append([i, m, materials[m]['name'], materials[m]['density'], materials[m]['fines']])
 		assignments_df = pnd.DataFrame(assignments, columns=['polygon', 'material', 'name', 'density', 'fines'])
 
