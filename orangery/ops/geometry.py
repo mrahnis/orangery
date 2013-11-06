@@ -12,19 +12,19 @@ from shapely.ops import linemerge
 
 def project2(p1, p2, p3):
 	"""
-	Projects a Point, p3 onto a line intersecting Points p1 and p2
+	Project a Point, p3 onto a line intersecting Points p1 and p2.
 	Adapted from tutorial by Paul Bourke: http://paulbourke.net/geometry/pointline/
-	This projection allows for points at negative distances.
+	This projection function allows for points at negative distances.
 
 	Parameters
 	----------
-	p1 : Point, point at zero distance on line between p1 and p2
-	p2 : Point, endpoint on line
-	p3 : Point, the point to project
+	p1 (Point) : point at zero distance on line between p1 and p2.
+	p2 (Point) : endpoint on line.
+	p3 (Point) : the point to project.
 
 	Returns
 	-------
-	dict : a dict including the projected point, distance along line, offset from line, and fractional distance along line
+	result (dict) : the projected Point, distance along line, offset from line, and fractional distance along line.
 
 	"""
 	x_delta = p2.x - p1.x
@@ -49,23 +49,23 @@ def project2(p1, p2, p3):
 	else:
 		offset = pp.distance(p3) # the point is right of the line
 	
-	return {'point':pp, 'd':d, 'offset':offset, 'u':u}
+	result = {'point':pp, 'd':d, 'offset':offset, 'u':u}
+	return result
 
 def project(p1, p2, p3):
 	"""
-	Projects a Point, p3 onto a line between Points p1 and p2
-	Relies on shapely methods.
-	This projection sets distance to zero for all negative distances.
+	Project a Point, p3 onto a line between Points p1 and p2.
+	Uses Shapely and GEOS functions, which set distance to zero for all negative distances.
 
 	Parameters
 	----------
-	p1 : Point, point at zero distance on line between p1 and p2
-	p2 : Point, endpoint of line
-	p3 : Point, the point to project
+	p1 (Point) : point at zero distance on line between p1 and p2.
+	p2 (Point) : endpoint of line.
+	p3 (Point) : the point to project.
 
 	Returns
 	-------
-	dict : a including the projected point, disctance along line, offset from line, and fractional distance along line
+	result (dict) : the projected Point, disctance along line, offset from line, and fractional distance along line.
 
 	"""
 	line = LineString([(p1.x, p1.y),(p2.x, p2.y)])
@@ -80,21 +80,22 @@ def project(p1, p2, p3):
 	else:
 		offset = pp.distance(p3) # the point is right of the line
 
-	return {'point':pp, 'd':d, 'offset':offset, 'u':u}	
+	result = {'point':pp, 'd':d, 'offset':offset, 'u':u}
+	return result
 
 def project_points(points, p1, p2):
 	"""
-	Projects multiple points onto a line through Points p1, p2.
+	Project multiple points onto a line through Points p1, p2.
 
 	Parameters
 	----------
-	points : array of Points
-	p1 : Point, point at zero distance on line between p1 and p2
-	p2 : Point, endpoint of line
+	points (pandas.DataFrame) : survey data to project.
+	p1 (Point) : point at zero distance on line between p1 and p2.
+	p2 (Point) : endpoint of line.
 
 	Returns
 	-------
-	array : an array representing the projected points, including the original index, x, y, z, distance along line, offset from line, and fractional distance along line
+	result (DataFrame) : DataFrame of projected points, including x, y, z, distance along line, offset from line, and fractional distance along line.
 
 	"""
 	ppoints = []
@@ -103,82 +104,82 @@ def project_points(points, p1, p2):
 		pp = project2(p1, p2, p3)
 		ppoints.append((pp['point'].x, pp['point'].y, pp['point'].z, pp['d'], pp['offset'], pp['u']))	
 
-	return pnd.DataFrame(ppoints, columns=['x','y','z','d','offset','u'])
+	result = pnd.DataFrame(ppoints, columns=['x','y','z','d','offset','u'])
+	return result
 
 def cut_by_distance(line, distance):
 	"""
-	cut function is from shapely recipes http://sgillies.net/blog/1040/shapely-recipes/
+	This line cutting function is from shapely recipes http://sgillies.net/blog/1040/shapely-recipes/
 
 	Parameters
 	----------
-	line : LineString, line to cut
-	distance : float, distance from beginning of line to cutting point
+	line (LineString) : the line to cut.
+	distance (float) : distance from beginning of line to cutting point.
 
 	Returns
 	-------
-	array of LineString
+	segments (LineString array) : array of cut line segments.
 
 	"""
 	if distance <= 0.0 or distance >= line.length:
-		return [LineString(line)]
+		segments = [LineString(line)]
 	coords = list(line.coords)
 	for i, p in enumerate(coords):
 		pd = line.project(Point(p))
 		if pd == distance:
-			return [
+			segments = [
 				LineString(coords[:i+1]),
 				LineString(coords[i:])]
 		if pd > distance:
 			cp = line.interpolate(distance)
-
-			return [
+			segments = [
 				LineString(coords[:i] + [(cp.x, cp.y)]),
 				LineString([(cp.x, cp.y)] + coords[i:])]
+	return segments
 
 def cut_by_point(line, pt):
 	"""
-	cut function that cuts a line and inserts a point at the cut location.
+	A cut function that divides a line and inserts points at the cut location.
 
 	Parameters
 	----------
-	line : LineString, line to cut
-	pt : Point, a point on the line where the cut is to be made
+	line (LineString) : the line to cut.
+	pt (Point) : a point on the line where the cut is to be made.
 
 	Returns
 	-------
-	array of LineString
+	segments (LineString array) : array of cut line segments.
 
 	"""
 	d = line.project(Point(pt))
 	if d <= 0.0 or d >= line.length:
-		return [LineString(line)]
+		segments = [LineString(line)]
 	coords = list(line.coords)
 	for i, c in enumerate(coords):
 		cd = line.project(Point(c))
 		if cd == d:
-			cutline = [LineString(coords[:i]), LineString(coords[i:])]
+			segments = [LineString(coords[:i]), LineString(coords[i:])]
 			break
 		elif cd > d:
-			cutline = [LineString(coords[:i] + [(pt.x, pt.y)]), LineString([(pt.x, pt.y)] + coords[i:])]
+			segments = [LineString(coords[:i] + [(pt.x, pt.y)]), LineString([(pt.x, pt.y)] + coords[i:])]
 			break
 	else:
 		print 'loop fell through without finding the point'
 
-	return cutline
+	return segments
 
 def cut_by_distances(line, intersections):
 	"""
-	Doesn't really do what the method name implies, isn't used, should change or remove.
 	Cut a line at multiple points by calculating the distance of each point along the line. Uses the cut_by_distance function.
 
 	Parameters
 	----------
-	line : LineString, line to cut
-	intersections : MultiPoint, object containing cut points
+	line (LineString) : the line to cut.
+	intersections (MultiPoint) : a MultiPoint object containing cut points
 
 	Returns
 	-------
-	MultiLineString
+	segments (MultiLineString) : contains the line segments.
 
 	"""
 	for i in intersections:
@@ -188,20 +189,21 @@ def cut_by_distances(line, intersections):
 		elif len(list(line)) > 1:
 			cutline = cut_by_distance(line[-1], d)
 			line = line[:-1] + cutline
-	return MultiLineString(line)
+	segments = MultiLineString(line)
+	return segments
 
 def cut_by_points(line, intersections):
 	"""
-	Use the cut_by_point function
+	Cut a line at multiple points by breaking the line and inserting each point. Uses the cut_by_point function.
 
 	Parameters
 	----------
-	line : LineString, line to cut
-	intersections : MultiPoint, object containing cut points
+	line (LineString) : the line to cut.
+	intersections (MultiPoint) : a MultiPoint object containing the cut points.
 
 	Returns
 	-------
-	MultiLineString
+	segments (MultiLineString) : contains the line segments.
 
 	"""
 	for i in intersections:
@@ -210,7 +212,8 @@ def cut_by_points(line, intersections):
 		elif len(list(line)) > 1:
 			cutline = cut_by_point(line[-1], i)
 			line = line[:-1] + cutline
-	return MultiLineString(line)
+	segments = MultiLineString(line)
+	return segments
 
 def sign(line1, line2):
 	"""
@@ -220,12 +223,12 @@ def sign(line1, line2):
 
 	Parameters
 	----------
-	line1 : LineString
-	line2 : LineString
+	line1 (LineString) : the line representing the initial condition.
+	line2 (LineString) : the line representing the final condition.
 
 	Returns
 	-------
-	signs : array, members are positive or negative integer one
+	signs (int array) : members are positive or negative integer one.
 
 	"""
 	signs = []
@@ -248,13 +251,13 @@ def extend(line, pt, prepend):
 
 	Parameters
 	----------
-	line : LineString, the line to extend
-	pt : Point, the coordinate to extend to
-	prepend : boolean, if True then prepend, else append
+	line (LineString) : the line to extend.
+	pt (Point) : the coordinate to extend to.
+	prepend (bool) : if True then prepend, else append.
 
 	Returns
 	-------
-	LineString
+	newline (LineString) : the extended LineString.
 
 	"""
 	xs, ys = zip(*list(line.coords))
@@ -264,19 +267,20 @@ def extend(line, pt, prepend):
 	else:
 		xs = list(xs) + [pt.x]
 		ys = list(ys) + [pt.y]
-	return LineString(zip(xs, ys))
+	newline = LineString(zip(xs, ys))
+	return newline
 
 def update(line, pt, idx):
 	"""
 	Parameters
 	----------
-	line : LineString, the line to update
-	pt : Point, the new coordinate
-	idx : idx, the index of the vertex to update
+	line (LineString) : the line to update.
+	pt (Point) : the new coordinate.
+	idx (int) : the integer index of the vertex to update.
 
 	Returns
 	-------
-	LineString
+	newline (LineString) : the updated LineString.
 
 	"""	
 	xs, ys = zip(*list(line.coords))
@@ -284,24 +288,24 @@ def update(line, pt, idx):
 	ys = list(ys)
 	xs[idx] = pt.x
 	ys[idx] = pt.y
-	print zip(xs,ys)
-	return LineString(zip(xs, ys))
+	newline = LineString(zip(xs, ys))
+	return newline
 
 def difference(line1, line2, close):
 	"""
-	Creates polygons from two LineString objects.
+	Create polygons from two LineString objects.
 
 	Parameters
 	----------
-	line1 : LineString
-	line2 : LineString
-	close : boolean, option to close open line ends with vertical line segments
+	line1 (LineString) : a line representing the initial condition.
+	line2 (LineString) : a line representing the final condition.
+	close (bool) : option to close open line ends with vertical line segments.
 
 	Returns
 	-------
-	intersections : array of Points, the intersections between the LineString objects
-	polygons : array of Polygons, the polygons between the lines
-	signs : array of integers, contains values of +1 or -1 to identify polygons as cut or fill
+	intersections (Point array) : the intersections between the LineString objects.
+	polygons (Polygon array) : the polygons between the lines.
+	signs (int array) : contains values of +1 or -1 to identify polygons as cut or fill.
 	
 	"""
 	if close==True:
@@ -372,12 +376,12 @@ def snap_to_points(segments, intersections):
 
 	Parameters
 	----------
-	segments : MultiLineString
-	intersections : an array of Points
+	segments (MultiLineString) : the line segments to snap.
+	intersections (Point array) : the points to snap to.
 
 	Returns
 	-------
-	MultiLineString : an updated MultiLineString
+	newline (MultiLineString) : an updated MultiLineString.
 
 	"""
 	snapped = []
@@ -389,5 +393,5 @@ def snap_to_points(segments, intersections):
 			if Point(coords[-1]).almost_equals(intersection, decimal=8):
 				segment = update(segment, intersection, len(coords)-1)
 		snapped.append(segment)
-		
-	return MultiLineString(snapped)
+	newline = MultiLineString(snapped)
+	return newline

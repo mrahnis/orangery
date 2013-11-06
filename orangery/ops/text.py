@@ -4,17 +4,16 @@ def parse(points, format):
 
 	"""
 	Parses the codes in a DataFrame to extract information about points and chains of points.
-	Returns a DataFrame with the index of the start and end of each chain, as well as descriptive information about the chain of points.
 
 	Parameters
 	----------
-	points : DataFrame, contains the survey data
-	format : dict, contains format configuration information that describes the codes used, including control codes
+	points (DataFrame) : contains the survey data.
+	format (dict) : contains format configuration information that describes the codes used, including control codes.
 
 	Returns
 	-------
-	DataFrame : describes the points and chains of points; column names match keys in the codes sub-dict,
-		the added group column currently comes from the 'comment' field at each start command 
+	df (DataFrame) : Describes the points and chains of points. Column names match keys in the codes sub-dict,
+		the added group column currently comes from the 'comment' field at each start command.
 	"""
 
 	# parse the codes into columns for marker, control, view and breakline

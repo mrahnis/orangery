@@ -2,12 +2,16 @@ from shapely.geometry import Point
 
 def pointname(df, name):
 	"""
-	Given a DataFrame return the named point or survey record
+	Given a DataFrame return the named point or survey record.
 
 	Parameters
 	----------
-	df : DataFrame of survey data records
-	name : string, name of the point to select
+	df (DataFrame) : survey data records.
+	name (str) : name of the point to select.
+
+	Returns
+	-------
+	None : not implemented	
 	"""
 	print 'not implemented'
 
@@ -17,13 +21,13 @@ def group(df, code_table, group):
 
 	Parameters
 	----------
-	df : DataFrame of survey data records
-	code_table : DataFrame of survey date record properties
-	group : string, name of the group to select
+	df (DataFrame) : survey data records.
+	code_table (DataFrame) : survey data record properties extracted by parse function.
+	group (str) : name of the group to select.
 
 	Returns
 	-------
-	DataFrame
+	result (DataFrame) : records matching the given group name.
 	"""
 	recs = df[code_table['group'] == group]
 	result = df.take(recs.index)
@@ -31,16 +35,16 @@ def group(df, code_table, group):
 
 def endpoints(df, reverse=False):
 	"""
-	Given a DataFrame return the first and last survey records
+	Given a DataFrame return the first and last survey records.
 
 	Parameters
 	----------
-	df : DataFrame of survey records
-	reverse : boolean, False returns first then last point, True returns last then first
+	df (pandas.DataFrame) : survey data records.
+	reverse (bool) : False returns first then last point, True returns last then first.
 
 	Returns
 	-------
-	p1, p2 : shapely Points
+	p1, p2 (Point) : first and last records in a DataFrame as Points.
 	"""
 
 	p1 = Point(df[:1]['x'], df[:1]['y'], df[:1]['z'])
@@ -52,17 +56,17 @@ def endpoints(df, reverse=False):
 
 def controls(df, code_table, format):
 	"""
-	Given a DataFrame return survey records with control codes
+	Given a DataFrame return survey records that have control codes.
 
 	Parameters
 	----------
-	df : a DataFrame of survey data records
-	code_table : a DataFrame of survey date record properties
-	format : a dict that describes the survey format
+	df (pandas.DataFrame) : survey data records.
+	code_table (pandas.DataFrame) : survey data record properties extracted by parse function.
+	format (dict) : dict that describes the survey format.
 
 	Returns
 	-------
-	DataFrame
+	result (DataFrame) : records having control codes.
 	"""
 
 	recs = df[code_table['control'].isin(format['codes']['control'])]
@@ -71,17 +75,17 @@ def controls(df, code_table, format):
 
 def benchmarks(df, code_table, format):
 	"""
-	Given a DataFrame return survey records with benchmark codes
+	Given a DataFrame return survey records with benchmark codes.
 
 	Parameters
 	----------
-	df : a DataFrame of survey data records
-	code_table : a DataFrame of survey date record properties
-	format : a dict that describes the survey format
+	df (pandas.DataFrame) : survey data records.
+	code_table (pandas.DataFrame) : survey data record properties extracted by parse function.
+	format (dict) : dict that describes the survey format.
 
 	Returns
 	-------
-	DataFrame
+	result (DataFrame) : records having benchmark codes.
 	"""
 
 	recs = df[code_table['marker'].isin(format['codes']['marker'])]

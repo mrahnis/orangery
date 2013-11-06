@@ -10,11 +10,11 @@ class Survey:
 	"""
 	A Survey dataset.
 
-		Parameters
-		----------
-		filename : string, the path to the file to read
-		format : dict, describes the survey data
-		kwargs: dict, keyword arguments passed to pandas.read_csv
+	Parameters
+	----------
+	filename (str) : the path to the file to read.
+	format (dict) : describes the survey data.
+	kwargs (dict) : keyword arguments passed to pandas.read_csv.
 
 	"""
 	def __init__(self, filename, format, **kwargs):
@@ -36,11 +36,19 @@ class Survey:
 
 	def plot(self, **kwargs):
 		"""
-		Plot the x, y values of the data. Keyword arguments are passed to Pandas.
+		Plot the x, y values of the data.
+
+		Parameters
+		----------
+			kwargs (dict) : Keyword arguments to be passed to Pandas and matplotlib.
+
+		Returns
+		-------
+		ax (Axis) : a matplotlib Axis.
+
 		"""
-		return self.data.plot('x','y', **kwargs)
-
-
+		ax = self.data.plot('x','y', **kwargs)
+		return ax
 
 class Section:
 	"""
@@ -48,10 +56,11 @@ class Section:
 
 	Parameters
 	----------
-	data : DataFrame, containing the data to project
-	p1 : Point, the start of a line of section
-	p2 : Point, the end of a line of section
-	adjustments : dict, describes adjustments to the data
+	data (pandas.DataFrame) : contains the data to project.
+	p1 (shapely.Point) : the start of a line of section.
+	p2 (shapely.Point) : the end of a line of section.
+	reverse (bool) : reverse the order of points in the section.
+	z_adjustment (float) : adjust the elevation of the data.
 
 	"""
 	def __init__(self, data, p1, p2, reverse=False, z_adjustment=None):
@@ -73,4 +82,17 @@ class Section:
 		self.line = asLineString(zip(self.projection['d'],self.projection['z']))
 
 	def plot(self, **kwargs):
-		return self.projection.plot('d','z',**kwargs)
+		"""
+		Plot the d, z values of the projected data.
+
+		Parameters
+		----------
+		kwargs (dict) : Keyword arguments to be passed to Pandas and matplotlib.
+
+		Returns
+		-------
+		ax (Axis) : a matplotlib Axis.
+
+		"""
+		ax = self.projection.plot('d','z',**kwargs)
+		return ax

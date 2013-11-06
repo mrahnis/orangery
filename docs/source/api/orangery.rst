@@ -18,7 +18,7 @@ orangery Package
     :show-inheritance:
 
 :mod:`evaluation` Module
---------------------
+------------------------
 
 .. automodule:: orangery.core.evaluation
     :members:

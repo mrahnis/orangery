@@ -1,15 +1,19 @@
 @import url("nature.css");
 
-dl.class dt, dl.function dt {
-	background-color: rgb(251, 229, 78);
+th.field-name {
+	background-color: rgb(249, 240, 179);
 }
 
 /*
+dl.class dt {
+	background-color: rgb(251, 229, 78);
+}
+
+dl.function dt {
+	background-color: rgb(251, 229, 78);
+}
+
 dl.method dt {
 	background-color: rgb(249, 240, 179);	
 }
 */
-
-th.field-name {
-	background-color: rgb(249, 240, 179);
-}

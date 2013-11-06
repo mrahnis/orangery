@@ -9,8 +9,9 @@ class Change:
 
 	Parameters
 	----------
-	section1 : Section, the initial condition
-	section2 : Section, the final condition
+	section1 (Section) : the initial condition.
+	section2 (Section) : the final condition.
+	close (bool) : True indicates dangles should be closed with a vertical line.
 
 	"""
 	def __init__(self, section1, section2, close=False):
@@ -23,8 +24,14 @@ class Change:
 			print 'Error calculating cut and fill'
 			raise
 
-	def segment(self, materials_p):
+	def segment(self, materials):
+		"""
+		Prompt the user to assign material from the materials dict to each polygon in the Change objects
 
+		Parameters
+		----------
+		materials (dict) : a dict containing possible materials
+		"""
 
 		def __assign_material(p, low, high):
 			prompt = 'Enter a material no. for area {0}: '.format(p)
@@ -40,7 +47,7 @@ class Change:
 					print err
 
 		# materials list and array to track assignment of material to polygon
-		materials = materials_p['materials']
+		materials = materials['materials']
 		assignments = []
 
 		# -----------------------------------------------

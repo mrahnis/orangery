@@ -1,7 +1,23 @@
 def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...', fill_label=None, cut_ec='black', cut_fc='none', cut_hatch='x', cut_label=None):
 	"""
-	Fill and label first polygon of each type separately, otherwise sequential call to fill with label property
-	produces a legend label for each individual polygon.
+	Adds two groups of polygon patches to a matplotlib Axis.
+	Fill and label first polygon of each type separately, otherwise make sequential call to fill.
+
+	Parameters
+	----------
+	ax (Axis) : matplotlib Axis to which to add polygon patches.
+	fill_ec (str) :  fill polygon edge color.
+	fill_fc (str) :  fill polygon face color.
+	fill_hatch (str) : fill polygon hatch pattern.
+	fill_label (str) : fill polygon label.
+	cut_ec (str) : cut polygon edge color.
+	cut_fc (str) : cut polygon face color.
+	cut_hatch (str) : cut polygon hatch pattern.
+	cut_label (str) :  cut polygon label.
+
+	Returns
+	-------
+	ax (Axis) : patched matplotlib Axis.
 	"""
 	cuts = []
 	hascut = False
@@ -29,7 +45,17 @@ def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...
 	return ax
 
 def annotate_plot(self, ax=None):
+	"""
+	Add annotation to a plot to identify individual polygons.
 
+	Parameters
+	----------
+	ax (Axis) : matplotlib Axis to which to add annotation.
+
+	Returns
+	-------
+	ax (Axis) : patched matplotlib Axis.
+	"""
 	import matplotlib.patches as patches
 	from matplotlib.path import Path
 
