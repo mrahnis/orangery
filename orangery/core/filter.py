@@ -11,7 +11,7 @@ def pointname(df, name):
 
 	Returns
 	-------
-	None : not implemented	
+	result (DataFrame) : records where point field (equivalent to the 'Point name' on Trimble data collectors) is equivalent to the name argument.
 	"""
 	recs = df[df['point'] == name]
 	result = df.take(recs.index)
