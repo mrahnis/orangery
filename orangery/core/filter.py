@@ -13,7 +13,9 @@ def pointname(df, name):
 	-------
 	None : not implemented	
 	"""
-	print 'not implemented'
+	recs = df[df['point'] == name]
+	result = df.take(recs.index)
+	return result
 
 def group(df, code_table, group):
 	"""
