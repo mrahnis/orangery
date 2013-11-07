@@ -4,6 +4,7 @@ from shapely.geometry import asLineString
 
 import orangery.ops.text as ot
 import orangery.ops.geometry as og
+import orangery.ops.correction as oc
 
 
 class Survey:
@@ -33,6 +34,9 @@ class Survey:
 		except:
 			print 'Error: Failed to parse CSV file: ', filename
 			raise
+
+	def translate(self, deltas):
+		self.data = oc.translate(self.data, deltas)
 
 	def plot(self, **kwargs):
 		"""
