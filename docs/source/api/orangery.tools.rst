@@ -9,3 +9,11 @@ tools Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`opus` Module
+------------------
+
+.. automodule:: orangery.tools.opus
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

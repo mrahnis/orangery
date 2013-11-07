@@ -17,3 +17,10 @@ ops Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`correction` Module
+------------------------
+
+.. automodule:: orangery.ops.correction
+    :members:
+    :undoc-members:
+    :show-inheritance:
