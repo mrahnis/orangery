@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import orangery as o
 
 filename = 'data/file_2004.csv'
-format_json = 'format.json'
+format_json = 'json/format.json'
 
 # load the configuration
 format = json.load(open(format_json, 'r'))

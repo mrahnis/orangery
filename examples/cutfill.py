@@ -10,8 +10,8 @@ import orangery as o
 
 file1 = 'data/file_2004.csv'
 file2 = 'data/file_2010.csv'
-materials_json = 'materials.json'
-format_json = 'format.json'
+materials_json = 'json/materials.json'
+format_json = 'json/format.json'
 
 # load the configuration
 format = json.load(open(format_json, 'r'))
