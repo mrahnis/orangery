@@ -17,6 +17,7 @@ format_json = 'json/format.json'
 format = json.load(open(format_json, 'r'))
 materials = json.load(open(materials_json, 'r'))
 
+# the cross section to plot
 xs_name = 'XS-7'
 
 # load the survey data
@@ -37,21 +38,20 @@ xs2 = o.Section(xs_pts2, p1, p2, reverse=False)
 # calculate the change
 chg = o.Change(xs1, xs2, close=True)
 
-# plot the change between two cross-sections
-title = 'Cross-section {0}'.format(xs_name)
-exag = 3
+ve = 3 # vertical exaggeration
 
+# plot the change between two cross-sections
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.set_aspect(exag)
+ax.set_aspect(ve)
 ax.set_xlabel('Distance (ft)')
-ax.set_ylabel('Elevation (ft), {0}x exaggeration'.format(exag))
+ax.set_ylabel('Elevation (ft), {0}x exaggeration'.format(ve))
 xs1.plot(ax=ax, marker='o', markersize=4, markerfacecolor='gray', linestyle='none', label='2004')
 xs2.plot(ax=ax, marker='o', markersize=4, markerfacecolor='black', linestyle='none', label='2010')
 chg.polygon_plot(ax=ax, fill_label='Fill', cut_label='Cut')
 chg.annotate_plot(ax=ax)
 plt.legend(loc='best')
-plt.title(title)
+plt.title('Cross-section {0}'.format(xs_name))
 plt.show(block=False)
 
 chg.segment(materials)
