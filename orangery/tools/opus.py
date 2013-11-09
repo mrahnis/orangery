@@ -1,6 +1,19 @@
 import xml.etree.ElementTree as xml
 from orangery.tools.units import US_FOOT_IN_METERS
 
+def _convert(root, val_path, unit_path, out_unit):
+	val = float(root.find(val_path).text)
+	opus_unit = root.find(unit_path).get('UNIT')
+	
+	if opus_unit == 'm' and out_unit =='US_ft':
+		result = val/US_FOOT_IN_METERS
+	elif opus_unit == 'US_ft' and out_unit == 'm':
+		result = val*US_FOOT_IN_METERS
+	else:
+		result = val
+
+	return result
+
 def get_plane_coords(filename, unit='m', spec_type='UTM'):	
 	"""
 	Extract the coordinate from an OPUS XML file PLANE_COORD_SPEC elements, and return it in the desired units and coordinate spec type.
@@ -18,35 +31,73 @@ def get_plane_coords(filename, unit='m', spec_type='UTM'):
 	tree = xml.parse(filename)
 	rootElement = tree.getroot()
 
-	h = rootElement.find('ORTHO_HGT')
-	ortho_hgt = float(h.text)
-	h_unit = h.get('UNIT')
-
 	for pcs in rootElement.findall('PLANE_COORD_INFO/PLANE_COORD_SPEC'):
 		#print pcs.tag, pcs.attrib
-
 		if pcs.get('TYPE') == spec_type:
-			e = pcs.find('EASTING')
-			n = pcs.find('NORTHING')
-
-			easting = float(e.text)
-			northing = float(n.text)
-
-			e_unit = e.get('UNIT')
-			n_unit = n.get('UNIT')
-
-			opus_coords = [easting, northing, ortho_hgt]
-			units = [e_unit, n_unit, h_unit]
+			e = _convert(pcs, 'EASTING', 'EASTING', unit)
+			n = _convert(pcs, 'NORTHING', 'NORTHING', unit)
 		else:
 			continue
+	h = _convert(rootElement, 'ORTHO_HGT', 'ORTHO_HGT', unit)
 
-	coords = []
-	for i, coord in enumerate(opus_coords):
-		if units[i] == 'm' and unit == 'US_ft':
-			coords.append(coord/US_FOOT_IN_METERS)
-		elif units[i] == 'US_ft' and unit == 'm':
-			coords.append(coord*US_FOOT_IN_METERS)
-		else:
-			coords.append(coord)
-
+	coords = [e, n, h]
 	return coords
+
+def get_data_quality(filename, unit='m'):
+	"""
+	Extract the information from an OPUS XML file DATA_QUALITY element, and return it in the desired units.
+
+	Parameters
+	----------
+	filename (str) : the path to the OPUS XML file.
+	unit (str) : distance units of the returned coordinate, valid values are 'm' or 'US_ft'.
+
+	Returns
+	-------
+	accuracy (float array) : array of x,y,z coordinate accuracies.
+	rms (float) : the RMS value
+	used (int array) : array of observations [total, used]
+	fixed (int array) : array of observation ambiguities [total, fixed]
+	"""
+	tree = xml.parse(filename)
+	rootElement = tree.getroot()
+	dq = rootElement.find('DATA_QUALITY')
+
+	accuracy = [_convert(dq, 'ACCURACY/LAT', 'ACCURACY', unit), _convert(dq, 'ACCURACY/LONG', 'ACCURACY', unit), _convert(dq, 'ACCURACY/EL_HEIGHT', 'ACCURACY', unit)]
+	rms = _convert(dq, 'RMS', 'RMS', unit)
+
+	used = [int(dq.find('PERCENT_OBS_USED').get('TOTAL')), int(dq.find('PERCENT_OBS_USED').get('USED'))]
+	fixed = [int(dq.find('PERCENT_AMB_FIXED').get('TOTAL')), int(dq.find('PERCENT_AMB_FIXED').get('FIXED'))]
+
+	return accuracy, rms, used, fixed
+
+def get_solution_info(filename):
+
+	tree = xml.parse(filename)
+	rootElement = tree.getroot()
+
+	print rootElement.find('OPUS_SOLUTION').get('SID')
+	print rootElement.find('SOLUTION_TIME').text
+	print rootElement.find('OBSERVATION_TIME').get('START')
+	print rootElement.find('OBSERVATION_TIME').get('END')
+	print rootElement.find('CONTRIBUTOR/EMAIL').text
+	print rootElement.find('CONTRIBUTOR/AGENCY').text
+	print rootElement.find('DATA_SOURCES/RINEX_FILE').text
+	print rootElement.find('DATA_SOURCES/EPHEMERIS_FILE').get('TYPE')
+	print rootElement.find('DATA_SOURCES/ANTENNA/NAME').text
+	print rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').text
+	print rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').get('UNIT')
+
+def get_mark_info(filename):
+
+	tree = xml.parse(filename)
+	rootElement = tree.getroot()
+
+	print rootElement.find('PID').text
+	print rootElement.find('DESIGNATION').text
+	print rootElement.find('STAMPING').text
+	print rootElement.find('MONUMENT_TYPE').text
+	print rootElement.find('MONUMENT_DESC').text
+	print rootElement.find('SOLUTION_TIME').text
+	print rootElement.find('STABILITY').text
+	print rootElement.find('DESCRIPTION').text
