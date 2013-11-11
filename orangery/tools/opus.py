@@ -2,6 +2,20 @@ import xml.etree.ElementTree as xml
 from orangery.tools.units import US_FOOT_IN_METERS
 
 def _convert(root, val_path, unit_path, out_unit):
+	"""
+	Convert a value value from the OPUS file to a new unit
+
+	Parameters
+	----------
+	root (XML root) : root element.
+	val_path (str) : path to the value to be converted.
+	unit_path  (str) : path to the unit designation.
+	out_unit (str) : desired output unit.
+
+	Returns
+	-------
+	result (float) : converted value.
+	"""
 	val = float(root.find(val_path).text)
 	opus_unit = root.find(unit_path).get('UNIT')
 	
@@ -22,7 +36,7 @@ def get_plane_coords(filename, unit='m', spec_type='UTM'):
 	----------
 	filename (str) : the path to the OPUS XML file.
 	unit (str) : distance units of the returned coordinate, valid values are 'm' or 'US_ft'.
-	spec_type (str) : coordinate projection of the returned coordinate, valid values are 'UTM' or 'SPC'
+	spec_type (str) : coordinate projection of the returned coordinate, valid values are 'UTM' or 'SPC'.
 
 	Returns
 	-------
@@ -72,11 +86,17 @@ def get_data_quality(filename, unit='m'):
 	return accuracy, rms, used, fixed
 
 def get_solution_info(filename):
+	"""
+	Print information about the solution.
+	"""
 
 	tree = xml.parse(filename)
 	rootElement = tree.getroot()
 
-	print rootElement.find('OPUS_SOLUTION').get('SID')
+	print '-----------------'
+	print 'SOLUTION_INFO'
+	print '-----------------'
+	print rootElement.get('SID')
 	print rootElement.find('SOLUTION_TIME').text
 	print rootElement.find('OBSERVATION_TIME').get('START')
 	print rootElement.find('OBSERVATION_TIME').get('END')
@@ -89,15 +109,20 @@ def get_solution_info(filename):
 	print rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').get('UNIT')
 
 def get_mark_info(filename):
-
+	"""
+	Print information about the mark.
+	"""
+	
 	tree = xml.parse(filename)
 	rootElement = tree.getroot()
 
-	print rootElement.find('PID').text
-	print rootElement.find('DESIGNATION').text
-	print rootElement.find('STAMPING').text
-	print rootElement.find('MONUMENT_TYPE').text
-	print rootElement.find('MONUMENT_DESC').text
-	print rootElement.find('SOLUTION_TIME').text
-	print rootElement.find('STABILITY').text
-	print rootElement.find('DESCRIPTION').text
+	print '-----------------'
+	print 'MARK_INFO'
+	print '-----------------'
+	print rootElement.find('MARK_METADATA/PID').text
+	print rootElement.find('MARK_METADATA/DESIGNATION').text
+	print rootElement.find('MARK_METADATA/STAMPING').text
+	print rootElement.find('MARK_METADATA/MONUMENT_TYPE').text
+	print rootElement.find('MARK_METADATA/MONUMENT_DESC').text
+	print rootElement.find('MARK_METADATA/STABILITY').text
+	print rootElement.find('MARK_METADATA/DESCRIPTION').text
