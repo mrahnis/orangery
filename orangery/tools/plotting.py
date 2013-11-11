@@ -70,3 +70,28 @@ def annotate_plot(self, ax=None):
 			ax.text((intersection.x + self.intersections[i+1].x)/2, ylim[0]+0.02*(ylim[1]-ylim[0]), i, color='red', fontsize=8, ha='center')
 
 	return ax
+
+def get_scale_factor(fig, ax, scale, axis='x'):
+	"""
+	Get the scale factor needed to obtain a desired scale in x-axis units per inch.
+
+	Parameters
+	----------
+	fig (Figure) : the figure to scale.
+	ax (Axis) : the axis to scale.
+	scale (int or float) : the desired output scale.
+
+	Returns
+	-------
+	scale_factor (float) : the scale factor to apply to the figure size.
+	"""	
+	bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+	if axis == 'x':
+		xlim = ax.get_xlim()
+		initial_scale = abs(xlim[1] - xlim[0]) / bbox.width
+	elif axis == 'y':
+		ylim = ax.get_ylim()
+		initial_scale = abs(ylim[1] - ylim[0]) / bbox.height		
+	scale_factor = initial_scale/scale
+
+	return scale_factor
