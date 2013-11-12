@@ -18,14 +18,13 @@ def _convert(root, val_path, unit_path, out_unit):
 	"""
 	val = float(root.find(val_path).text)
 	opus_unit = root.find(unit_path).get('UNIT')
-	
+
 	if opus_unit == 'm' and out_unit =='US_ft':
 		result = val/US_FOOT_IN_METERS
 	elif opus_unit == 'US_ft' and out_unit == 'm':
 		result = val*US_FOOT_IN_METERS
 	else:
 		result = val
-
 	return result
 
 def get_plane_coords(filename, unit='m', spec_type='UTM'):	
@@ -93,6 +92,7 @@ def get_solution_info(filename):
 	tree = xml.parse(filename)
 	rootElement = tree.getroot()
 
+
 	print '-----------------'
 	print 'SOLUTION_INFO'
 	print '-----------------'
@@ -101,7 +101,7 @@ def get_solution_info(filename):
 	print rootElement.find('OBSERVATION_TIME').get('START')
 	print rootElement.find('OBSERVATION_TIME').get('END')
 	print rootElement.find('CONTRIBUTOR/EMAIL').text
-	print rootElement.find('CONTRIBUTOR/AGENCY').text
+	#print rootElement.find('CONTRIBUTOR/AGENCY').text
 	print rootElement.find('DATA_SOURCES/RINEX_FILE').text
 	print rootElement.find('DATA_SOURCES/EPHEMERIS_FILE').get('TYPE')
 	print rootElement.find('DATA_SOURCES/ANTENNA/NAME').text
