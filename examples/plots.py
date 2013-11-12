@@ -46,7 +46,7 @@ ax2 = fig2.add_subplot(111)
 xs.plot(ax=ax2, linestyle='-', label='2004')
 ax2.set_aspect(ve)
 ax2.set_xlabel('Distance (ft)')
-ax2.set_ylabel('Elevation (ft), {0}x exaggeration'.format(ve))
+ax2.set_ylabel(u'Elevation (ft), {0}\u00D7 V.E.'.format(ve))
 
 # set the desired scale
 scale = 5
