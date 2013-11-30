@@ -8,13 +8,14 @@ from orangery.ops.correction import get_offsets
 opusxml = 'opus/2010096o.10o.xml'
 
 filename = 'data/Topo-20100331.csv'
-format_json = 'json/format.json'
+codebook_json = 'json/codebook.json'
 
 # load the configuration
-format = json.load(open(format_json, 'r'))
+codebook = json.load(open(codebook_json, 'r'))
 
 # load the survey data
-s = o.Survey(filename, format)
+s = o.Survey(filename, 'pyxzctn', codebook, 0)
+
 print s.data.head()
 
 base = o.pointname(s.data, 'BASE2')

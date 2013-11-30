@@ -7,15 +7,15 @@ import orangery as o
 from orangery.tools.plotting import get_scale_factor
 
 filename = 'data/file_2004.csv'
-format_json = 'json/format.json'
+codebook_json = 'json/codebook.json'
 
 # load the configuration
-format = json.load(open(format_json, 'r'))
+codebook = json.load(open(codebook_json, 'r'))
 
 xs_name = 'XS-7'
 
 # load the survey data
-s = o.Survey(filename, format)
+s = o.Survey(filename, 'pyxzctn', codebook, 0)
 
 # make a map of both surveys
 fig1 = plt.figure()

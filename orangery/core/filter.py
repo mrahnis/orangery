@@ -13,7 +13,7 @@ def pointname(df, name):
 	-------
 	result (DataFrame) : records where point field (equivalent to the 'Point name' on Trimble data collectors) is equivalent to the name argument.
 	"""
-	recs = df[df['point'] == name]
+	recs = df[df['p'] == name]
 	result = df.take(recs.index)
 	return result
 
@@ -56,7 +56,7 @@ def endpoints(df, reverse=False):
 	else:
 		return p1, p2
 
-def controls(df, code_table, format):
+def controls(df, code_table, codebook):
 	"""
 	Given a DataFrame return survey records that have control codes.
 
@@ -64,18 +64,18 @@ def controls(df, code_table, format):
 	----------
 	df (pandas.DataFrame) : survey data records.
 	code_table (pandas.DataFrame) : survey data record properties extracted by parse function.
-	format (dict) : dict that describes the survey format.
+	codebook (dict) : a dict that describes the codes used in the survey.
 
 	Returns
 	-------
 	result (DataFrame) : records having control codes.
 	"""
 
-	recs = df[code_table['control'].isin(format['codes']['control'])]
+	recs = df[code_table['control'].isin(codebook['codes']['control'])]
 	result = df.take(recs.index)
 	return result
 
-def benchmarks(df, code_table, format):
+def benchmarks(df, code_table, codebook):
 	"""
 	Given a DataFrame return survey records with benchmark codes.
 
@@ -83,13 +83,13 @@ def benchmarks(df, code_table, format):
 	----------
 	df (pandas.DataFrame) : survey data records.
 	code_table (pandas.DataFrame) : survey data record properties extracted by parse function.
-	format (dict) : dict that describes the survey format.
+	codebook (dict) : a dict that describes the codes used in the survey.
 
 	Returns
 	-------
 	result (DataFrame) : records having benchmark codes.
 	"""
 
-	recs = df[code_table['marker'].isin(format['codes']['marker'])]
+	recs = df[code_table['marker'].isin(codebook['codes']['marker'])]
 	result = df.take(recs.index)
 	return result

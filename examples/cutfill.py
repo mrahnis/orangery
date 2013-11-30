@@ -11,18 +11,18 @@ import orangery as o
 file1 = 'data/file_2004.csv'
 file2 = 'data/file_2010.csv'
 materials_json = 'json/materials.json'
-format_json = 'json/format.json'
+codebook_json = 'json/codebook.json'
 
 # load the configuration
-format = json.load(open(format_json, 'r'))
+codebook = json.load(open(codebook_json, 'r'))
 materials = json.load(open(materials_json, 'r'))
 
 # the cross section to plot
 xs_name = 'XS-7'
 
 # load the survey data
-s1 = o.Survey(file1, format)
-s2 = o.Survey(file2, format)
+s1 = o.Survey(file1, 'pyxzctn', codebook, 0)
+s2 = o.Survey(file2, 'pyxzctn', codebook, 0)
 
 # select a group of points, in this case a cross section
 xs_pts1 = o.group(s1.data, s1.code_table, group=xs_name)

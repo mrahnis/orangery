@@ -1,13 +1,4 @@
 {
-	"column_map": {
-		"point": "Point",
-		"t": "Timestamp",
-		"x": "Easting",
-		"y": "Northing",
-		"z": "Elevation",
-		"code": "Code",
-		"comment": "Comment"
-	},
 	"codes": {
 		"marker": ["BASE","BM"],
 		"control": ["JST","JEND"],

@@ -14,23 +14,41 @@ class Survey:
 	Parameters
 	----------
 	filename (str) : the path to the file to read.
-	format (dict) : describes the survey data.
+	format (str) : a string of characters that describes the survey data. Accepts:
+		P, I - Point, Index
+		X, E - X Coord, Easting
+		Y, N - Y Coord, Northing
+		Z, H - Z Coord, Height
+		S    - Station
+		O    - Offset
+		D    - Depth
+		T    - Timestamp
+		C    - Code
+		N    - Note
+		U    - User data/Comment
+		F    - Field_1, Field_2, etc
+		-    - Skip
+	codebook (dict) : a dict that describes the codes used in the survey.
+	header (int) : the row number of the header. As in pandas it is 0 by default. If there is no header row specify 'None'.
 	kwargs (dict) : keyword arguments passed to pandas.read_csv.
 
 	"""
-	def __init__(self, filename, format, **kwargs):
+	def __init__(self, filename, format, codebook, header=0, **kwargs):
 		self.filename = filename
-		self.format = format
+		self.codebook = codebook
 		try:
-			self.data = pnd.read_csv(filename, **kwargs)
+			self.data = pnd.read_csv(filename, header=header, **kwargs)
 			# get inverse map of the column names, then rename for internal use
-			inv_col_map = {v:k for k, v in self.format['column_map'].items()}
+			col_map = dict(zip(list(format),self.data.columns))
+			self.format = col_map
+			inv_col_map = {v:k for k, v in col_map.items()}
+
 			self.data.rename(columns=inv_col_map, inplace=True)
 		except:
 			print 'Error: Failed to read CSV file: ', filename
 			raise
 		try:
-			self.code_table = ot.parse(self.data, self.format['codes'])
+			self.code_table = ot.parse(self.data, self.codebook['codes'])
 		except:
 			print 'Error: Failed to parse CSV file: ', filename
 			raise
