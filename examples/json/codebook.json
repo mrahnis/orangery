@@ -6,6 +6,6 @@
 		"breakline": ["TRE","TW","WSE"]
 	},
 	"group": {
-		"source": "comment"
+		"column": "r"
 	}
 }

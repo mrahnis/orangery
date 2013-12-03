@@ -35,21 +35,21 @@ def project2(p1, p2, p3):
 		return
 	
 	u = ((p3.x - p1.x) * x_delta + (p3.y - p1.y) * y_delta) / (x_delta * x_delta + y_delta * y_delta)
-	pp = Point(p1.x + u * x_delta, p1.y + u * y_delta, p3.z)
+	pt = Point(p1.x + u * x_delta, p1.y + u * y_delta, p3.z)
 
 	# calculate distance along the line from p1
 	if u < 0:
-		d = -pp.distance(p1)
+		d = -pt.distance(p1)
 	else:
-		d = pp.distance(p1)
+		d = pt.distance(p1)
 		
 	# calculate the offset distance of p3 from the line
 	if (p1.y - p2.y) * (p3.x -  p2.x) - (p1.x - p2.x) * (p3.y - p2.y) < 0:
-		offset = -pp.distance(p3) # the point is left of the line
+		offset = -pt.distance(p3) # the point is offset left of the line
 	else:
-		offset = pp.distance(p3) # the point is right of the line
+		offset = pt.distance(p3) # the point is offset right of the line
 	
-	result = {'point':pp, 'd':d, 'offset':offset, 'u':u}
+	result = {'pt':pt, 'd':d, 'o':offset, 'u':u}
 	return result
 
 def project(p1, p2, p3):
@@ -71,16 +71,16 @@ def project(p1, p2, p3):
 	line = LineString([(p1.x, p1.y),(p2.x, p2.y)])
 	u = line.project(p3, normalized=True)
 	d = line.project(p3, normalized=False)
-	pp2D = line.interpolate(d)
-	pp = Point([pp2D.x, pp2D.y, p3.z])
+	pt_xy = line.interpolate(d)
+	pt = Point([pt_xy.x, pt_xy.y, p3.z])
 
 	# calculate the offset distance of p3 from the line
 	if (p1.y - p2.y) * (p3.x - p2.x) - (p1.x - p2.x) * (p3.y - p2.y) < 0:
-		offset = -pp.distance(p3) # the point is left of the line
+		offset = -pt.distance(p3) # the point is offset left of the line
 	else:
-		offset = pp.distance(p3) # the point is right of the line
+		offset = pt.distance(p3) # the point is offset right of the line
 
-	result = {'point':pp, 'd':d, 'offset':offset, 'u':u}
+	result = {'pt':pt, 'd':d, 'o':offset, 'u':u}
 	return result
 
 def project_points(points, p1, p2):
@@ -101,10 +101,10 @@ def project_points(points, p1, p2):
 	ppoints = []
 	for i in points.index:
 		p3 = Point(points.loc[i, 'x'], points.loc[i, 'y'], points.loc[i, 'z'])
-		pp = project2(p1, p2, p3)
-		ppoints.append((pp['point'].x, pp['point'].y, pp['point'].z, pp['d'], pp['offset'], pp['u']))	
+		pt = project2(p1, p2, p3)
+		ppoints.append((pt['pt'].x, pt['pt'].y, pt['pt'].z, pt['d'], pt['o'], pt['u']))	
 
-	result = pnd.DataFrame(ppoints, columns=['x','y','z','d','offset','u'])
+	result = pnd.DataFrame(ppoints, columns=['x','y','z','d','o','u'])
 	return result
 
 def cut_by_distance(line, distance):
@@ -239,9 +239,9 @@ def sign(line1, line2):
 					Point(line1.coords[i][0], line1.coords[i][1], 0),
 					Point(line1.coords[i+1][0], line1.coords[i+1][1], 0),
 					Point(line2.coords[j+1][0], line2.coords[j+1][1], 0))
-				if pp['offset'] < 0:
+				if pp['o'] < 0:
 					signs.append(-1)
-				elif pp['offset'] > 0:
+				elif pp['o'] > 0:
 					signs.append(1)
 	return signs
 

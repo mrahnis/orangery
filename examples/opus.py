@@ -14,7 +14,7 @@ codebook_json = 'json/codebook.json'
 codebook = json.load(open(codebook_json, 'r'))
 
 # load the survey data
-s = o.Survey(filename, 'pyxzctn', codebook, 0)
+s = o.Survey(filename, 'pyxzctr', codebook, 0)
 
 print s.data.head()
 

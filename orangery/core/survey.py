@@ -1,3 +1,6 @@
+import re
+import collections
+
 import pandas as pnd
 
 from shapely.geometry import asLineString
@@ -15,40 +18,63 @@ class Survey:
 	----------
 	filename (str) : the path to the file to read.
 	format (str) : a string of characters that describes the survey data. Accepts:
-		P, I - Point, Index
-		X, E - X Coord, Easting
-		Y, N - Y Coord, Northing
-		Z, H - Z Coord, Height
-		S    - Station
-		O    - Offset
-		D    - Depth
-		T    - Timestamp
-		C    - Code
-		N    - Note
-		U    - User data/Comment
-		F    - Field_1, Field_2, etc
-		-    - Skip
+		p    - point
+		x, e - x coord, easting
+		y, n - y coord, northing
+		z, h - z coord
+		d, s - distance, station
+		o    - offset
+		t    - timestamp
+		c    - code
+		r    - remark
+		q    - quality
+		f    - fields f1,f2,f3...
+		The string may contain the characters in any order, without duplicates, except for 'f' which may occur multiple times. The string must contain x/e,y/n,z/h or d/s,z/h.
+		Examples: 'pyxzctnff', 'pnezfrf'
 	codebook (dict) : a dict that describes the codes used in the survey.
 	header (int) : the row number of the header. As in pandas it is 0 by default. If there is no header row specify 'None'.
 	kwargs (dict) : keyword arguments passed to pandas.read_csv.
 
 	"""
-	def __init__(self, filename, format, codebook, header=0, **kwargs):
+	def __init__(self, filename, columns, codebook, header=0, **kwargs):
 		self.filename = filename
 		self.codebook = codebook
+
 		try:
 			self.data = pnd.read_csv(filename, header=header, **kwargs)
-			# get inverse map of the column names, then rename for internal use
-			col_map = dict(zip(list(format),self.data.columns))
-			self.format = col_map
-			inv_col_map = {v:k for k, v in col_map.items()}
 
+			known_columns = set(('p','x','y','z','n','e','s','o','z','t','d','c','r','q','f'))
+			columns = list(columns.lower())
+
+			if set(columns).issubset(known_columns) == False:
+				unrecognized = set(columns).difference(known_columns)
+				print 'Warning: Unrecognized column entry ', unrecognized
+
+			columns = [c.replace('f', 'f'+str(i)) for i,c in enumerate(columns)]
+
+			if len(set(columns)) < len(columns):
+				duplicates = [i for i, c in collections.Counter(columns).items() if c > 1]
+				print 'Warning: Duplicate columns ', duplicates
+
+			columns = [c.replace('n', 'y') for c in columns]
+			columns = [c.replace('e', 'x') for c in columns]
+			columns = [c.replace('h', 'z') for c in columns]
+			columns = [c.replace('s', 'd') for c in columns]
+		
+			if {'x','y','z'}.issubset(columns):
+				print 'xyz'
+			if {'d','z'}.issubset(columns):
+				print 'dz'
+
+			# get inverse map of the dataframe column names, then rename columns for internal use
+			self.format = collections.OrderedDict(zip(columns,self.data.columns))
+			inv_col_map = {v:k for k, v in self.format.items()}
 			self.data.rename(columns=inv_col_map, inplace=True)
 		except:
 			print 'Error: Failed to read CSV file: ', filename
 			raise
 		try:
-			self.code_table = ot.parse(self.data, self.codebook['codes'])
+			self.code_table = ot.parse(self.data, self.codebook)
 		except:
 			print 'Error: Failed to parse CSV file: ', filename
 			raise
@@ -93,14 +119,11 @@ class Section:
 		self.line = None
 
 		if reverse == True:
-			# flip sections shot right to left
-			self.data.sort(ascending=False, inplace=True)
+			self.data.sort(ascending=False, inplace=True) # flip sections shot right to left
 		if z_adjustment != None:
-			# adjust the section z values
 			self.data['z'] = self.data['z'] + z_adjustment
-		# project the data
+
 		self.projection = og.project_points(self.data, self.p1, self.p2)
-		# convert to LineString
 		self.line = asLineString(zip(self.projection['d'],self.projection['z']))
 
 	def plot(self, **kwargs):

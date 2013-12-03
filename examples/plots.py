@@ -1,10 +1,16 @@
 """
 Plots a map of a survey and a single cross-section from that survey.
 """
+#import matplotlib
+#print matplotlib.get_backend()
+#print matplotlib.rcsetup.interactive_bk
+#matplotlib.use('WebAgg')
+
 import json
 import matplotlib.pyplot as plt
 import orangery as o
 from orangery.tools.plotting import get_scale_factor
+
 
 filename = 'data/file_2004.csv'
 codebook_json = 'json/codebook.json'
@@ -15,7 +21,7 @@ codebook = json.load(open(codebook_json, 'r'))
 xs_name = 'XS-7'
 
 # load the survey data
-s = o.Survey(filename, 'pyxzctn', codebook, 0)
+s = o.Survey(filename, 'pnezctr', codebook, header=0)
 
 # make a map of both surveys
 fig1 = plt.figure()

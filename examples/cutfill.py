@@ -21,8 +21,8 @@ materials = json.load(open(materials_json, 'r'))
 xs_name = 'XS-7'
 
 # load the survey data
-s1 = o.Survey(file1, 'pyxzctn', codebook, 0)
-s2 = o.Survey(file2, 'pyxzctn', codebook, 0)
+s1 = o.Survey(file1, 'pyxzctr', codebook, 0)
+s2 = o.Survey(file2, 'pyxzctr', codebook, 0)
 
 # select a group of points, in this case a cross section
 xs_pts1 = o.group(s1.data, s1.code_table, group=xs_name)

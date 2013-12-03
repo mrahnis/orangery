@@ -24,17 +24,17 @@ def parse(points, codebook):
 		codes = str(points.loc[pt, 'c']).split(' ')
 
 		# validate start and end order for chains
-		if codebook['control'][0] in codes:
+		if codebook['codes']['control'][0] in codes:
 			if build == False:
 				build = True
-				group = str(points.loc[pt, 'n'])
+				group = str(points.loc[pt, codebook['group']['column']])
 			else:
 				print 'Error: Out of order line start command.'
 				break
 
 		# assign codes to the correct column
 		record = []
-		for k, v in codebook.items():
+		for k, v in codebook['codes'].items():
 			c = None
 			for code in codes:
 				if code in v:
@@ -47,7 +47,7 @@ def parse(points, codebook):
 		results.append(dict(record))
 
 		# validate start and end order for chains, clean up after line end command
-		if codebook['control'][1] in codes:
+		if codebook['codes']['control'][1] in codes:
 			if build == True:
 				build = False
 				group = None
