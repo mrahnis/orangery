@@ -143,4 +143,7 @@ class Section:
 			ax = self.projection.plot('d','z',**kwargs)
 		elif view=='map':
 			ax = self.data.plot('x','y',**kwargs)
+		else:
+			print 'Warning:', view, 'is not a valid view option.'
+			ax=None
 		return ax
