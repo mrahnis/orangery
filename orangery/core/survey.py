@@ -60,11 +60,6 @@ class Survey:
 			columns = [c.replace('e', 'x') for c in columns]
 			columns = [c.replace('h', 'z') for c in columns]
 			columns = [c.replace('s', 'd') for c in columns]
-		
-			if {'x','y','z'}.issubset(columns):
-				print 'xyz'
-			if {'d','z'}.issubset(columns):
-				print 'dz'
 
 			# get inverse map of the dataframe column names, then rename columns for internal use
 			self.format = collections.OrderedDict(zip(columns,self.data.columns))
@@ -95,7 +90,11 @@ class Survey:
 		ax (Axis) : a matplotlib Axis.
 
 		"""
-		ax = self.data.plot('x','y', **kwargs)
+		if {'x','y','z'}.issubset(self.data.columns):
+			ax = self.data.plot('x','y', **kwargs)
+		else:
+			print 'x,y columns not available in this data'
+			ax = None
 		return ax
 
 class Section:
@@ -126,12 +125,13 @@ class Section:
 		self.projection = og.project_points(self.data, self.p1, self.p2)
 		self.line = asLineString(zip(self.projection['d'],self.projection['z']))
 
-	def plot(self, **kwargs):
+	def plot(self, view='section', **kwargs):
 		"""
 		Plot the d, z values of the projected data.
 
 		Parameters
 		----------
+		view (str) : Valid entries are 'section' and 'map'. Default is 'section' view.
 		kwargs (dict) : Keyword arguments to be passed to Pandas and matplotlib.
 
 		Returns
@@ -139,5 +139,8 @@ class Section:
 		ax (Axis) : a matplotlib Axis.
 
 		"""
-		ax = self.projection.plot('d','z',**kwargs)
+		if view=='section':
+			ax = self.projection.plot('d','z',**kwargs)
+		elif view=='map':
+			ax = self.data.plot('x','y',**kwargs)
 		return ax
