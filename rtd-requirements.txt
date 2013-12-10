@@ -1,3 +1,5 @@
 numpy
 numpydoc
 pandas
+matplotlib
+shapely

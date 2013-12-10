@@ -32,7 +32,7 @@ class Mock(object):
 		else:
 			return Mock()
 
-MOCK_MODULES = ['libgeos']
+MOCK_MODULES = ['numpy', 'matplotlib', 'matplotlib.pyplot','pandas','shapely']
 for mod_name in MOCK_MODULES:
 	sys.modules[mod_name] = Mock()
 
