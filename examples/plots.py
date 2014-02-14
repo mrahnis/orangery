@@ -1,10 +1,6 @@
 """
 Plots a map of a survey and a single cross-section from that survey.
 """
-#import matplotlib
-#print matplotlib.get_backend()
-#print matplotlib.rcsetup.interactive_bk
-#matplotlib.use('WebAgg')
 
 import json
 import matplotlib.pyplot as plt
