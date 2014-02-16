@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.etree.ElementTree as xml
 import json
 import matplotlib.pyplot as plt
@@ -16,27 +18,27 @@ codebook = json.load(open(codebook_json, 'r'))
 # load the survey data
 s = o.Survey(filename, 'pyxzctr', codebook, 0)
 
-print s.data.head()
+print(s.data.head())
 
 base = o.pointname(s.data, 'BASE2')
-print
-print 'Base Record: ', base
+print('\n')
+print('Base Record: ', base)
 
 # get the OPUS coordinates in the desired units and projection
 coords = get_plane_coords(opusxml, unit='US_ft', spec_type='SPC')
-print
-print 'OPUS Coords: ', coords
+print('\n')
+print('OPUS Coords: ', coords)
 
 # get the deltas
 offsets = get_offsets(base, coords)
-print
-print 'Offsets: ', offsets
+print('\n')
+print('Offsets: ', offsets)
 
 s.translate(offsets)
-print
-print s.data.head()
+print('\n')
+print(s.data.head())
 
-#print get_data_quality(opusxml, unit='US_ft')
+#print(get_data_quality(opusxml, unit='US_ft'))
 
 #get_solution_info(opusxml)
 

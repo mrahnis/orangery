@@ -31,7 +31,7 @@ def project2(p1, p2, p3):
 	y_delta = p2.y - p1.y
 	
 	if x_delta == 0 and y_delta == 0:
-		print "p1 and p2 cannot be the same point"
+		print("p1 and p2 cannot be the same point")
 		return
 	
 	u = ((p3.x - p1.x) * x_delta + (p3.y - p1.y) * y_delta) / (x_delta * x_delta + y_delta * y_delta)
@@ -164,7 +164,7 @@ def cut_by_point(line, pt):
 			segments = [LineString(coords[:i] + [(pt.x, pt.y)]), LineString([(pt.x, pt.y)] + coords[i:])]
 			break
 	else:
-		print 'loop fell through without finding the point'
+		print('loop fell through without finding the point')
 
 	return segments
 
@@ -347,7 +347,7 @@ def difference(line1, line2, close):
 					append = Point([ei.x, ei.y+1])
 				line2 = extend(line2, append, False)
 		except:
-			print 'Error: Unable to close line ends. You may need to flip one of your sections.'
+			print('Error: Unable to close line ends. You may need to flip one of your sections.')
 			raise
 			
 	intersections = line1.intersection(line2)

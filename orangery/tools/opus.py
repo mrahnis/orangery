@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import xml.etree.ElementTree as xml
 from orangery.tools.units import US_FOOT_IN_METERS
 
@@ -45,7 +47,7 @@ def get_plane_coords(filename, unit='m', spec_type='UTM'):
 	rootElement = tree.getroot()
 
 	for pcs in rootElement.findall('PLANE_COORD_INFO/PLANE_COORD_SPEC'):
-		#print pcs.tag, pcs.attrib
+		#print(pcs.tag, pcs.attrib)
 		if pcs.get('TYPE') == spec_type:
 			e = _convert(pcs, 'EASTING', 'EASTING', unit)
 			n = _convert(pcs, 'NORTHING', 'NORTHING', unit)
@@ -93,20 +95,20 @@ def get_solution_info(filename):
 	rootElement = tree.getroot()
 
 
-	print '-----------------'
-	print 'SOLUTION_INFO'
-	print '-----------------'
-	print rootElement.get('SID')
-	print rootElement.find('SOLUTION_TIME').text
-	print rootElement.find('OBSERVATION_TIME').get('START')
-	print rootElement.find('OBSERVATION_TIME').get('END')
-	print rootElement.find('CONTRIBUTOR/EMAIL').text
-	#print rootElement.find('CONTRIBUTOR/AGENCY').text
-	print rootElement.find('DATA_SOURCES/RINEX_FILE').text
-	print rootElement.find('DATA_SOURCES/EPHEMERIS_FILE').get('TYPE')
-	print rootElement.find('DATA_SOURCES/ANTENNA/NAME').text
-	print rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').text
-	print rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').get('UNIT')
+	print('-----------------')
+	print('SOLUTION_INFO')
+	print('-----------------')
+	print(rootElement.get('SID'))
+	print(rootElement.find('SOLUTION_TIME').text)
+	print(rootElement.find('OBSERVATION_TIME').get('START'))
+	print(rootElement.find('OBSERVATION_TIME').get('END'))
+	print(rootElement.find('CONTRIBUTOR/EMAIL').text)
+	#print(rootElement.find('CONTRIBUTOR/AGENCY').text)
+	print(rootElement.find('DATA_SOURCES/RINEX_FILE').text)
+	print(rootElement.find('DATA_SOURCES/EPHEMERIS_FILE').get('TYPE'))
+	print(rootElement.find('DATA_SOURCES/ANTENNA/NAME').text)
+	print(rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').text)
+	print(rootElement.find('DATA_SOURCES/ANTENNA/ARP_HEIGHT').get('UNIT'))
 
 def get_mark_info(filename):
 	"""
@@ -116,13 +118,13 @@ def get_mark_info(filename):
 	tree = xml.parse(filename)
 	rootElement = tree.getroot()
 
-	print '-----------------'
-	print 'MARK_INFO'
-	print '-----------------'
-	print rootElement.find('MARK_METADATA/PID').text
-	print rootElement.find('MARK_METADATA/DESIGNATION').text
-	print rootElement.find('MARK_METADATA/STAMPING').text
-	print rootElement.find('MARK_METADATA/MONUMENT_TYPE').text
-	print rootElement.find('MARK_METADATA/MONUMENT_DESC').text
-	print rootElement.find('MARK_METADATA/STABILITY').text
-	print rootElement.find('MARK_METADATA/DESCRIPTION').text
+	print('-----------------')
+	print('MARK_INFO')
+	print('-----------------')
+	print(rootElement.find('MARK_METADATA/PID').text)
+	print(rootElement.find('MARK_METADATA/DESIGNATION').text)
+	print(rootElement.find('MARK_METADATA/STAMPING').text)
+	print(rootElement.find('MARK_METADATA/MONUMENT_TYPE').text)
+	print(rootElement.find('MARK_METADATA/MONUMENT_DESC').text)
+	print(rootElement.find('MARK_METADATA/STABILITY').text)
+	print(rootElement.find('MARK_METADATA/DESCRIPTION').text)
