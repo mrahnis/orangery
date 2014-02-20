@@ -9,8 +9,7 @@ for line in open('orangery/__init__.py', 'r'):
         version = version.strip("'")
         continue
 
-open('VERSION.txt', 'wb').write(version)
-
+open('VERSION.txt', 'wb').write(bytes(version, 'UTF-8'))
 
 
 setup(name='orangery',
