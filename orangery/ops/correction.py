@@ -6,7 +6,7 @@ def get_offsets(df, coords):
 		offsets = [coords[0] - df.iloc[0]['x'], coords[1] - df.iloc[0]['y'], coords[2] - df.iloc[0]['z']]
 		return offsets
 	else:
-		print 'df can have only one record. df has ', len(df), ' records.'
+		print('df can have only one record. df has ', len(df), ' records.')
 
 def translate(df, offsets):
 	"""
