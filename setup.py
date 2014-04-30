@@ -9,7 +9,9 @@ for line in open('orangery/__init__.py', 'r'):
         version = version.strip("'")
         continue
 
-open('VERSION.txt', 'wb').write(bytes(version, 'UTF-8'))
+#open('VERSION.txt', 'wb').write(bytes(version, 'UTF-8'))
+with open('VERSION.txt', 'w') as fp:
+    fp.write(version)
 
 
 setup(name='orangery',
@@ -29,6 +31,7 @@ setup(name='orangery',
 		'License :: OSI Approved :: BSD License',
 		'Programming Language :: Python',
 		'Programming Language :: Python :: 2.7',
+		'Programming Language :: Python :: 3',
 		'Topic :: Scientific/Engineering :: GIS'
 	]
 )
