@@ -44,7 +44,7 @@ xs1 = o.Section(xs_pts1, p1, p2, reverse=True)
 xs2 = o.Section(xs_pts2, p1, p2, reverse=False)
 
 # calculate the change
-chg = o.Change(xs1, xs2, close=True)
+chg = o.Change(xs1, xs2, dangles=True)
 
 ve = 3 # vertical exaggeration
 
@@ -62,7 +62,7 @@ chg.annotate_plot(ax=ax)
 
 plt.legend(loc='best')
 plt.title('Cross-section {0}'.format(xs_name))
-plt.show(block=False)
+plt.show(block=True)
 
 # if QT binding in matplotlibrc is PySide uncomment the following:
 #from matplotlib.pyplot import pause
@@ -75,5 +75,5 @@ plt.show(block=False)
 # to
 # backend.qt4 : PyQt4        # PyQt4 | PySide
 
-chg.segment(materials)
-chg.save(xs_name)
+#chg.segment(materials)
+#chg.save(xs_name)
