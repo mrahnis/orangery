@@ -14,7 +14,6 @@ class Change:
 	section1 (Section) : the initial condition.
 	section2 (Section) : the final condition.
 	close_ends (bool) : True indicates dangles should be closed with a vertical line.
-
 	"""
 	def __init__(self, section1, section2, close_ends=False):
 		self.section1 = section1
