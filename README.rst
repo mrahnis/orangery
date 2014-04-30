@@ -6,9 +6,9 @@ Orangery is a Python library to support analysis of topographic cross-sections, 
 
 Orangery was initially a single script that allowed me to segregate, by grain size, changed areas on repeat topographic cross-sections. It can produce output plots like the one below.
 
-.. image:: https://lh3.googleusercontent.com/-ZCSNkXYEuhk/U2FhMurxYqI/AAAAAAAABMw/vpQHE2H4thU/w800-h597-no/figure_1.png
-	:width: 800
-	:height: 597
+.. image:: https://lh5.googleusercontent.com/-ZCSNkXYEuhk/U2FhMurxYqI/AAAAAAAABNg/WVMFmvIoxIA/w727-h353-no/figure_1.png
+	:width: 727
+	:height: 353
 
 Dependencies
 ============
