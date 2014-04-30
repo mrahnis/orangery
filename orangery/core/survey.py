@@ -125,7 +125,7 @@ class Section:
 			self.data['z'] = self.data['z'] + z_adjustment
 
 		self.projection = og.project_points(self.data, self.p1, self.p2)
-		self.line = asLineString(zip(self.projection['d'],self.projection['z']))
+		self.line = asLineString(list(zip(self.projection['d'],self.projection['z'])))
 
 	def plot(self, view='section', **kwargs):
 		"""
@@ -175,7 +175,7 @@ class LevelSection:
 			# xyzdou
 			self.location = og.locate_points(self.data, self.p1, self.p2)
 			
-		self.line = asLineString(zip(self.data['d'],self.data['z']))
+		self.line = asLineString(list(zip(self.data['d'],self.data['z'])))
 
 	def plot(self, view='section', **kwargs):
 		"""
