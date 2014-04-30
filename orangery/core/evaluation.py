@@ -13,15 +13,15 @@ class Change:
 	----------
 	section1 (Section) : the initial condition.
 	section2 (Section) : the final condition.
-	close (bool) : True indicates dangles should be closed with a vertical line.
+	close_ends (bool) : True indicates dangles should be closed with a vertical line.
 
 	"""
-	def __init__(self, section1, section2, dangles=False):
+	def __init__(self, section1, section2, close_ends=False):
 		self.section1 = section1
 		self.section2 = section2
 
 		try:
-			self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, dangles=dangles)
+			self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, close_ends=close_ends)
 		except:
 			print('Error calculating cut and fill')
 			raise

@@ -44,7 +44,7 @@ xs1 = o.Section(xs_pts1, p1, p2, reverse=True)
 xs2 = o.Section(xs_pts2, p1, p2, reverse=False)
 
 # calculate the change
-chg = o.Change(xs1, xs2, dangles=True)
+chg = o.Change(xs1, xs2, close_ends=True)
 
 ve = 3 # vertical exaggeration
 

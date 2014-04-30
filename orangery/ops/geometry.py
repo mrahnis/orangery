@@ -329,7 +329,7 @@ def close(line1, line2):
 
 	return line1, line2
 
-def difference(line1, line2, dangles=False):
+def difference(line1, line2, close_ends=False):
 	"""
 	Create polygons from two LineString objects.
 
@@ -337,7 +337,7 @@ def difference(line1, line2, dangles=False):
 	----------
 	line1 (LineString) : a line representing the initial condition.
 	line2 (LineString) : a line representing the final condition.
-	dangles (bool) : option to close open line ends with vertical line segments.
+	close_ends (bool) : option to close open line ends with vertical line segments.
 
 	Returns
 	-------
@@ -346,7 +346,7 @@ def difference(line1, line2, dangles=False):
 	signs (int array) : contains values of +1 or -1 to identify polygons as cut or fill.
 	
 	"""
-	if dangles==True:
+	if close_ends==True:
 		line1, line2 = close(line1, line2)
 
 	intersections = line1.intersection(line2)
