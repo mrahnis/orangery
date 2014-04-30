@@ -7,7 +7,7 @@ Orangery is a Python library to support analysis of topographic cross-sections, 
 Dependencies
 ============
 
-Orangery 0.2.0 depends on:
+Orangery 0.3.0 depends on:
 
 * `Python 2.7`_
 * NumPy_
