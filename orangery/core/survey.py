@@ -41,6 +41,7 @@ class Survey:
 	def __init__(self, filename, columns, codebook, header=0, **kwargs):
 		self.filename = filename
 		self.codebook = codebook
+		self.history = []
 
 		try:
 			self.data = pnd.read_csv(filename, header=header, **kwargs)
@@ -77,7 +78,25 @@ class Survey:
 			raise
 
 	def translate(self, deltas):
+		"""
+		Translate the data by an xyz offset and add a line to history.
+		"""
 		self.data = oc.translate(self.data, deltas)
+		# add a line to history
+		self.history.append('Translated: {0[0]}, {0[1]}, {0[2]}\n'.format(deltas))
+
+	def save(self, filename=None, original_header=False, write_history=False):
+		"""
+		Save the data to a file
+		"""
+		if original_header==True:
+			output = self.data.rename(columns=self.format, inplace=False)
+		else:
+			output = self.data
+
+		output.to_csv(filename)
+		print(''.join(list(self.history)))
+		print('Saved data to: ', filename)
 
 	def plot(self, **kwargs):
 		"""
