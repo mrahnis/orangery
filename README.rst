@@ -9,9 +9,13 @@ Orangery was initially a single script that allowed me to segregate, by grain si
 .. image:: https://lh3.googleusercontent.com/-ZCSNkXYEuhk/U2FhMurxYqI/AAAAAAAABMw/vpQHE2H4thU/w800-h597-no/figure_1.png
 =======
 
-.. image:: https://lh3.googleusercontent.com/-ZCSNkXYEuhk/U2FhMurxYqI/AAAAAAAABMw/vpQHE2H4thU/w800-h597-no/figure_1.png
+.. image:: https://lh3.googleusercontent.com/-3BBypwcOuqQ/U2GP63BYFII/AAAAAAAABNs/ubaKDHXSqjQ/w800-h344-no/figure_1.png
 	:width: 800
+<<<<<<< HEAD
 	:height: 597
+>>>>>>> develop
+=======
+	:height: 344
 >>>>>>> develop
 
 Dependencies
