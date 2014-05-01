@@ -53,13 +53,13 @@ ve = 3 # vertical exaggeration
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.set_aspect(ve)
-ax.set_xlabel('Distance (ft)')
-ax.set_ylabel('Elevation (ft), {0}x exaggeration'.format(ve))
+
 xs1.plot(ax=ax, marker='o', markersize=4, markerfacecolor='gray', linestyle='none', label='2004')
 xs2.plot(ax=ax, marker='o', markersize=4, markerfacecolor='black', linestyle='none', label='2010')
 chg.polygon_plot(ax=ax, fill_label='Fill', cut_label='Cut')
 chg.annotate_plot(ax=ax)
-
+ax.set_xlabel('Distance (ft)')
+ax.set_ylabel('Elevation (ft), {0}x exaggeration'.format(ve))
 plt.legend(loc='best')
 plt.title('Cross-section {0}'.format(xs_name))
 plt.show(block=True)
