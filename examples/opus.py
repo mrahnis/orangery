@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from __future__ import print_function
 
 import os
@@ -8,38 +10,41 @@ import orangery as o
 from orangery.tools.opus import get_plane_coords, get_data_quality, get_solution_info, get_mark_info
 from orangery.ops.correction import get_offsets
 
-opusxml = 'opus/2010096o.10o.xml'
+if __name__ == '__main__':
+	import argparse
 
-filename = 'data/Topo-20100331.csv'
-codebook_json = 'json/codebook.json'
+	def _default_outname(filename):
+		dirpath = os.path.dirname(filename)
+		fnsplit = os.path.splitext(os.path.basename(filename))
+		outname = '{0[0]}-corr{0[1]}'.format(fnsplit)
+		return outname
 
-bmname = 'BASE2'
+	# python opus.py opus/2010096o.10o.xml data/Topo-20100331.csv json/codebook.json pyxzctr -p BASE2 -u US_ft -s SPC --keep-header
 
-# load the configuration
-codebook = json.load(open(codebook_json, 'r'))
+	argparser = argparse.ArgumentParser()
+	argparser.add_argument('opusxml', help="OPUS XML file containing the corrected coordinates")
+	argparser.add_argument('filename', help="survey file to adjust")
+	argparser.add_argument('codes', help="JSON file containing a list of survey codes")
+	argparser.add_argument('fields', help="Character string identifying the columns")
+	argparser.add_argument('-o', '--output', dest='output', type=argparse.FileType('wb', 0), help="output file path") # default = '{0[0]}-corr{0[1]}'.format(fnsplit)
+	argparser.add_argument('-p', '--point', dest='point', required=True, help="name of the base or reference point")
+	argparser.add_argument('-u', '--unit', dest='unit', choices={'m','US_ft'}, default='m', help="the units to use")
+	argparser.add_argument('-s', '--spec', dest='spec', choices={'UTM','SPC'}, default='UTM', help="the plane coordinate spec type")
 
-# load the survey data
-s = o.Survey(filename, 'pyxzctr', codebook, 0)
+	argparser.add_argument('--keep-header', dest='header', action='store_true', help="keep the original header")
+	argparser.add_argument('--drop-header', dest='header', action='store_false', help="drop the original header")
+	argparser.set_defaults(header=True)
 
-bmrecord = o.pointname(s.data, bmname)
 
-# get the OPUS coordinates in the desired units and projection
-coords = get_plane_coords(opusxml, unit='US_ft', spec_type='SPC')
+	args = argparser.parse_args()
 
-# get the deltas
-offsets = get_offsets(bmrecord, coords)
+	codes = json.load(open(args.codes, 'r'))
+	s = o.Survey(args.filename, args.fields, codes, 0)
 
-s.history.append('Offset correction between: {0} and {1}\n'.format(bmname, os.path.basename(opusxml)))
-s.translate(offsets)
+	record = o.pointname(s.data, args.point)
+	coords = get_plane_coords(args.opusxml, unit=args.unit, spec_type=args.spec)
+	offsets = get_offsets(record, coords)
 
-dirpath = os.path.dirname(filename)
-fnsplit = os.path.splitext(os.path.basename(filename))
-outname = '{0[0]}-corr{0[1]}'.format(fnsplit)
-
-s.save(outname, original_header=True)
-
-#print(get_data_quality(opusxml, unit='US_ft'))
-
-#get_solution_info(opusxml)
-
-#get_mark_info(opusxml)
+	s.history.append('Offset correction between: {0} and {1}\n'.format(args.point, os.path.basename(args.opusxml)))
+	s.translate(offsets)
+	s.save(_default_outname(args.filename), original_header=args.header)

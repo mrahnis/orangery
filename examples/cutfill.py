@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """
 Displays a plot of a repeat survey with cut and fill.
 The console prompts the user to assign a material to each polygon along the line of section.
@@ -77,3 +79,39 @@ plt.show(block=True)
 
 #chg.segment(materials)
 #chg.save(xs_name)
+
+if __name__ == '__main__':
+	import argparse
+
+	argparser = argparse.ArgumentParser()
+	argparser.add_argument("file1", help="survey representing the initial condition")
+	argparser.add_argument("file2", help="survey representing the final condition")
+	argparser.add_argument("-o", "--output", dest='output', type=argparse.FileType('wb', 0), help="output file path")
+
+	argparser.add_argument("-f", "--fields", help="character string identifying the columns")
+	argparser.add_argument("-n", "--name", dest="xs_name", help="name of the cross-section to plot")
+
+	argparser.add_argument("-ve", "--vertical-exaggeration", dest="ve", help="vertical exaggeration of plot")
+
+	argparser.add_argument("--closed-ends", dest="close", action='store_true', help="close the line ends")
+	argparser.add_argument("--no-closed-ends", dest="close", action='store_false', help="no not close the line ends")
+	argparser.set_defaults(close=False)
+
+	"""
+	--codebook / codes
+		if none then assume first point is start...
+	--materials
+		if none then don't prompt
+	--config1, --config2
+
+		{
+			name : xs_name,
+			label : label,
+			codes : filename,
+			fields : pyxzctr,
+			reverse : True,
+		}
+	--style 
+		some drawing properties
+	"""	
+	args = argparser.parse_args()
