@@ -1,10 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Displays a plot of a repeat survey with cut and fill.
 The console prompts the user to assign a material to each polygon along the line of section.
 Then saves a CSV file containing the net gain or loss of fine sediment.
 """
+
 # use a different backend such as TkAgg or WebAgg
 #import matplotlib
 #matplotlib.use('TkAgg')
@@ -83,7 +85,7 @@ plt.show(block=True)
 if __name__ == '__main__':
 	import argparse
 
-	argparser = argparse.ArgumentParser()
+	argparser = argparse.ArgumentParser(description=__doc__)
 	argparser.add_argument("file1", help="survey representing the initial condition")
 	argparser.add_argument("file2", help="survey representing the final condition")
 	argparser.add_argument("-o", "--output", dest='output', type=argparse.FileType('wb', 0), help="output file path")

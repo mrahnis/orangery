@@ -1,15 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
-Applies an XSLT stylesheet to a JobXML
-	# variable name : String
-	# prompt : String
-	# variable type : Double, Integer, String and StringMenu
+A command-line utility to transform a Trimble JobXML file using a XSLT stylesheet, similar to Trimble ASCII File Generator.
+Stylesheets are available from the Trimble website.
+
+Examples:
+python .\convert_jxl.py './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes='No' --no-prompt
 
 """
+
 from __future__ import print_function
 
+import argparse
 from collections import OrderedDict
+
 import json
 from lxml import etree
 
@@ -86,14 +91,30 @@ def transform(xmlRoot, xslRoot, options=None):
 
 	return transRoot
 
-if __name__ == '__main__':
-	import argparse
+def convert(args):
 
-	# python .\convert_jxl.py './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes='No' --no-prompt
+	if args.prompt is True:
+		options = get_input(xslRoot)
+	else:
+		options = get_options(xslRoot, fields)
+		arguments = (vars(args))
+		for field in fields:
+			if arguments[field] is not None:
+				 options[field] = arguments[field]
+
+	result = transform(xmlRoot, xslRoot, options=options)
+
+	if args.output is not None:
+		args.output.write(result)
+	else:
+		print(result)
+
+
+if __name__ == '__main__':
 
 	parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
 
-	argparser = argparse.ArgumentParser()
+	argparser = argparse.ArgumentParser(description=__doc__)
 	argparser.add_argument('xml_path', help="input JobXML path")
 	argparser.add_argument('xsl_path', help="input XSLT stylesheet path"),
 	argparser.add_argument('-o', '--output', dest='output', type=argparse.FileType('wb', 0), help="output file name")
@@ -114,20 +135,4 @@ if __name__ == '__main__':
 
 	args = argparser.parse_args()
 
-	if args.prompt is True:
-		options = get_input(xslRoot)
-	else:
-		options = get_options(xslRoot, fields)
-		arguments = (vars(args))
-		for field in fields:
-			if arguments[field] is not None:
-				 options[field] = arguments[field]
-
-	#print(json.dumps(options))
-
-	result = transform(xmlRoot, xslRoot, options=options)
-
-	if args.output is not None:
-		args.output.write(result)
-	else:
-		print(result)
+	convert(args)
