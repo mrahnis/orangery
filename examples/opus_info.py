@@ -5,7 +5,7 @@
 This script prints information from an OPUS XML file.
 
 Examples:
-python opus.py opus/2010096o.10o.xml data/Topo-20100331.csv json/codebook.json pyxzctr -p BASE2 -u US_ft -s SPC --keep-header
+python opus_info.py opus/2010096o.10o.xml -u US_ft -s SPC
 
 """
 
@@ -18,18 +18,18 @@ import xml.etree.ElementTree as xml
 import json
 import matplotlib.pyplot as plt
 
-import orangery as o
 from orangery.tools.opus import get_plane_coords, get_data_quality, get_solution_info, get_mark_info
-from orangery.ops.correction import get_offsets
 
 def printout(args):
-
+	print(get_plane_coords(args.opusxml, unit=args.unit, spec_type=args.spec))
 	print(get_data_quality(args.opusxml, unit=args.unit))
 	print()
 	print(get_solution_info(args.opusxml))
 	print()
-	print(get_mark_info(args.opusxml))
-
+	try:
+		print(get_mark_info(args.opusxml))
+	except:
+		print('no info for this mark')
 
 if __name__ == '__main__':
 
