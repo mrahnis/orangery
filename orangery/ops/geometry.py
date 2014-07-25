@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pnd
 
 from numpy import array
@@ -31,7 +33,7 @@ def project2(p1, p2, p3):
 	y_delta = p2.y - p1.y
 	
 	if x_delta == 0 and y_delta == 0:
-		print("p1 and p2 cannot be the same point")
+		logging.warning("p1 and p2 cannot be the same point")
 		return
 	
 	u = ((p3.x - p1.x) * x_delta + (p3.y - p1.y) * y_delta) / (x_delta * x_delta + y_delta * y_delta)
@@ -324,7 +326,7 @@ def close(line1, line2):
 				append = Point([ei.x, ei.y+1])
 			line2 = extend(line2, append, False)
 	except:
-		print('Error: Unable to close line ends. You may need to flip one of your sections.')
+		logging.error('Unable to close line ends. You may need to flip one of your sections.')
 		raise
 
 	return line1, line2

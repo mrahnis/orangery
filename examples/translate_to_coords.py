@@ -12,6 +12,8 @@ python translate_to_coords.py opus/2010096o.10o.xml data/Topo-20100331.csv json/
 from __future__ import print_function
 
 import os
+import sys
+import logging
 import argparse
 
 import xml.etree.ElementTree as xml
@@ -28,7 +30,9 @@ def _default_outname(filename):
 	outname = '{0[0]}-corr{0[1]}'.format(fnsplit)
 	return outname
 
-def adjust(args):
+def main(args):
+
+	logging.basicConfig(stream=sys.stderr, level=args.loglevel or logging.INFO)
 
 	codes = json.load(open(args.codes, 'r'))
 	s = o.Survey(args.filename, args.fields, codes, 0)
@@ -37,7 +41,8 @@ def adjust(args):
 	coords = get_plane_coords(args.opusxml, unit=args.unit, spec_type=args.spec)
 	offsets = get_offsets(record, coords)
 
-	s.history.append('Offset correction between: {0} and {1}\n'.format(args.point, os.path.basename(args.opusxml)))
+	logging.info('Translating data by offsets between {0} and {1}\n'.format(args.point, os.path.basename(args.opusxml)))
+	
 	s.translate(offsets)
 	s.save(_default_outname(args.filename), original_header=args.header)
 
@@ -59,4 +64,4 @@ if __name__ == '__main__':
 
 
 	args = argparser.parse_args()
-	adjust(args)
+	main(args)

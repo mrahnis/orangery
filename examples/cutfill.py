@@ -16,6 +16,10 @@ Then saves a CSV file containing the net gain or loss of fine sediment.
 #from mpld3 import enable_notebook
 #enable_notebook()
 
+import sys
+import logging
+import argparse
+
 import json
 import matplotlib.pyplot as plt
 import orangery as o
@@ -83,7 +87,8 @@ plt.show(block=True)
 #chg.save(xs_name)
 
 if __name__ == '__main__':
-	import argparse
+
+	logging.basicConfig(stream=sys.stderr, level=args.loglevel or logging.INFO)
 
 	argparser = argparse.ArgumentParser(description=__doc__)
 	argparser.add_argument("file1", help="survey representing the initial condition")

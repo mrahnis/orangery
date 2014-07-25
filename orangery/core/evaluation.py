@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import logging
 import numpy as np
 import pandas as pnd
 
@@ -22,7 +23,7 @@ class Change:
 		try:
 			self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, close_ends=close_ends)
 		except:
-			print('Error calculating cut and fill')
+			logging.error('Error calculating cut and fill')
 			raise
 
 	def segment(self, materials):

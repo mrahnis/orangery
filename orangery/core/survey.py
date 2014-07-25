@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import logging
 import collections
 
 import pandas as pnd
@@ -41,7 +42,6 @@ class Survey:
 	def __init__(self, filename, columns, codebook, header=0, **kwargs):
 		self.filename = filename
 		self.codebook = codebook
-		self.history = []
 
 		try:
 			self.data = pnd.read_csv(filename, header=header, **kwargs)
@@ -51,13 +51,13 @@ class Survey:
 
 			if set(columns).issubset(known_columns) == False:
 				unrecognized = set(columns).difference(known_columns)
-				print('Warning: Unrecognized column entry ', unrecognized)
+				logging.warning('Unrecognized column entry: {0}'.format(unrecognized))
 
 			columns = [c.replace('a', 'a'+str(i)) for i,c in enumerate(columns)]
 
 			if len(set(columns)) < len(columns):
 				duplicates = [i for i, c in collections.Counter(columns).items() if c > 1]
-				print('Warning: Duplicate columns ', duplicates)
+				logging.warning('Duplicate columns: {0}'.format(duplicates))
 
 			columns = [c.replace('n', 'y') for c in columns]
 			columns = [c.replace('e', 'x') for c in columns]
@@ -69,12 +69,12 @@ class Survey:
 			inv_col_map = {v:k for k, v in self.format.items()}
 			self.data.rename(columns=inv_col_map, inplace=True)
 		except:
-			print('Error: Failed to read CSV file: ', filename)
+			logging.error('Failed to read CSV file: {0}'.format(filename))
 			raise
 		try:
 			self.code_table = ot.parse(self.data, self.codebook)
 		except:
-			print('Error: Failed to parse CSV file: ', filename)
+			logging.error('Failed to parse CSV file: {0}'.format(filename))
 			raise
 
 	def translate(self, deltas):
@@ -83,7 +83,7 @@ class Survey:
 		"""
 		self.data = oc.translate(self.data, deltas)
 		# add a line to history
-		self.history.append('Translated: {0[0]}, {0[1]}, {0[2]}\n'.format(deltas))
+		logging.info('Translated data by x,y,z offsets: {0[0]}, {0[1]}, {0[2]}\n'.format(deltas))
 
 	def save(self, filename=None, original_header=False, write_history=False):
 		"""
@@ -95,8 +95,7 @@ class Survey:
 			output = self.data
 
 		output.to_csv(filename)
-		print(''.join(list(self.history)))
-		print('Saved data to: ', filename)
+		logging.info('Saved data to: {0}'.format(filename))
 
 	def plot(self, **kwargs):
 		"""
@@ -114,7 +113,7 @@ class Survey:
 		if {'x','y','z'}.issubset(self.data.columns):
 			ax = self.data.plot('x','y', **kwargs)
 		else:
-			print('Warning: x,y columns not available in this data')
+			logging.warning('x,y columns not available in this data')
 			ax = None
 		return ax
 
@@ -165,7 +164,7 @@ class Section:
 		elif view=='map':
 			ax = self.data.plot('x','y',**kwargs)
 		else:
-			print('Warning:', view, 'is not a valid view option.')
+			logging.warning('{0} is not a valid view option'.format(view))
 			ax=None
 		return ax
 
@@ -182,7 +181,7 @@ class LevelSection:
 		self.line = None
 
 		if {'f'}.isin(self.data.columns):
-			print('calculate elevations')
+			logging.info('calculate elevations')
 
 		if reverse == True:
 			self.data.sort(ascending=False, inplace=True) # flip sections shot right to left
@@ -215,6 +214,6 @@ class LevelSection:
 		elif view=='map':
 			ax = self.location.plot('x','y',**kwargs)
 		else:
-			print('Warning:', view, 'is not a valid view option.')
+			logging.warning('{0} is not a valid view option'.format(view))
 			ax=None
 		return ax

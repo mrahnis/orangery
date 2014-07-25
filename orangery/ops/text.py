@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import logging
 import pandas as pnd
 
 def parse(points, codebook):
@@ -31,7 +32,7 @@ def parse(points, codebook):
 				build = True
 				group = str(points.loc[pt, codebook['group']['column']])
 			else:
-				print('Error: Out of order line start command.')
+				logging.error('Out of order line start command')
 				break
 
 		# assign codes to the correct column
@@ -41,7 +42,7 @@ def parse(points, codebook):
 			for code in codes:
 				if code in v:
 					if c != None:
-						print('Warning: More than one {0} code in point {1}.'.format(k, str(points.loc[pt, 'p'])))
+						logging.warning('More than one {0} code in point {1}'.format(k, str(points.loc[pt, 'p'])))
 					c = code
 			kv = (k, c)
 			record.append(kv)
@@ -54,7 +55,7 @@ def parse(points, codebook):
 				build = False
 				group = None
 			else:
-				print('Error: Out of order line end command.')
+				logging.error('Out of order line end command')
 				break
 
 	df = pnd.DataFrame(results)

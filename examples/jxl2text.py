@@ -6,16 +6,18 @@ A command-line utility to transform a Trimble JobXML file using a XSLT styleshee
 Stylesheets are available from the Trimble website.
 
 Examples:
-python .\convert_jxl.py './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes='No' --no-prompt
+python .\jxl2text.py './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes='No' --no-prompt
 
 """
 
 from __future__ import print_function
 
+import sys
+import logging
 import argparse
-from collections import OrderedDict
 
 import json
+from collections import OrderedDict
 from lxml import etree
 
 from orangery.tools.console import *
@@ -69,7 +71,7 @@ def get_input(xslRoot):
 		elif props[1].lower()=='string':
 			value = string_prompt(label=label)
 		else:
-			print('Unexpected field type: ', props[1])
+			logging.warning('Unexpected field type: ', props[1])
 		options[field] = "'{0}'".format(value)
 	return options
 
@@ -79,19 +81,20 @@ def transform(xmlRoot, xslRoot, options=None):
 
 	if options is not None:
 		xslRoot = set_options(xslRoot, options)
-		print('Using Options:')
+		msg = 'options'
 	else:
-		print('Using Defaults:')
+		msg = 'defaults'
 	
-	print(json.dumps(get_options(xslRoot, fields)))
-	print()
+	logging.info('Using {0}: {1}'.format(msg, json.dumps(get_options(xslRoot, fields))))
 
 	transform = etree.XSLT(xslRoot)
 	transRoot = transform(xmlRoot)
 
 	return transRoot
 
-def convert(args):
+def main(args):
+
+	logging.basicConfig(stream=sys.stderr, level=args.loglevel or logging.INFO)
 
 	if args.prompt is True:
 		options = get_input(xslRoot)
@@ -135,4 +138,4 @@ if __name__ == '__main__':
 
 	args = argparser.parse_args()
 
-	convert(args)
+	main(args)

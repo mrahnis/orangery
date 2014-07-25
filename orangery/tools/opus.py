@@ -128,3 +128,9 @@ def get_mark_info(filename):
 	print(rootElement.find('MARK_METADATA/MONUMENT_DESC').text)
 	print(rootElement.find('MARK_METADATA/STABILITY').text)
 	print(rootElement.find('MARK_METADATA/DESCRIPTION').text)
+
+
+def get_ecef_coords(filename):
+	print('-----------------')
+	print('ECEF COORDS')
+	print('-----------------')
