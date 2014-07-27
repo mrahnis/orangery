@@ -6,6 +6,9 @@ import pandas as pnd
 
 import orangery.ops.geometry as og
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
 class Change:
 	"""
 	An analysis of the change between two Section objects.
@@ -23,7 +26,7 @@ class Change:
 		try:
 			self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, close_ends=close_ends)
 		except:
-			logging.error('Error calculating cut and fill')
+			logger.error('Error calculating cut and fill')
 			raise
 
 	def segment(self, materials):

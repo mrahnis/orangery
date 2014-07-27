@@ -1,5 +1,8 @@
 import logging
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
 def get_offsets(df, coords):
 	"""
 	Calulate the x,y,z offsets between a record in a dataframe and an array of x,y,z coordinates.
@@ -8,7 +11,7 @@ def get_offsets(df, coords):
 		offsets = [coords[0] - df.iloc[0]['x'], coords[1] - df.iloc[0]['y'], coords[2] - df.iloc[0]['z']]
 		return offsets
 	else:
-		logging.error('df can have only one record. df has {0} records.'.format(len(df)))
+		logger.error('df can have only one record. df has {0} records.'.format(len(df)))
 
 def translate(df, offsets):
 	"""

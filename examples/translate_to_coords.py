@@ -62,6 +62,9 @@ if __name__ == '__main__':
 	argparser.add_argument('--drop-header', dest='header', action='store_false', help="drop the original header")
 	argparser.set_defaults(header=True)
 
+	group = argparser.add_mutually_exclusive_group()
+	group.add_argument('-v', '--verbose', dest='loglevel', action='store_const', const=logging.DEBUG, help="Verbose (debug) logging")
+	group.add_argument('-q', '--quiet', dest='loglevel', action='store_const', const=logging.WARN, help="Silent mode, only log warnings")
 
 	args = argparser.parse_args()
 	main(args)

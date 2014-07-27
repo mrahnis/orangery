@@ -11,6 +11,8 @@ import orangery.ops.text as ot
 import orangery.ops.geometry as og
 import orangery.ops.correction as oc
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 class Survey:
 	"""
@@ -51,13 +53,13 @@ class Survey:
 
 			if set(columns).issubset(known_columns) == False:
 				unrecognized = set(columns).difference(known_columns)
-				logging.warning('Unrecognized column entry: {0}'.format(unrecognized))
+				logger.warning('Unrecognized column entry: {0}'.format(unrecognized))
 
 			columns = [c.replace('a', 'a'+str(i)) for i,c in enumerate(columns)]
 
 			if len(set(columns)) < len(columns):
 				duplicates = [i for i, c in collections.Counter(columns).items() if c > 1]
-				logging.warning('Duplicate columns: {0}'.format(duplicates))
+				logger.warning('Duplicate columns: {0}'.format(duplicates))
 
 			columns = [c.replace('n', 'y') for c in columns]
 			columns = [c.replace('e', 'x') for c in columns]
@@ -69,12 +71,12 @@ class Survey:
 			inv_col_map = {v:k for k, v in self.format.items()}
 			self.data.rename(columns=inv_col_map, inplace=True)
 		except:
-			logging.error('Failed to read CSV file: {0}'.format(filename))
+			logger.error('Failed to read CSV file: {0}'.format(filename))
 			raise
 		try:
 			self.code_table = ot.parse(self.data, self.codebook)
 		except:
-			logging.error('Failed to parse CSV file: {0}'.format(filename))
+			logger.error('Failed to parse CSV file: {0}'.format(filename))
 			raise
 
 	def translate(self, deltas):
@@ -83,7 +85,7 @@ class Survey:
 		"""
 		self.data = oc.translate(self.data, deltas)
 		# add a line to history
-		logging.info('Translated data by x,y,z offsets: {0[0]}, {0[1]}, {0[2]}\n'.format(deltas))
+		logger.info('Translated data by x,y,z offsets: {0[0]}, {0[1]}, {0[2]}\n'.format(deltas))
 
 	def save(self, filename=None, original_header=False, write_history=False):
 		"""
@@ -95,7 +97,7 @@ class Survey:
 			output = self.data
 
 		output.to_csv(filename)
-		logging.info('Saved data to: {0}'.format(filename))
+		logger.info('Saved data to: {0}'.format(filename))
 
 	def plot(self, **kwargs):
 		"""
@@ -113,7 +115,7 @@ class Survey:
 		if {'x','y','z'}.issubset(self.data.columns):
 			ax = self.data.plot('x','y', **kwargs)
 		else:
-			logging.warning('x,y columns not available in this data')
+			logger.warning('x,y columns not available in this data')
 			ax = None
 		return ax
 
@@ -164,7 +166,7 @@ class Section:
 		elif view=='map':
 			ax = self.data.plot('x','y',**kwargs)
 		else:
-			logging.warning('{0} is not a valid view option'.format(view))
+			logger.warning('{0} is not a valid view option'.format(view))
 			ax=None
 		return ax
 
@@ -181,7 +183,7 @@ class LevelSection:
 		self.line = None
 
 		if {'f'}.isin(self.data.columns):
-			logging.info('calculate elevations')
+			logger.info('calculate elevations')
 
 		if reverse == True:
 			self.data.sort(ascending=False, inplace=True) # flip sections shot right to left
@@ -214,6 +216,6 @@ class LevelSection:
 		elif view=='map':
 			ax = self.location.plot('x','y',**kwargs)
 		else:
-			logging.warning('{0} is not a valid view option'.format(view))
+			logger.warning('{0} is not a valid view option'.format(view))
 			ax=None
 		return ax

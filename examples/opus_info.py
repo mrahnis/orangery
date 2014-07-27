@@ -43,5 +43,9 @@ if __name__ == '__main__':
 	argparser.add_argument('-u', '--unit', dest='unit', choices={'m','US_ft'}, default='m', help="the units to use")
 	argparser.add_argument('-s', '--spec', dest='spec', choices={'UTM','SPC'}, default='UTM', help="the plane coordinate spec type")
 
+	group = argparser.add_mutually_exclusive_group()
+	group.add_argument('-v', '--verbose', dest='loglevel', action='store_const', const=logging.DEBUG, help="Verbose (debug) logging")
+	group.add_argument('-q', '--quiet', dest='loglevel', action='store_const', const=logging.WARN, help="Silent mode, only log warnings")
+
 	args = argparser.parse_args()
 	main(args)

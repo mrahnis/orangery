@@ -136,6 +136,10 @@ if __name__ == '__main__':
 		props = fields[field]
 		argparser.add_argument('--{0}'.format(field), help=props[0])
 
+	group = argparser.add_mutually_exclusive_group()
+	group.add_argument('-v', '--verbose', dest='loglevel', action='store_const', const=logging.DEBUG, help="Verbose (debug) logging")
+	group.add_argument('-q', '--quiet', dest='loglevel', action='store_const', const=logging.WARN, help="Silent mode, only log warnings")
+
 	args = argparser.parse_args()
 
 	main(args)

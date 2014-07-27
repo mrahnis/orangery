@@ -104,6 +104,10 @@ if __name__ == '__main__':
 	argparser.add_argument("--no-closed-ends", dest="close", action='store_false', help="no not close the line ends")
 	argparser.set_defaults(close=False)
 
+	group = argparser.add_mutually_exclusive_group()
+	group.add_argument('-v', '--verbose', dest='loglevel', action='store_const', const=logging.DEBUG, help="Verbose (debug) logging")
+	group.add_argument('-q', '--quiet', dest='loglevel', action='store_const', const=logging.WARN, help="Silent mode, only log warnings")
+
 	"""
 	--codebook / codes
 		if none then assume first point is start...
