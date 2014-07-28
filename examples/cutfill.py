@@ -91,14 +91,14 @@ if __name__ == '__main__':
 	logging.basicConfig(stream=sys.stderr, level=args.loglevel or logging.INFO)
 
 	argparser = argparse.ArgumentParser(description=__doc__)
-	argparser.add_argument("file1", help="survey representing the initial condition")
-	argparser.add_argument("file2", help="survey representing the final condition")
-	argparser.add_argument("-o", "--output", dest='output', type=argparse.FileType('wb', 0), help="output file path")
+	argparser.add_argument("file1", metavar='INPUT TIME 1', help="survey representing the initial condition")
+	argparser.add_argument("file2", metavar='INPUT TIME 2', help="survey representing the final condition")
+	argparser.add_argument("-o", "--output", matavar='OUTPUT FILE', dest='output', type=argparse.FileType('wb', 0), help="output file path")
 
-	argparser.add_argument("-f", "--fields", help="character string identifying the columns")
-	argparser.add_argument("-n", "--name", dest="xs_name", help="name of the cross-section to plot")
+	argparser.add_argument("-f", "--fields", matavar='FIELDS', help="character string identifying the columns")
+	argparser.add_argument("-n", "--name", metavar='CROSS-SECTION NAME', dest="xs_name", help="name of the cross-section to plot")
 
-	argparser.add_argument("-ve", "--vertical-exaggeration", dest="ve", help="vertical exaggeration of plot")
+	argparser.add_argument("-ve", "--vertical-exaggeration", metavar='VERTICAL EXAGGERATION', dest="ve", help="vertical exaggeration of plot")
 
 	argparser.add_argument("--closed-ends", dest="close", action='store_true', help="close the line ends")
 	argparser.add_argument("--no-closed-ends", dest="close", action='store_false', help="no not close the line ends")

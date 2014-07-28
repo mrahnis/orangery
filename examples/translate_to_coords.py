@@ -49,14 +49,14 @@ def main(args):
 if __name__ == '__main__':
 
 	argparser = argparse.ArgumentParser(description=__doc__)
-	argparser.add_argument('opusxml', help="OPUS XML file containing the corrected coordinates")
-	argparser.add_argument('filename', help="survey file to adjust")
-	argparser.add_argument('codes', help="JSON file containing a list of survey codes")
-	argparser.add_argument('fields', help="Character string identifying the columns")
-	argparser.add_argument('-o', '--output', dest='output', type=argparse.FileType('wb', 0), help="output file path") # default = '{0[0]}-corr{0[1]}'.format(fnsplit)
-	argparser.add_argument('-p', '--point', dest='point', required=True, help="name of the base or reference point")
-	argparser.add_argument('-u', '--unit', dest='unit', choices={'m','US_ft'}, default='m', help="the units to use")
-	argparser.add_argument('-s', '--spec', dest='spec', choices={'UTM','SPC'}, default='UTM', help="the plane coordinate spec type")
+	argparser.add_argument('opusxml', metavar='OPUS XML FILE', help="OPUS XML file containing the corrected coordinates")
+	argparser.add_argument('filename', metavar='INPUT FILE', help="survey file to adjust")
+	argparser.add_argument('codes', metavar='CODES', help="JSON file containing a list of survey codes")
+	argparser.add_argument('fields', metavar='FIELDS', help="Character string identifying the columns")
+	argparser.add_argument('-o', '--output', metavar='OUTPUT FILE', dest='output', type=argparse.FileType('wb', 0), help="output file path") # default = '{0[0]}-corr{0[1]}'.format(fnsplit)
+	argparser.add_argument('-p', '--point', metavar='POINT NAME', dest='point', required=True, help="name of the base or reference point")
+	argparser.add_argument('-u', '--unit', metavar='DISTANCE UNIT', dest='unit', choices={'m','US_ft'}, default='m', help="the units to use")
+	argparser.add_argument('-s', '--spec', metavar='PLANE COORDINATE SPEC', dest='spec', choices={'UTM','SPC'}, default='UTM', help="the plane coordinate spec type")
 
 	argparser.add_argument('--keep-header', dest='header', action='store_true', help="keep the original header")
 	argparser.add_argument('--drop-header', dest='header', action='store_false', help="drop the original header")

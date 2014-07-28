@@ -39,9 +39,9 @@ def main(args):
 if __name__ == '__main__':
 
 	argparser = argparse.ArgumentParser(description=__doc__)
-	argparser.add_argument('opusxml', help="OPUS XML file containing the corrected coordinates")
-	argparser.add_argument('-u', '--unit', dest='unit', choices={'m','US_ft'}, default='m', help="the units to use")
-	argparser.add_argument('-s', '--spec', dest='spec', choices={'UTM','SPC'}, default='UTM', help="the plane coordinate spec type")
+	argparser.add_argument('opusxml', metavar='OPUS XML FILE', help="OPUS XML file containing the corrected coordinates")
+	argparser.add_argument('-u', '--unit', metavar='DISTANCE UNIT', dest='unit', choices={'m','US_ft'}, default='m', help="the units to use")
+	argparser.add_argument('-s', '--spec', metavar='PLANE COORDINATE SPEC', dest='spec', choices={'UTM','SPC'}, default='UTM', help="the plane coordinate spec type")
 
 	group = argparser.add_mutually_exclusive_group()
 	group.add_argument('-v', '--verbose', dest='loglevel', action='store_const', const=logging.DEBUG, help="Verbose (debug) logging")

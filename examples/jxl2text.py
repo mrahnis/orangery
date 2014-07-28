@@ -118,9 +118,9 @@ if __name__ == '__main__':
 	parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
 
 	argparser = argparse.ArgumentParser(description=__doc__)
-	argparser.add_argument('xml_path', help="input JobXML path")
-	argparser.add_argument('xsl_path', help="input XSLT stylesheet path"),
-	argparser.add_argument('-o', '--output', dest='output', type=argparse.FileType('wb', 0), help="output file name")
+	argparser.add_argument('xml_path', metavar='XML FILE', help="input JobXML path")
+	argparser.add_argument('xsl_path', metavar='XSL FILE', help="input XSLT stylesheet path"),
+	argparser.add_argument('-o', '--output', metavar='OUTPUT FILE', dest='output', type=argparse.FileType('wb', 0), help="output file name")
 	
 	argparser.add_argument('--prompt', dest='prompt', action='store_true', help="show user prompts for stylesheet options")
 	argparser.add_argument('--no-prompt', dest='prompt', action='store_false', help="do not show user prompts for stylesheet options")
