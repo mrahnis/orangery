@@ -112,7 +112,6 @@ def main(args):
 	else:
 		print(result)
 
-
 if __name__ == '__main__':
 
 	parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')

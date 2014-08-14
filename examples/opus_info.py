@@ -25,7 +25,8 @@ from orangery.tools.opus import get_plane_coords, get_data_quality, get_solution
 def main(args):
 
 	logging.basicConfig(stream=sys.stderr, level=args.loglevel or logging.INFO)
-
+	logger = logging.getLogger('opusinfo')
+	
 	print(get_plane_coords(args.opusxml, unit=args.unit, spec_type=args.spec))
 	print(get_data_quality(args.opusxml, unit=args.unit))
 	print()

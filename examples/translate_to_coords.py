@@ -9,8 +9,6 @@ python translate_to_coords.py opus/2010096o.10o.xml data/Topo-20100331.csv json/
 
 """
 
-from __future__ import print_function
-
 import os
 import sys
 import logging
@@ -33,6 +31,7 @@ def _default_outname(filename):
 def main(args):
 
 	logging.basicConfig(stream=sys.stderr, level=args.loglevel or logging.INFO)
+	logger = logging.getLogger('translate')
 
 	codes = json.load(open(args.codes, 'r'))
 	s = o.Survey(args.filename, args.fields, codes, 0)
@@ -41,7 +40,7 @@ def main(args):
 	coords = get_plane_coords(args.opusxml, unit=args.unit, spec_type=args.spec)
 	offsets = get_offsets(record, coords)
 
-	logging.info('Translating data by offsets between {0} and {1}\n'.format(args.point, os.path.basename(args.opusxml)))
+	logger.info('Translating data by offsets between {0} and {1}\n'.format(args.point, os.path.basename(args.opusxml)))
 	
 	s.translate(offsets)
 	s.save(_default_outname(args.filename), original_header=args.header)
