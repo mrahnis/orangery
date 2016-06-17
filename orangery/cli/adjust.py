@@ -35,12 +35,12 @@ def _default_outname(filename):
 @click.argument('fields', nargs=1, metavar='FIELDS') # help="Character string identifying the columns"
 @click.argument('point', nargs=1, metavar='POINT', required=True) # help="name of the base or reference point"
 @click.option('-o', '--output', type=click.File('wb', 0), metavar='OUTFILE', help="Output file path") # default = '{0[0]}-corr{0[1]}'.format(fnsplit)
-@click.option('-u', '--unit', metavar='UNIT', type=click.Choice(['m','US_ft']), default='m', help="Distance units")
+@click.option('-u', '--unit', metavar='UNIT', type=click.Choice(['m','sft']), default='m', help="Distance units")
 @click.option('-s', '--system', metavar='PLANE SYSTEM', type=click.Choice(['UTM','SPC']), default='UTM', help="Plane coordinate spec type")
 @click.option('--keep-header', 'header', is_flag=True, default=True, help="Keeps the original header")
 @click.option('--drop-header', 'header', is_flag=True, help="Drops the original header")
 @click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
-def cli(opusxml, filename, codes, fields, output, point, unit, spec, header, verbose):
+def cli(opusfile, filename, codes, fields, output, point, unit, system, header, verbose):
 
 	if verbose is True:
 		loglevel = 2
@@ -59,7 +59,7 @@ def cli(opusxml, filename, codes, fields, output, point, unit, spec, header, ver
 	coords = solution.plane_coords(system='SPC', unit=unit)
 	offsets = get_offsets(record, coords)
 
-	logger.info('Translating data by offsets between {0} and {1}\n'.format(point, os.path.basename(opusxml)))
+	logger.info('Translating data by offsets between {0} and {1}\n'.format(point, os.path.basename(opusfile)))
 	
 	s.translate(offsets)
 	s.save(_default_outname(filename), original_header=header)
