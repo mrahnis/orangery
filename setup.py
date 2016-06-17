@@ -23,8 +23,14 @@ setup(name='orangery',
 	license='BSD',
 	packages=find_packages(),
 	install_requires=[
-		'numpy','pandas','matplotlib','shapely'
+		'numpy','pandas','matplotlib','shapely','click', 'opusxml'
 	],
+	entry_points='''
+		[console_scripts]
+		adjust=orangery.cli.adjust:cli
+		geodetic=orangery.cli.geodetic:cli
+		cutfill=orangery.cli.cutfill:cli
+	''',
 	keywords='cross-section, topography, survey, plotting',
 	classifiers=[
 		'Development Status :: 3 - Alpha',
