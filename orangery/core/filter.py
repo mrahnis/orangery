@@ -19,7 +19,7 @@ def pointname(df, name):
 
 def group(df, code_table, group):
 	"""
-	Given a DataFrame return the survey records belonging to a given group
+	Given a DataFrame return a copy of the survey records belonging to a given group
 
 	Parameters
 	----------
@@ -31,8 +31,8 @@ def group(df, code_table, group):
 	-------
 	result (DataFrame) : records matching the given group name.
 	"""
-	recs = df[code_table['group'] == group]
-	result = df.take(recs.index)
+	recs = df.loc[code_table['group'] == group]
+	result = df.take(recs.index).copy()
 	return result
 
 def endpoints(df, reverse=False):
