@@ -5,7 +5,7 @@
 A command-line utility to adjust a survey dataset. It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
 
 Examples:
-python adjust.py opus/2010096o.10o.xml data/Topo-20100331.csv json/codebook.json pyxzctr BASE2 -u US_ft -s SPC --keep-header
+adjust.exe opus/2010096o.10o.xml data/Topo-20100331.csv pyxzctr BASE2 -u sft -s SPC --keep-header
 
 """
 
