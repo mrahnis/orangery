@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import sys
 import logging
 import numpy as np
 import pandas as pnd
@@ -39,16 +40,14 @@ class Change:
 		"""
 
 		def __assign_material(p, low, high):
-			try:
-				input = raw_input
-			except NameError:
-				pass
-
 			prompt = 'Enter a material no. for area {0}: '.format(p)
 			err = 'Input must be an integer number between {0} and {1}.'.format(low, high)
 			while True:
 				try:
-					m = int(input(prompt))
+					if sys.hexversion >= 0x03000000:
+						m = int(input(prompt))
+					else:
+						m = int(raw_input(prompt))
 					if low <= m <= high:
 						return m
 					else:
@@ -80,9 +79,8 @@ class Change:
 		print('\n')
 		print("Assign a material, by number, to each area")
 		print('-------------------')
-		
+
 		for i, poly in enumerate(self.cutfill):
-			# m = int(raw_input('Enter material no. for area {0}: '.format(i)))
 			m = __assign_material(i, 0, len(materials)-1)
 			assignments.append([i, m, materials[m]['name'], materials[m]['density'], materials[m]['fines']])
 		assignments_df = pnd.DataFrame(assignments, columns=['polygon', 'material', 'name', 'density', 'fines'])
@@ -98,12 +96,10 @@ class Change:
 		
 		print('\n')
 
-		try:
-			input = raw_input
-		except NameError:
-			pass
-
-		input("Press Enter to exit")		
+		if sys.hexversion >= 0x03000000:
+			input("Press Enter to exit")
+		else:
+			raw_input("Press Enter to exit")
 
 	def save(self, filename=None):
 		# save polygon cut-fill areas to csv
