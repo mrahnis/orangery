@@ -56,8 +56,9 @@ import orangery as o
 @click.option('-r0', '--reverse-t0', metavar='REVERSE_T0', is_flag=True, help="Reverse initial line of section (time t0) shot right-to-left")
 @click.option('-r1', '--reverse-t1', metavar='REVERSE_T1', is_flag=True, help="Reverse final line of section (time t1) shot right-to-left")
 @click.option("--close/--no-close", default=True, help="Close the line ends")
-@click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
-def cli(file1, file2, output, fields, xs_name, exaggeration, close, verbose, reverse_t0, reverse_t1):
+@click.option('-s', '--segment', metavar='SEGMENT', is_flag=True, help="Prompts user to do interactive segmentation in the console")
+@click.option('-v', '--verbose', is_flag=True, help="Enables verbose mode")
+def cli(file1, file2, output, fields, xs_name, exaggeration, close, verbose, reverse_t0, reverse_t1, segment):
 
 	if verbose is True:
 		loglevel = 2
@@ -105,7 +106,7 @@ def cli(file1, file2, output, fields, xs_name, exaggeration, close, verbose, rev
 	ax.set_ylabel('Elevation (ft), {0}x exaggeration'.format(exaggeration))
 	plt.legend(loc='best')
 	plt.title('Cross-section {0}'.format(xs_name))
-	plt.show(block=False)
+	plt.show(block = not segment)
 
 	# if QT binding in matplotlibrc is PySide uncomment the following:
 	#from matplotlib.pyplot import pause
@@ -117,6 +118,6 @@ def cli(file1, file2, output, fields, xs_name, exaggeration, close, verbose, rev
 	# backend.qt4 : PySide        # PyQt4 | PySide
 	# to
 	# backend.qt4 : PyQt4        # PyQt4 | PySide
-
-	chg.segment(materials)
-	chg.save(xs_name)
+	if segment:
+		chg.segment(materials)
+		chg.save(xs_name)
