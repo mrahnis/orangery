@@ -9,17 +9,17 @@ import json
 import matplotlib.pyplot as plt
 import orangery as o
 
-@click.command()
-@click.argument("file1", nargs=1, type=click.Path(exists=True), metavar='FILE1') # help="survey representing the initial condition"
-@click.argument("file2", nargs=1, type=click.Path(exists=True), metavar='FILE2') # help="survey representing the final condition"
-@click.argument("fields", nargs=1, metavar='FIELDS') # help="character string identifying the columns"
-@click.argument("xs_name", nargs=1, metavar='XSNAME') # help="name of the cross-section to plot"
-@click.option("-o", "--output", metavar='OUTFILE', type=click.File('wb', 0), help="Output file path") 
-@click.option("-e", "--exaggeration", metavar='EXAGGERATION', default=3, help="Vertical exaggeration of plot")
+@click.command(options_metavar='<options>')
+@click.argument("file1", nargs=1, type=click.Path(exists=True), metavar='<file_t0>') # help="survey representing the initial condition"
+@click.argument("file2", nargs=1, type=click.Path(exists=True), metavar='<file_t1>') # help="survey representing the final condition"
+@click.argument("fields", nargs=1, metavar='<fields>') # help="character string identifying the columns"
+@click.argument("xs_name", nargs=1, metavar='<name>') # help="name of the cross-section to plot"
+@click.option("-o", "--output", metavar='<file>', type=click.File('wb', 0), help="Output file path") 
+@click.option("-e", "--exaggeration", metavar='<int>', default=3, help="Vertical exaggeration of plot")
 @click.option("--close/--no-close", default=True, help="Close the line ends")
-@click.option('-r0', '--reverse-t0', metavar='REVERSE_T0', is_flag=True, help="Reverse initial line of section (time t0) shot right-to-left")
-@click.option('-r1', '--reverse-t1', metavar='REVERSE_T1', is_flag=True, help="Reverse final line of section (time t1) shot right-to-left")
-@click.option('-s', '--segment', metavar='SEGMENT', is_flag=True, help="Prompts user to do interactive segmentation in the console")
+@click.option('-r0', '--reverse-t0', is_flag=True, help="Reverse initial line of section (time t0) shot right-to-left")
+@click.option('-r1', '--reverse-t1', is_flag=True, help="Reverse final line of section (time t1) shot right-to-left")
+@click.option('-s', '--segment', is_flag=True, help="Prompts user to do interactive segmentation in the console")
 @click.option('-v', '--verbose', is_flag=True, help="Enables verbose mode")
 def cli(file1, file2, fields, xs_name, output, exaggeration, close, reverse_t0, reverse_t1, segment, verbose):
 	"""
@@ -27,8 +27,10 @@ def cli(file1, file2, fields, xs_name, output, exaggeration, close, reverse_t0, 
 	The console prompts the user to assign a material to each polygon along the line of section.
 	Then saves a CSV file containing the net gain or loss of fine sediment.
 
+	\b
 	Example:
-	cutfill.exe .\examples\data\file_2004.csv .\examples\data\file_2010.csv pxyzctr XS-7 --reverse-t0
+	cutfill ./examples/data/file_2004.csv ./examples/data/file_2010.csv pxyzctr XS-7 --reverse-t0
+
 	"""
 
 	if verbose is True:
