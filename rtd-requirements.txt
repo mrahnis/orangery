@@ -1,5 +1,1 @@
-numpy
-numpydoc
-pandas
-matplotlib
-shapely
+click
