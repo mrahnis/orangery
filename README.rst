@@ -13,7 +13,7 @@ Orangery was initially a single script that allowed me to segregate, by grain si
 Dependencies
 ============
 
-Orangery 0.3.0 depends on:
+Orangery 0.4.0 depends on:
 
 * `Python 2.7 or 3.x`_
 * NumPy_
