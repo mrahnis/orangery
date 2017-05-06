@@ -1,23 +1,22 @@
 def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...', fill_label=None, cut_ec='black', cut_fc='none', cut_hatch='x', cut_label=None):
-	"""
-	Adds two groups of polygon patches to a matplotlib Axis.
+	"""Adds two groups of polygon patches to a matplotlib Axis.
+
 	Fill and label first polygon of each type separately, otherwise make sequential call to fill.
 
-	Parameters
-	----------
-	ax (Axis) : matplotlib Axis to which to add polygon patches.
-	fill_ec (str) :  fill polygon edge color.
-	fill_fc (str) :  fill polygon face color.
-	fill_hatch (str) : fill polygon hatch pattern.
-	fill_label (str) : fill polygon label.
-	cut_ec (str) : cut polygon edge color.
-	cut_fc (str) : cut polygon face color.
-	cut_hatch (str) : cut polygon hatch pattern.
-	cut_label (str) :  cut polygon label.
+	Parameters:
+		ax (Axis) : matplotlib Axis to which to add polygon patches.
+		fill_ec (str) :  fill polygon edge color.
+		fill_fc (str) :  fill polygon face color.
+		fill_hatch (str) : fill polygon hatch pattern.
+		fill_label (str) : fill polygon label.
+		cut_ec (str) : cut polygon edge color.
+		cut_fc (str) : cut polygon face color.
+		cut_hatch (str) : cut polygon hatch pattern.
+		cut_label (str) :  cut polygon label.
 
-	Returns
-	-------
-	ax (Axis) : patched matplotlib Axis.
+	Returns:
+		ax (Axis) : patched matplotlib Axis.
+
 	"""
 	cuts = []
 	hascut = False
@@ -45,16 +44,14 @@ def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...
 	return ax
 
 def annotate_plot(self, ax=None):
-	"""
-	Add annotation to a plot to identify individual polygons.
+	"""Add annotation to a plot to identify individual polygons.
 
-	Parameters
-	----------
-	ax (Axis) : matplotlib Axis to which to add annotation.
+	Parameters:
+		ax (Axis) : matplotlib Axis to which to add annotation.
 
-	Returns
-	-------
-	ax (Axis) : patched matplotlib Axis.
+	Returns:
+		ax (Axis) : patched matplotlib Axis.
+
 	"""
 	import matplotlib.patches as patches
 	from matplotlib.path import Path
@@ -72,18 +69,16 @@ def annotate_plot(self, ax=None):
 	return ax
 
 def get_scale_factor(fig, ax, scale, axis='x'):
-	"""
-	Get the scale factor needed to obtain a desired scale in x-axis units per inch.
+	"""Get the scale factor needed to obtain a desired scale in x-axis units per inch.
 
-	Parameters
-	----------
-	fig (Figure) : the figure to scale.
-	ax (Axis) : the axis to scale.
-	scale (int or float) : the desired output scale.
+	Parameters:
+	]	fig (Figure) : the figure to scale.
+		ax (Axis) : the axis to scale.
+		scale (int or float) : the desired output scale.
 
-	Returns
-	-------
-	scale_factor (float) : the scale factor to apply to the figure size.
+	Returns:
+		scale_factor (float) : the scale factor to apply to the figure size.
+
 	"""	
 	bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
 	if axis == 'x':

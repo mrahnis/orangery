@@ -32,7 +32,7 @@ class Mock(object):
 		else:
 			return Mock()
 
-MOCK_MODULES = ['numpy','matplotlib','matplotlib.pyplot','pandas','shapely','shapely.geometry','shapely.ops']
+MOCK_MODULES = ['numpy','matplotlib','matplotlib.pyplot','pandas','shapely','shapely.geometry','shapely.ops', 'opusxml']
 for mod_name in MOCK_MODULES:
 	sys.modules[mod_name] = Mock()
 
@@ -55,7 +55,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc',
 			  'sphinx.ext.autosummary',
-			  'numpydoc']
+			  'sphinx.ext.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

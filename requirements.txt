@@ -1,5 +1,6 @@
+click
 numpy
-numpydoc
 pandas
 matplotlib
 shapely
+opusxml
