@@ -24,7 +24,7 @@ install:
   - "conda create -q -n test-environment python=%PYTHON_VERSION% fiona rasterio shapely click networkx opusxml pytest"
   - activate test-environment
   - conda build .
-  - conda install surficial --use-local
+  - conda install orangery --use-local
 
 artifacts:
   - path: 'conda-packages\*.tar.bz2'
