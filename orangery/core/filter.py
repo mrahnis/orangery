@@ -15,7 +15,7 @@ def pointname(df, name):
     result = df.take(recs.index)
     return result
 
-def group(df, code_table, group):
+def group(df, code_table, group, withhold=[]):
     """Given a DataFrame return a copy of the survey records belonging to a given group
 
     Parameters:
@@ -28,7 +28,16 @@ def group(df, code_table, group):
 
     """
     recs = df.loc[code_table['group'] == group]
-    result = df.take(recs.index).copy()
+
+    def match(codes, withold):
+        codeset = set(codes.split(' '))
+        matches = codeset.intersection(withhold)
+        return matches
+
+    mask = recs['c'].apply(lambda x: bool(match(x, set(withhold))))
+    masked = recs[~mask]
+
+    result = df.take(masked.index).copy()
     return result
 
 def endpoints(df, reverse=False):
@@ -42,7 +51,6 @@ def endpoints(df, reverse=False):
         p1, p2 (Point) : first and last records in a DataFrame as Points.
 
     """
-
     p1 = Point(df[:1]['x'], df[:1]['y'], df[:1]['z'])
     p2 = Point(df[-1:]['x'], df[-1:]['y'], df[-1:]['z'])
     if reverse == True:
