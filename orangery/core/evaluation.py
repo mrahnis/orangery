@@ -29,6 +29,28 @@ class Change:
             logger.error('Error calculating cut and fill')
             raise
 
+    def summarize(self):
+        """Prints summary information
+
+        """
+        print('\n')
+        print("Length: ", self.length())
+        print("Fill: ", self.cutfill[self.cutfill > 0].sum())
+        print("Cut:  ", self.cutfill[self.cutfill < 0].sum())
+        print("Net:  ", self.cutfill.sum())
+
+    def length(self):
+        """Return the length of overlap in two sections on which cut and fill was calculated
+
+        Result (float) : legnth of the cross-sectional cut and fill area 
+
+        """
+        p1 = self.intersections[0]
+        p2 = self.intersections[-1]
+        result = p1.distance(p2)
+
+        return result
+
     def segment(self, materials):
         """Prompt the user to assign material from the materials dict to each polygon in the Change objects
 
@@ -57,16 +79,11 @@ class Change:
         materials = materials['materials']
         assignments = []
 
-        # -----------------------------------------------
-        # calculate cut-fill amounts
         print('\n')
         print('Areas')
         print('--------------------')
         print(self.cutfill)
         print('-------------------')
-        print("Fill: ", self.cutfill[self.cutfill > 0].sum())
-        print("Cut:  ", self.cutfill[self.cutfill < 0].sum())
-        print("Net:  ", self.cutfill.sum())
 
         print('\n')
         print("No.   Material")
@@ -101,7 +118,7 @@ class Change:
 
     def save(self, filename=None):
         # save polygon cut-fill areas to csv
-        self.results.to_csv('{0}.csv'.format(filename))
+        self.results.to_csv(filename)
 
 # add plot method
 import orangery.tools.plotting as _gfx
