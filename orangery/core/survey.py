@@ -129,6 +129,7 @@ class Section:
 
         self.projection = None
         self.line = None
+        self.date = None
 
         if reverse == True:
             self.data.sort_index(ascending=False, inplace=True) # flip sections shot right to left
@@ -137,7 +138,8 @@ class Section:
 
         self.projection = og.project_points(self.data, self.p1, self.p2)
         self.line = asLineString(list(zip(self.projection['d'],self.projection['z'])))
-
+        self.date = (self.data.iloc[0]['t']).split('T')[0]
+        
     def plot(self, view='section', **kwargs):
         """Plot the d, z values of the projected data.
 
