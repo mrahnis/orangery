@@ -42,11 +42,23 @@ To install from the source distribution execute the setup script in the orangery
 
 	$python setup.py install
 
-Windows users just getting started may choose to install a Python distribution to obtain the requirements:
+To install from Anaconda Cloud:
 
-* Install Anaconda from `Continuum Analytics`_ or Canopy from `Enthought`_
-* Install the appropriate `Shapely binary`_
-* Install Orangery as shown above, or install the .msi installer from the GitHub project `release page`_
+If you are starting from scratch the first thing to do is install the Anaconda Python distribution, add the necessary channels to obtain the dependencies and install orangery.
+
+.. code-block:: console
+
+	$conda config --append channels conda-forge
+	$conda config --append channels mrahnis
+	$conda install orangery
+
+To install from the source distribution:
+
+Execute the setup script in the surficial directory:
+
+.. code-block:: console
+
+	$python setup.py install
 
 Examples
 ========

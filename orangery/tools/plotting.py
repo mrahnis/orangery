@@ -72,7 +72,7 @@ def get_scale_factor(fig, ax, scale, axis='x'):
 	"""Get the scale factor needed to obtain a desired scale in x-axis units per inch.
 
 	Parameters:
-	]	fig (Figure) : the figure to scale.
+		fig (Figure) : the figure to scale.
 		ax (Axis) : the axis to scale.
 		scale (int or float) : the desired output scale.
 
