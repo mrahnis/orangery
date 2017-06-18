@@ -272,13 +272,13 @@ def close(line1, line2):
         if line1.coords[0][0] > line2.coords[0][0]:
             # prepend to line1
             bi = line2.intersection(
-                LineString([(line1.coords[0][0], line2.bounds[1]-1), (line2.coords[0][0], line2.bounds[3]+1)]))
+                LineString([(line1.coords[0][0], line2.bounds[1]-1), (line1.coords[0][0], line2.bounds[3]+1)]))
             if bi.y < line1.coords[0][1]:
                 prepend = Point([bi.x, bi.y-1])
             else:
                 prepend = Point([bi.x, bi.y+1])
             line1 = extend(line1, prepend, True)
-        else:
+        elif line1.coords[0][0] < line2.coords[0][0]:
             # prepend to line2
             bi = line1.intersection(
                 LineString([(line2.coords[0][0], line1.bounds[1]-1), (line2.coords[0][0], line1.bounds[3]+1)]))
@@ -287,6 +287,8 @@ def close(line1, line2):
             else:
                 prepend = Point([bi.x, bi.y+1])
             line2 = extend(line2, prepend, True)
+        else:
+            pass # the coordinate values are the same
         # append
         if line1.coords[-1][0] < line2.coords[-1][0]:
             # append to line1
@@ -296,7 +298,7 @@ def close(line1, line2):
             else:
                 append = Point([ei.x, ei.y+1])
             line1 = extend(line1, append, False)
-        else:
+        elif line1.coords[-1][0] > line2.coords[-1][0]:
             # append to line2
             ei = line1.intersection(LineString([(line2.coords[-1][0], line1.bounds[1]-1), (line2.coords[-1][0], line1.bounds[3]+1)]))
             if ei.y < line2.coords[-1][1]:
@@ -304,6 +306,8 @@ def close(line1, line2):
             else:
                 append = Point([ei.x, ei.y+1])
             line2 = extend(line2, append, False)
+        else:
+            pass # the coordinate values are the same
     except:
         logger.error('Unable to close line ends. You may need to flip one of your sections.')
         raise
