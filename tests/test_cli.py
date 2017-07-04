@@ -1,9 +1,9 @@
 from click.testing import CliRunner
 
 import orangery
-from orangery.cli.cutfill import cutfill
+from orangery.cli.orangery import cli
 
-def test_cutfill():
+def test_orangery():
     runner = CliRunner()
-    result = runner.invoke(cutfill, ['--help'])
+    result = runner.invoke(cli, ['--help'])
     assert result.exit_code == 0
