@@ -1,7 +1,7 @@
 from click.testing import CliRunner
 
 import orangery
-from orangery.cli.cutfill import cli
+from orangery.cli.cutfill import cutfill
 
 def test_cutfill():
     runner = CliRunner()
