@@ -15,7 +15,7 @@ def pointname(df, name):
     result = df.take(recs.index)
     return result
 
-def group(df, code_table, group, withhold=[]):
+def group(df, code_table, group, exclude=[]):
     """Given a DataFrame return a copy of the survey records belonging to a given group
 
     Parameters:
@@ -29,12 +29,12 @@ def group(df, code_table, group, withhold=[]):
     """
     recs = df.loc[code_table['group'] == group]
 
-    def match(codes, withold):
+    def match(codes, exclude):
         codeset = set(codes.split(' '))
-        matches = codeset.intersection(withhold)
+        matches = codeset.intersection(exclude)
         return matches
 
-    mask = recs['c'].apply(lambda x: bool(match(x, set(withhold))))
+    mask = recs['c'].apply(lambda x: bool(match(x, set(exclude))))
     masked = recs[~mask]
 
     result = df.take(masked.index).copy()
