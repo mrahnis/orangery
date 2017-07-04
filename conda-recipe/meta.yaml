@@ -11,7 +11,7 @@ build:
   number: 1
   script: python setup.py install --single-version-externally-managed --record=record.txt
   entry_points:
-    - cutfill = orangery.cli.orangery:cli
+    - orangery = orangery.cli.orangery:cli
 
 requirements:
   build:
