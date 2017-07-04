@@ -11,9 +11,7 @@ build:
   number: 1
   script: python setup.py install --single-version-externally-managed --record=record.txt
   entry_points:
-    - cutfill = orangery.cli.cutfill:cli
-    - adjust = orangery.cli.adjust:cli
-    - geodetic = orangery.cli.geodetic:cli
+    - cutfill = orangery.cli.orangery:cli
 
 requirements:
   build:
@@ -34,7 +32,7 @@ test:
   imports:
     - orangery
   commands:
-    - cutfill --help
+    - orangery --help
 
 about:
   home: https://github.com/mrahnis/orangery

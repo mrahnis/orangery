@@ -17,7 +17,7 @@ import click
 @click.argument('lat', nargs=1, type=click.FLOAT, metavar='LATITUDE')
 @click.argument('lon', nargs=1, type=click.FLOAT, metavar='LONGITUDE')
 @click.argument('h', nargs=1, type=click.FLOAT, metavar='HAE')
-def cli(lat, lon, h):
+def geodetic(lat, lon, h):
 	print("INPUT VALUES")
 	print("lon {0} lat {1} h {2}".format(lon,lat,h))
 	print()

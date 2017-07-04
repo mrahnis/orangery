@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-A command-line utility to adjust a survey dataset. It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
-
-Examples:
-adjust.exe opus/2010096o.10o.xml data/Topo-20100331.csv pyxzctr BASE2 -u sft -s SPC --keep-header
-
-"""
-
 import os
 import sys
 import logging
@@ -40,7 +32,7 @@ def _default_outname(filename):
 @click.option('--keep-header', 'header', is_flag=True, default=True, help="Keeps the original header")
 @click.option('--drop-header', 'header', is_flag=True, help="Drops the original header")
 @click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
-def cli(opusfile, filename, codes, fields, output, point, unit, system, header, verbose):
+def adjust(opusfile, filename, codes, fields, output, point, unit, system, header, verbose):
 	"""
 	A command-line utility to adjust a survey dataset. It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
 
