@@ -33,8 +33,9 @@ def _default_outname(filename):
 @click.option('--drop-header', 'header', is_flag=True, help="Drops the original header")
 @click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
 def adjust(opusfile, filename, codes, fields, output, point, unit, system, header, verbose):
-	"""
-	A command-line utility to adjust a survey dataset. It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
+	"""A command-line utility to adjust a survey dataset.
+
+	It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
 
 	\b
 	Examples:
