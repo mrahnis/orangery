@@ -34,7 +34,7 @@ setup(name='orangery',
 		geodetic=orangery.cli.geodetic:geodetic
 		cutfill=orangery.cli.cutfill:cutfill
 		segment=orangery.cli.segment:segment
-
+		info=orangery.cli.info:info
 	''',
 	keywords='cross-section, topography, survey, plotting',
 	classifiers=[
