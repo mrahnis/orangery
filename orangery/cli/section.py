@@ -27,72 +27,72 @@ from orangery.tools.plotting import get_scale_factor
 @click.option('--exclude', nargs=1, multiple=True, metavar='<str>', help="Exclude a survey code from the section plot")
 @click.option('-v', '--verbose', is_flag=True, help="Enables verbose mode")
 def section(file1, fields, xs_name, codes_f, show, units, label, exaggeration, scale, reverse, exclude, verbose):
-	"""Displays a cross-section plot.
+    """Displays a cross-section plot.
 
-	\b
-	The section subcommand takes three arguments:
-	<file_t0> : survey data representing the initial condition in csv format
-	<fields> : series of characters describing the data columns
-	<name> : name of cross-section to plot
+    \b
+    The section subcommand takes three arguments:
+    <file_t0> : survey data representing the initial condition in csv format
+    <fields> : series of characters describing the data columns
+    <name> : name of cross-section to plot
 
-	Options allow to set various properties of the plot. The default is to --show the plot.
-	With the --save option the plot will be saved as an image.
+    Options allow to set various properties of the plot. The default is to --show the plot.
+    With the --save option the plot will be saved as an image.
 
-	\b
-	Example:
-	orangery section file_2004.csv pxyzctr XS-7 --reverse t0
+    \b
+    Example:
+    orangery section file_2004.csv pxyzctr XS-7 --reverse t0
 
-	"""
-	if verbose is True:
-		loglevel = 2
-	else:
-		loglevel = 0
+    """
+    if verbose is True:
+        loglevel = 2
+    else:
+        loglevel = 0
 
-	logging.basicConfig(stream=sys.stderr, level=loglevel or logging.INFO)
+    logging.basicConfig(stream=sys.stderr, level=loglevel or logging.INFO)
 
-	# load the configuration
-	codes = defaults.codes.copy()
-	if codes_f:
-		user_codes = util.load_config(codes_f)
-		codes.update(user_codes)
+    # load the configuration
+    codes = defaults.codes.copy()
+    if codes_f:
+        user_codes = util.load_config(codes_f)
+        codes.update(user_codes)
 
-	# load the survey data
-	s1 = o.Survey(file1, fields, codes, 0)
+    # load the survey data
+    s1 = o.Survey(file1, fields, codes, 0)
 
-	# select a group of points, in this case a cross section
-	xs_pts1 = o.group(s1.data, s1.code_table, group=xs_name, exclude=exclude)
+    # select a group of points, in this case a cross section
+    xs_pts1 = o.group(s1.data, s1.code_table, group=xs_name, exclude=exclude)
 
-	# get the endpoints of the group
-	p1, p2 = o.endpoints(xs_pts1, reverse=reverse)
+    # get the endpoints of the group
+    p1, p2 = o.endpoints(xs_pts1, reverse=reverse)
 
-	# make the sections
-	xs1 = o.Section(xs_pts1, p1, p2, reverse=reverse)
+    # make the sections
+    xs1 = o.Section(xs_pts1, p1, p2, reverse=reverse)
 
-	if label:
-		label = label
-	elif 't' in fields:
-		label = (xs1.data.iloc[0]['t']).split('T')[0]
-	else:
-		label = 't0'
+    if label:
+        label = label
+    elif 't' in fields:
+        label = (xs1.data.iloc[0]['t']).split('T')[0]
+    else:
+        label = 't0'
 
-	# plot the change between two cross-sections
-	fig = plt.figure()
-	ax = fig.add_subplot(111)
-	ax.set_aspect(exaggeration)
+    # plot the change between two cross-sections
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_aspect(exaggeration)
 
-	xs1.plot(ax=ax, marker='o', markersize=4, markerfacecolor='white', markeredgecolor='black', linestyle='-', color='gray', label=label)
-	ax.set_xlabel('Distance ({0})'.format(units))
-	ax.set_ylabel('Elevation ({0}), {1}x exaggeration'.format(units, exaggeration))
-	plt.legend(loc='best')
-	plt.title('Cross-section {0}'.format(xs_name))
+    xs1.plot(ax=ax, marker='o', markersize=4, markerfacecolor='white', markeredgecolor='black', linestyle='-', color='gray', label=label)
+    ax.set_xlabel('Distance ({0})'.format(units))
+    ax.set_ylabel('Elevation ({0}), {1}x exaggeration'.format(units, exaggeration))
+    plt.legend(loc='best')
+    plt.title('Cross-section {0}'.format(xs_name))
 
-	if show:
-		plt.show()
-	else:
-		fname = xs_name + '-' + label.replace('-', '')
-	
-		scale_factor = get_scale_factor(fig, ax, scale[0])
-		dims = fig.get_size_inches()
-		fig.set_size_inches(dims[0]*scale_factor, dims[1]*scale_factor)
-		fig.savefig(fname+'.png', dpi=scale[1])
-		click.echo('Figure saved to: {}'.format(fname+'.png'))
+    if show:
+        plt.show()
+    else:
+        fname = xs_name + '-' + label.replace('-', '')
+    
+        scale_factor = get_scale_factor(fig, ax, scale[0])
+        dims = fig.get_size_inches()
+        fig.set_size_inches(dims[0]*scale_factor, dims[1]*scale_factor)
+        fig.savefig(fname+'.png', dpi=scale[1])
+        click.echo('Figure saved to: {}'.format(fname+'.png'))
