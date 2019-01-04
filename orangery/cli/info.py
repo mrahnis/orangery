@@ -4,6 +4,7 @@
 import sys
 import logging
 import time
+from collections import Counter
 
 import json
 import pprint
@@ -63,7 +64,8 @@ def info(file, fields, names, codes_f, verbose):
 	print()
 	print("Codes used")
 	print("----------")
-	pp.pprint(sorted(set(code_list)))
+	#pp.pprint(sorted(set(code_list)))
+	pp.pprint(dict(Counter(code_list)))
 
 	if names:
 		name_list = []
