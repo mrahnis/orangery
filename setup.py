@@ -32,6 +32,7 @@ setup(name='orangery',
 		[orangery.subcommands]
 		adjust=orangery.cli.adjust:adjust
 		geodetic=orangery.cli.geodetic:geodetic
+		section=orangery.cli.section:section
 		cutfill=orangery.cli.cutfill:cutfill
 		segment=orangery.cli.segment:segment
 		info=orangery.cli.info:info
