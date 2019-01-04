@@ -47,3 +47,5 @@ nosetests.xml
 
 # Examples
 examples/
+
+VERSION.txt
