@@ -15,6 +15,7 @@ from shapely.ops import linemerge
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
+
 def project2(p1, p2, p3):
     """Project a Point, p3 onto a line intersecting Points p1 and p2.
 
@@ -32,11 +33,11 @@ def project2(p1, p2, p3):
     """
     x_delta = p2.x - p1.x
     y_delta = p2.y - p1.y
-    
+
     if x_delta == 0 and y_delta == 0:
         logger.warning("p1 and p2 cannot be the same point")
         return
-    
+
     u = ((p3.x - p1.x) * x_delta + (p3.y - p1.y) * y_delta) / (x_delta * x_delta + y_delta * y_delta)
     pt = Point(p1.x + u * x_delta, p1.y + u * y_delta, p3.z)
 
@@ -45,15 +46,16 @@ def project2(p1, p2, p3):
         d = -pt.distance(p1)
     else:
         d = pt.distance(p1)
-        
+
     # calculate the offset distance of p3 from the line
     if (p1.y - p2.y) * (p3.x -  p2.x) - (p1.x - p2.x) * (p3.y - p2.y) < 0:
         offset = -pt.distance(p3) # the point is offset left of the line
     else:
         offset = pt.distance(p3) # the point is offset right of the line
-    
+
     result = {'pt':pt, 'd':d, 'o':offset, 'u':u}
     return result
+
 
 def project(p1, p2, p3):
     """Project a Point, p3 onto a line between Points p1 and p2.
@@ -84,6 +86,7 @@ def project(p1, p2, p3):
     result = {'pt':pt, 'd':d, 'o':offset, 'u':u}
     return result
 
+
 def project_points(points, p1, p2):
     """Project multiple points onto a line through Points p1, p2.
 
@@ -104,6 +107,7 @@ def project_points(points, p1, p2):
 
     result = pnd.DataFrame(ppoints, columns=['x','y','z','d','o','u'])
     return result
+
 
 def cut_by_distance(line, distance):
     """This line cutting function is from shapely recipes http://sgillies.net/blog/1040/shapely-recipes/
@@ -134,6 +138,7 @@ def cut_by_distance(line, distance):
 
     return segments
 
+
 def cut_by_point(line, pt):
     """A cut function that divides a line and inserts points at the cut location.
 
@@ -161,6 +166,7 @@ def cut_by_point(line, pt):
 
     return segments
 
+
 def cut_by_distances(line, intersections):
     """ Cut a line at multiple points by calculating the distance of each point along the line. Uses the cut_by_distance function.
 
@@ -178,6 +184,7 @@ def cut_by_distances(line, intersections):
     segments = MultiLineString(line)
     return segments
 
+
 def cut_by_points(line, intersections):
     """Cut a line at multiple points by breaking the line and inserting each point. Uses the cut_by_point function.
 
@@ -194,6 +201,7 @@ def cut_by_points(line, intersections):
         line = line[:-1] + cutline
     segments = MultiLineString(line)
     return segments
+
 
 def sign(line1, line2):
     """Determine left-right orientation of a line relative to another
@@ -224,6 +232,7 @@ def sign(line1, line2):
                     signs.append(1)
     return signs
 
+
 def extend(line, pt, prepend):
     """Extends a LineString by one Point, which may be prepended at the start of the LineString, or appended at the end.
 
@@ -246,6 +255,7 @@ def extend(line, pt, prepend):
     newline = LineString(zip(xs, ys))
     return newline
 
+
 def update(line, pt, idx):
     """Update a point within a LineString
 
@@ -265,6 +275,7 @@ def update(line, pt, idx):
     ys[idx] = pt.y
     newline = LineString(zip(xs, ys))
     return newline
+
 
 def close(line1, line2):
     try:
@@ -314,6 +325,7 @@ def close(line1, line2):
 
     return line1, line2
 
+
 def difference(line1, line2, close_ends=False):
     """ Create polygons from two LineString objects.
 
@@ -326,7 +338,7 @@ def difference(line1, line2, close_ends=False):
         intersections (Point array) : the intersections between the LineString objects.
         polygons (Polygon array) : the polygons between the lines.
         signs (int array) : contains values of +1 or -1 to identify polygons as cut or fill.
-    
+
     """
     if close_ends==True:
         line1, line2 = close(line1, line2)
@@ -335,9 +347,9 @@ def difference(line1, line2, close_ends=False):
 
     segs1 = cut_by_points([line1], intersections)
     segs2 = cut_by_points([line2], intersections)
-    
+
     polygons = polygonize([segs1, segs2])
-    
+
     signs = sign(linemerge(segs1), linemerge(segs2))
 
     # can't pass the polygonize generator to my class so convert the polygons into an array
@@ -349,6 +361,7 @@ def difference(line1, line2, close_ends=False):
     cutfill = pnd.Series(asarray(areas), name='area')
 
     return intersections, polygontxt, cutfill
+
 
 def snap_to_points(segments, intersections):
     """Snap line segment endpoints to given points

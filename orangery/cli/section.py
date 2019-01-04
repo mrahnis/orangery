@@ -13,6 +13,7 @@ import orangery as o
 from orangery.cli import defaults, util
 from orangery.tools.plotting import get_scale_factor
 
+
 @click.command(options_metavar='<options>')
 @click.argument('file1', nargs=1, type=click.Path(exists=True), metavar='<file_t0>') # help="survey representing the initial condition"
 @click.argument('fields', nargs=1, metavar='<fields>') # help="character string identifying the columns"

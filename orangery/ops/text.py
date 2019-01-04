@@ -4,6 +4,7 @@ import pandas as pnd
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
+
 def parse(points, codebook):
     """Parses the codes in a DataFrame to extract information about points and chains of points.
 
@@ -58,4 +59,3 @@ def parse(points, codebook):
 
     df = pnd.DataFrame(results)
     return df
-

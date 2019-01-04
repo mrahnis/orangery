@@ -12,6 +12,7 @@ import orangery.ops.correction as oc
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
+
 class Survey:
     """ A Survey dataset.
 
@@ -112,6 +113,7 @@ class Survey:
             ax = None
         return ax
 
+
 class Section:
     """A Section view of a set of x,y,z coordinates.
 
@@ -139,7 +141,7 @@ class Section:
         self.projection = og.project_points(self.data, self.p1, self.p2)
         self.line = asLineString(list(zip(self.projection['d'],self.projection['z'])))
         self.date = (self.data.iloc[0]['t']).split('T')[0]
-        
+
     def plot(self, view='section', **kwargs):
         """Plot the d, z values of the projected data.
 
@@ -159,6 +161,7 @@ class Section:
             logger.warning('{0} is not a valid view option'.format(view))
             ax=None
         return ax
+
 
 class LevelSection:
     """
@@ -184,7 +187,7 @@ class LevelSection:
             # calculate locations, but instead of dou, calculate xyz
             # xyzdou
             self.location = og.locate_points(self.data, self.p1, self.p2)
-            
+
         self.line = asLineString(list(zip(self.data['d'],self.data['z'])))
 
     def plot(self, view='section', **kwargs):

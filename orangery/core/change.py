@@ -12,6 +12,7 @@ import orangery.ops.geometry as og
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
+
 class Change:
     """ An analysis of the change between two Section objects.
 
@@ -55,7 +56,7 @@ class Change:
 
     def save(self, filename):
         """Save polygon cut-fill areas to csv file
-        
+
         Parameters
             filename (str) : file to output
         """
@@ -70,7 +71,6 @@ class Change:
 # add plot method
 import orangery.tools.plotting as _gfx
 
-#Change.plot = _gfx.change_plot
+# Change.plot = _gfx.change_plot
 Change.polygon_plot = _gfx.polygon_plot
 Change.annotate_plot = _gfx.annotate_plot
-

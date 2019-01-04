@@ -1,5 +1,6 @@
 from shapely.geometry import Point
 
+
 def pointname(df, name):
     """Given a DataFrame return the named point or survey record.
 
@@ -14,6 +15,7 @@ def pointname(df, name):
     recs = df[df['p'] == name]
     result = df.take(recs.index)
     return result
+
 
 def group(df, code_table, group, exclude=[]):
     """Given a DataFrame return a copy of the survey records belonging to a given group
@@ -40,6 +42,7 @@ def group(df, code_table, group, exclude=[]):
     result = df.take(masked.index).copy()
     return result
 
+
 def endpoints(df, reverse=False):
     """Given a DataFrame return the first and last survey records.
 
@@ -58,6 +61,7 @@ def endpoints(df, reverse=False):
     else:
         return p1, p2
 
+
 def controls(df, code_table, codebook):
     """Given a DataFrame return survey records that have control codes.
 
@@ -74,6 +78,7 @@ def controls(df, code_table, codebook):
     recs = df[code_table['control'].isin(codebook['codes']['control'])]
     result = df.take(recs.index)
     return result
+
 
 def benchmarks(df, code_table, codebook):
     """Given a DataFrame return survey records with benchmark codes.

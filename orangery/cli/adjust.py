@@ -14,11 +14,13 @@ import opusxml
 import orangery as o
 from orangery.ops.correction import get_offsets
 
+
 def _default_outname(filename):
-	dirpath = os.path.dirname(filename)
-	fnsplit = os.path.splitext(os.path.basename(filename))
-	outname = '{0[0]}-corr{0[1]}'.format(fnsplit)
-	return outname
+    dirpath = os.path.dirname(filename)
+    fnsplit = os.path.splitext(os.path.basename(filename))
+    outname = '{0[0]}-corr{0[1]}'.format(fnsplit)
+    return outname
+
 
 @click.command(options_metavar='<options>')
 @click.argument('opusfile', nargs=1, type=click.Path(exists=True), metavar='<opusxml_file>') # help="OPUS XML file containing the corrected coordinates"
@@ -33,33 +35,33 @@ def _default_outname(filename):
 @click.option('--drop-header', 'header', is_flag=True, help="Drops the original header")
 @click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
 def adjust(opusfile, filename, codes, fields, output, point, unit, system, header, verbose):
-	"""A command-line utility to adjust a survey dataset.
+    """A command-line utility to adjust a survey dataset.
 
-	It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
+    It translates coordinates by the offset between one coordinate in the dataset and coordinates in an OPUS XML file.
 
-	\b
-	Examples:
-	adjust opus/2010096o.10o.xml data/Topo-20100331.csv json/codebook.json pyxzctr BASE2 -u sft -s SPC --keep-header
+    \b
+    Examples:
+    adjust opus/2010096o.10o.xml data/Topo-20100331.csv json/codebook.json pyxzctr BASE2 -u sft -s SPC --keep-header
 
-	"""
-	if verbose is True:
-		loglevel = 2
-	else:
-		loglevel = 0
+    """
+    if verbose is True:
+        loglevel = 2
+    else:
+        loglevel = 0
 
-	logging.basicConfig(stream=sys.stderr, level=loglevel or logging.INFO)
-	logger = logging.getLogger('translate')
+    logging.basicConfig(stream=sys.stderr, level=loglevel or logging.INFO)
+    logger = logging.getLogger('translate')
 
-	codes = json.load(open(codes, 'r'))
-	s = o.Survey(filename, fields, codes, 0)
+    codes = json.load(open(codes, 'r'))
+    s = o.Survey(filename, fields, codes, 0)
 
-	record = o.pointname(s.data, point)
+    record = o.pointname(s.data, point)
 
-	solution = opusxml.Solution(opusfile)
-	coords = solution.plane_coords(system='SPC', unit=unit)
-	offsets = get_offsets(record, coords)
+    solution = opusxml.Solution(opusfile)
+    coords = solution.plane_coords(system='SPC', unit=unit)
+    offsets = get_offsets(record, coords)
 
-	logger.info('Translating data by offsets between {0} and {1}\n'.format(point, os.path.basename(opusfile)))
-	
-	s.translate(offsets)
-	s.save(_default_outname(filename), original_header=header)
+    logger.info('Translating data by offsets between {0} and {1}\n'.format(point, os.path.basename(opusfile)))
+
+    s.translate(offsets)
+    s.save(_default_outname(filename), original_header=header)

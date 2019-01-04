@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 import orangery as o
 
+
 @click.command(options_metavar='<options>')
 @click.argument('areas_f', nargs=1, type=click.Path(exists=True), metavar='<areas_file>')
 @click.argument('materials_f', nargs=1, type=click.Path(exists=True), metavar='<materials_file>')
