@@ -20,19 +20,14 @@ Orangery was initially a single script that allowed me to segregate, by grain si
 	:width: 800
 	:height: 344
 
-Dependencies
-============
-
-Orangery 0.4.1 depends on:
-
-* `Python 2.7 or 3.x`_
-* NumPy_
-* pandas_
-* matplotlib_
-* Shapely_
-
 Installation
 ============
+
+.. image:: https://img.shields.io/pypi/v/orangery.svg
+	:target: https://pypi.org/project/orangery/
+
+.. image:: https://anaconda.org/mrahnis/orangery/badges/version.svg
+	:target: https://anaconda.org/mrahnis/orangery
 
 To install from the Python Package Index:
 
@@ -54,7 +49,7 @@ If you are starting from scratch the first thing to do is install the Anaconda P
 
 To install from the source distribution:
 
-Execute the setup script in the surficial directory:
+Execute the setup script in the orangery directory:
 
 .. code-block:: console
 
