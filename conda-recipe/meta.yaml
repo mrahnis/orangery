@@ -36,5 +36,6 @@ test:
 
 about:
   home: https://github.com/mrahnis/orangery
+  description: Python library to support analysis of topographic cross-sections
   license: BSD
   license_file: LICENSE.txt

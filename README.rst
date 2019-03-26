@@ -7,8 +7,8 @@ Orangery is a Python library to support analysis of topographic cross-sections, 
 .. image:: https://travis-ci.org/mrahnis/orangery.svg?branch=master
     :target: https://travis-ci.org/mrahnis/orangery
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/mrahnis/orangery?svg=true
-	:target: https://ci.appveyor.com/api/projects/status/github/mrahnis/orangery?svg=true
+.. image:: https://ci.appveyor.com/api/projects/status/lw4wysrcfu2x3653?svg=true
+	:target: https://ci.appveyor.com/project/mrahnis/orangery
 
 .. image:: https://readthedocs.org/projects/orangery/badge/?version=latest
 	:target: http://orangery.readthedocs.io/en/latest/?badge=latest
