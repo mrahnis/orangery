@@ -26,6 +26,7 @@ install:
   - conda update -q conda
   - conda install conda-build conda-verify anaconda-client pytest
   - conda config --add channels conda-forge
+  - conda config --add channels mrahnis
   - conda info -a
 
 build: false
