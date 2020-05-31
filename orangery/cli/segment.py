@@ -30,10 +30,7 @@ def segment(areas_f, materials_f):
         err = 'Input must be an integer number between {0} and {1}.'.format(low, high)
         while True:
             try:
-                if sys.hexversion >= 0x03000000:
-                    m = int(input(prompt))
-                else:
-                    m = int(raw_input(prompt))
+                m = int(input(prompt))
                 if low <= m <= high:
                     return m
                 else:
@@ -75,13 +72,8 @@ def segment(areas_f, materials_f):
     print(result)
     print('-------------------')
     print('Net change in mass of fines: ', result['mass_fines'].sum())
-    
     print('\n')
-
-    if sys.hexversion >= 0x03000000:
-        input("Press Enter to exit")
-    else:
-        raw_input("Press Enter to exit")
+    input("Press Enter to exit")
 
     outfile = areas_f.split('.')[0] + '-sgmt.' + areas_f.split('.')[1]
     result.to_csv(outfile)

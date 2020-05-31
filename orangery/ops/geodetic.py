@@ -1,7 +1,6 @@
 # consider doing all this with
 # http://geographiclib.sourceforge.net/
 
-from __future__ import print_function
 from math import pow, sqrt, cos, sin, atan, radians, degrees, modf
 # from numba import vectorize, float64, jit
 

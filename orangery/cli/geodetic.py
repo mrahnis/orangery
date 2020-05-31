@@ -1,7 +1,6 @@
 # consider doing all this with
 # http://geographiclib.sourceforge.net/
 
-from __future__ import print_function
 from orangery.ops.geodetic import *
 import click
 
