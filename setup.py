@@ -36,11 +36,11 @@ setup(name='orangery',
 
           [orangery.subcommands]
           adjust=orangery.cli.adjust:adjust
-          geodetic=orangery.cli.geodetic:geodetic
-          section=orangery.cli.section:section
           cutfill=orangery.cli.cutfill:cutfill
-          segment=orangery.cli.segment:segment
+          geodetic=orangery.cli.geodetic:geodetic
           info=orangery.cli.info:info
+          section=orangery.cli.section:section
+          segment=orangery.cli.segment:segment
       ''',
       keywords='cross-section, topography, survey, plotting',
       classifiers=[
