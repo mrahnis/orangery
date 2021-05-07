@@ -82,7 +82,7 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
     xs_pts1 = o.group(s1.data, s1.code_table, group=xs_name, exclude=exclude_t0)
     xs_pts2 = o.group(s2.data, s2.code_table, group=xs_name, exclude=exclude_t1)
 
-    xs_pts_overlay = o.group(s3.data, s3.code_table, group=xs_name)
+    # xs_pts_overlay = o.group(s3.data, s3.code_table, group=xs_name)
 
     # get the endpoints of the group
     p1, p2 = o.endpoints(xs_pts1, reverse=reverse in ('t0','tx'))
@@ -91,7 +91,7 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
     xs1 = o.Section(xs_pts1, p1, p2, reverse=reverse in ('t0','tx'))
     xs2 = o.Section(xs_pts2, p1, p2, reverse=reverse in ('t1','tx'))
 
-    xs_overlay = o.Section(xs_pts_overlay, p1, p2)
+    # xs_overlay = o.Section(xs_pts_overlay, p1, p2)
 
     if labels:
         label_t0 = labels[0]
@@ -100,11 +100,11 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
     elif 't' in fields:
         label_t0 = (xs1.data.iloc[0]['t']).split('T')[0]
         label_t1 = (xs2.data.iloc[0]['t']).split('T')[0]
-        label_overlay = (xs_overlay.data.iloc[0]['t']).split('T')[0]
+        # label_overlay = (xs_overlay.data.iloc[0]['t']).split('T')[0]
     else:
         label_t0 = 't0'
         label_t1 = 't1'
-        label_overlay = 'pre-restoration'
+        # label_overlay = 'pre-restoration'
 
     # calculate the change
     chg = o.Change(xs1, xs2, close_ends=close)
@@ -119,7 +119,7 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
     ax = fig.add_subplot(111)
     ax.set_aspect(exaggeration)
 
-    xs_overlay.plot(ax=ax, marker='None', linestyle='-', linewidth=3, color='tab:red', label=label_overlay)
+    # xs_overlay.plot(ax=ax, marker='None', linestyle='-', linewidth=3, color='tab:red', label=label_overlay)
     xs1.plot(ax=ax, marker='o', markersize=4, markerfacecolor='white', markeredgecolor='black', linestyle='-', color='gray', label=label_t0)
     xs2.plot(ax=ax, marker='o', markersize=4, markerfacecolor='black', markeredgecolor='black', linestyle='-', color='black', label=label_t1)
     chg.polygon_plot(ax=ax, fill_label='Fill', cut_label='Cut')
