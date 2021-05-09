@@ -4,15 +4,13 @@ Orangery
 
 Orangery is a Python library to support analysis of topographic cross-sections, particularly on stream channels. The intent is to enable the user to write simple scripts that operate on CSV data exported from a survey data collector.
 
-.. image:: https://travis-ci.org/mrahnis/orangery.svg?branch=main
-    :target: https://travis-ci.org/mrahnis/orangery
-
-.. image:: https://ci.appveyor.com/api/projects/status/lw4wysrcfu2x3653?svg=true
-	:target: https://ci.appveyor.com/project/mrahnis/orangery
-
 .. image:: https://github.com/mrahnis/orangery/workflows/Python%20package/badge.svg
 	:target: https://github.com/mrahnis/orangery/actions?query=workflow%3A%22Python+package%22
 	:alt: Python Package
+
+.. image:: https://github.com/mrahnis/orangery/workflows/Conda%20package/badge.svg
+	:target: https://github.com/mrahnis/orangery/actions?query=workflow%3A%22Conda+package%22
+	:alt: Conda Package
 
 .. image:: https://readthedocs.org/projects/orangery/badge/?version=latest
 	:target: http://orangery.readthedocs.io/en/latest/?badge=latest
