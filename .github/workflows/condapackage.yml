@@ -37,7 +37,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           auto-update-conda: true
           allow-softlinks: true
-          channels: conda-forge
+          channels: conda-forge, mrahnis
           show-channel-urls: true
           channel-priority: strict
           environment-file: conda-recipe/environment.yml
