@@ -1,24 +1,15 @@
-from os import path
 from setuptools import setup, find_packages
+import versioneer
 
 
-for line in open('orangery/__init__.py', 'r'):
-    if line.find("__version__") >= 0:
-        version = line.split("=")[1].strip()
-        version = version.strip('"')
-        version = version.strip("'")
-        continue
-
-with open('VERSION.txt', 'w') as fp:
-    fp.write(version)
-
-current_directory = path.abspath(path.dirname(__file__))
-with open(path.join(current_directory, 'README.rst'), 'r', encoding='utf-8') as f:
+with open('README.rst', 'r', encoding='utf-8') as f:
     long_description = f.read()
-
+with open("requirements.txt", "r") as f:
+    requirements = [line.strip() for line in f]
 
 setup(name='orangery',
-      version=version,
+      version=versioneer.get_version(),
+      cmdclass=versioneer.get_cmdclass(),
       author='Michael Rahnis',
       author_email='mike@topomatrix.com',
       description='Python library to support analysis of topographic cross-sections',
@@ -27,9 +18,7 @@ setup(name='orangery',
       url='http://github.com/mrahnis/orangery',
       license='BSD',
       packages=find_packages(),
-      install_requires=[
-          'numpy','pandas','matplotlib','shapely','click', 'opusxml'
-      ],
+      install_requires=requirements,
       entry_points='''
           [console_scripts]
           orangery=orangery.cli.orangery:cli

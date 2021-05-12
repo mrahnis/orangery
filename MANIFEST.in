@@ -2,11 +2,13 @@ include MANIFEST.in
 include LICENSE.txt
 include README.rst
 include setup.py
+include requirements.txt
 
 graft examples
 graft orangery
 
-global-exclude *.pyc
-global-exclude *.pyo
+recursive-exclude * *.py[co]
 global-exclude .git*
 global-exclude *.png
+include versioneer.py
+include orangery/_version.py
