@@ -9,6 +9,5 @@ graft orangery
 
 recursive-exclude * *.py[co]
 global-exclude .git*
-global-exclude *.png
 include versioneer.py
 include orangery/_version.py
