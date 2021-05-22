@@ -1,4 +1,8 @@
-def integer_prompt(low, high, label=None):
+from __future__ import annotations
+
+from typing import Union
+
+def integer_prompt(low: int, high: int, label: Union[None, str] = None) -> int:
     prompt = 'Enter an integer number between {0} and {1}: '.format(low, high)
     err = 'Input must be an integer number between {0} and {1}.'.format(low, high)
 
@@ -16,7 +20,7 @@ def integer_prompt(low, high, label=None):
             print(err)
 
 
-def double_prompt(low, high, label=None):
+def double_prompt(low: float, high: float, label: Union[None, str] = None) -> float:
     prompt = 'Enter a decimal number between {0} and {1}: '.format(low, high)
     err = 'Input must be a decimal number between {0} and {1}.'.format(low, high)
     if label:
@@ -33,7 +37,7 @@ def double_prompt(low, high, label=None):
             print(err)
 
 
-def string_prompt(label=None):
+def string_prompt(label: Union[None, str] = None) -> str:
     prompt = 'Enter a text string: '
     err = 'String must be at least one character length.'
 
@@ -51,7 +55,7 @@ def string_prompt(label=None):
             print(err)
 
 
-def choice_prompt(choices, label=None):
+def choice_prompt(choices: dict, label: Union[None, str] = None) -> str:
     low = 0
     high = low + len(choices) - 1
 

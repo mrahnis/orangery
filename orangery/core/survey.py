@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import logging
 import collections
+from typing import Union
 
 import pandas as pnd
-
-from shapely.geometry import asLineString
+from shapely.geometry import Point, asLineString
+from matplotlib.lines import Line2D
 
 import orangery.ops.text as ot
 import orangery.ops.geometry as og
@@ -38,7 +41,14 @@ class Survey:
         kwargs (dict) : keyword arguments passed to pandas.read_csv.
 
     """
-    def __init__(self, filename, columns, codebook, header=0, **kwargs):
+    def __init__(
+        self,
+        filename: str,
+        columns: str,
+        codebook: dict,
+        header: int = 0,
+        **kwargs
+    ):
         self.filename = filename
         self.codebook = codebook
 
@@ -46,25 +56,26 @@ class Survey:
             self.data = pnd.read_csv(filename, header=header, **kwargs)
 
             known_columns = set(('p','x','y','z','n','e','s','o','z','t','d','c','r','q','f','a'))
-            columns = list(columns.lower())
+            columns_tmp = list(columns.lower())
+            #columns = columns.lower()
 
-            if set(columns).issubset(known_columns) == False:
-                unrecognized = set(columns).difference(known_columns)
+            if set(columns_tmp).issubset(known_columns) == False:
+                unrecognized = set(columns_tmp).difference(known_columns)
                 logger.warning('Unrecognized column entry: {0}'.format(unrecognized))
 
-            columns = [c.replace('a', 'a'+str(i)) for i,c in enumerate(columns)]
+            columns_tmp = [c.replace('a', 'a'+str(i)) for i, c in enumerate(columns)]
 
-            if len(set(columns)) < len(columns):
+            if len(set(columns_tmp)) < len(columns_tmp):
                 duplicates = [i for i, c in collections.Counter(columns).items() if c > 1]
                 logger.warning('Duplicate columns: {0}'.format(duplicates))
 
-            columns = [c.replace('n', 'y') for c in columns]
-            columns = [c.replace('e', 'x') for c in columns]
-            columns = [c.replace('h', 'z') for c in columns]
-            columns = [c.replace('s', 'd') for c in columns]
+            columns_tmp = [c.replace('n', 'y') for c in columns]
+            columns_tmp = [c.replace('e', 'x') for c in columns]
+            columns_tmp = [c.replace('h', 'z') for c in columns]
+            columns_tmp = [c.replace('s', 'd') for c in columns]
 
             # get inverse map of the dataframe column names, then rename columns for internal use
-            self.format = collections.OrderedDict(zip(columns,self.data.columns))
+            self.format = collections.OrderedDict(zip(columns_tmp,self.data.columns_tmp))
             inv_col_map = {v:k for k, v in self.format.items()}
             self.data.rename(columns=inv_col_map, inplace=True)
         except:
@@ -76,7 +87,7 @@ class Survey:
             logger.error('Failed to parse CSV file: {0}'.format(filename))
             raise
 
-    def translate(self, deltas):
+    def translate(self, deltas: list[float]):
         """
         Translate the data by an xyz offset and add a line to history.
         """
@@ -84,7 +95,12 @@ class Survey:
         # add a line to history
         logger.info('Translated data by x,y,z offsets: {0[0]}, {0[1]}, {0[2]}\n'.format(deltas))
 
-    def save(self, filename=None, original_header=False, write_history=False):
+    def save(
+        self,
+        filename: Union[None, str] = None,
+        original_header: bool = False,
+        write_history: bool = False
+    ):
         """
         Save the data to a file
         """
@@ -96,7 +112,7 @@ class Survey:
         output.to_csv(filename)
         logger.info('Saved data to: {0}'.format(filename))
 
-    def plot(self, **kwargs):
+    def plot(self, **kwargs) -> Line2D:
         """Plot the x, y values of the data.
 
         Parameters:
@@ -125,7 +141,14 @@ class Section:
         z_adjustment (float) : adjust the elevation of the data.
 
     """
-    def __init__(self, data, p1, p2, reverse=False, z_adjustment=None):
+    def __init__(
+        self,
+        data: pnd.DataFrame,
+        p1: Point,
+        p2: Point,
+        reverse: bool = False,
+        z_adjustment: Union[None, float] = None
+    ):
         self.data = data
         self.p1, self.p2 = p1, p2
 
@@ -142,7 +165,7 @@ class Section:
         self.line = asLineString(list(zip(self.projection['d'],self.projection['z'])))
         self.date = (self.data.iloc[0]['t']).split('T')[0]
 
-    def plot(self, view='section', **kwargs):
+    def plot(self, view='section', **kwargs) -> Union[None, Line2D]:
         """Plot the d, z values of the projected data.
 
         Parameters:
@@ -159,7 +182,7 @@ class Section:
             ax = self.data.plot('x','y',**kwargs)
         else:
             logger.warning('{0} is not a valid view option'.format(view))
-            ax=None
+            ax = None
         return ax
 
 

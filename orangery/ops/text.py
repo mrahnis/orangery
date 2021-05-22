@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import pandas as pnd
 
@@ -5,7 +7,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def parse(points, codebook):
+def parse(points: pnd.DataFrame, codebook: dict) -> pnd.DataFrame:
     """Parses the codes in a DataFrame to extract information about points and chains of points.
 
     Parameters:

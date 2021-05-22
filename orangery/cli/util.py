@@ -1,4 +1,4 @@
-def load_config(json_f):
+def load_config(json_f: str) -> dict:
     """Load a json file containing configuration data
 
     Parameters:

@@ -1,8 +1,8 @@
 import sys
 import logging
+
 import numpy as np
 import pandas as pnd
-
 from shapely.geometry import LineString
 
 import orangery.ops.geometry as og
@@ -23,6 +23,8 @@ class Change:
     def __init__(self, section1, section2, close_ends=False):
         self.section1 = section1
         self.section2 = section2
+        self.polygon_plot = None
+        self.annotate_plot = None
 
         try:
             self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, close_ends=close_ends)

@@ -1,7 +1,10 @@
+from __future__ import annotations
+
+import pandas as pnd
 from shapely.geometry import Point
 
 
-def pointname(df, name):
+def pointname(df: pnd.DataFrame, name: str) -> pnd.DataFrame:
     """Given a DataFrame return the named point or survey record.
 
     Parameters:
@@ -17,7 +20,7 @@ def pointname(df, name):
     return result
 
 
-def group(df, code_table, group, exclude=[]):
+def group(df: pnd.DataFrame, code_table: pnd.DataFrame, group: str, exclude: list = []) -> pnd.DataFrame:
     """Given a DataFrame return a copy of the survey records belonging to a given group
 
     Parameters:
@@ -43,7 +46,7 @@ def group(df, code_table, group, exclude=[]):
     return result
 
 
-def endpoints(df, reverse=False):
+def endpoints(df: pnd.DataFrame, reverse: bool = False) -> tuple[Point, Point]:
     """Given a DataFrame return the first and last survey records.
 
     Parameters:
@@ -62,7 +65,7 @@ def endpoints(df, reverse=False):
         return p1, p2
 
 
-def controls(df, code_table, codebook):
+def controls(df: pnd.DataFrame, code_table: pnd.DataFrame, codebook: dict) -> pnd.DataFrame:
     """Given a DataFrame return survey records that have control codes.
 
     Parameters:
@@ -80,7 +83,7 @@ def controls(df, code_table, codebook):
     return result
 
 
-def benchmarks(df, code_table, codebook):
+def benchmarks(df: pnd.DataFrame, code_table: pnd.DataFrame, codebook: dict) -> pnd.DataFrame:
     """Given a DataFrame return survey records with benchmark codes.
 
     Parameters:

@@ -1,22 +1,18 @@
+from __future__ import annotations
+
 import logging
+from typing import Union
 
 import pandas as pnd
-
-from numpy import array
 from numpy import asarray
-from numpy import float
-
-from shapely.geometry import Point
-from shapely.geometry import LineString
-from shapely.geometry import MultiLineString
-from shapely.ops import polygonize
-from shapely.ops import linemerge
+from shapely.geometry import Point, LineString, MultiLineString
+from shapely.ops import polygonize, linemerge
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-def project2(p1, p2, p3):
+def project2(p1: Point, p2: Point, p3: Point) -> Union[None, dict]:
     """Project a Point, p3 onto a line intersecting Points p1 and p2.
 
     Adapted from tutorial by Paul Bourke: http://paulbourke.net/geometry/pointline/
@@ -36,7 +32,7 @@ def project2(p1, p2, p3):
 
     if x_delta == 0 and y_delta == 0:
         logger.warning("p1 and p2 cannot be the same point")
-        return
+        return None
 
     u = ((p3.x - p1.x) * x_delta + (p3.y - p1.y) * y_delta) / (x_delta * x_delta + y_delta * y_delta)
     pt = Point(p1.x + u * x_delta, p1.y + u * y_delta, p3.z)
@@ -57,7 +53,7 @@ def project2(p1, p2, p3):
     return result
 
 
-def project(p1, p2, p3):
+def project(p1: Point, p2: Point, p3: Point) -> dict:
     """Project a Point, p3 onto a line between Points p1 and p2.
 
     Uses Shapely and GEOS functions, which set distance to zero for all negative distances.
@@ -87,7 +83,7 @@ def project(p1, p2, p3):
     return result
 
 
-def project_points(points, p1, p2):
+def project_points(points: pnd.DataFrame, p1: Point, p2: Point) -> pnd.DataFrame:
     """Project multiple points onto a line through Points p1, p2.
 
     Parameters:
@@ -103,13 +99,14 @@ def project_points(points, p1, p2):
     for i in points.index:
         p3 = Point(points.loc[i, 'x'], points.loc[i, 'y'], points.loc[i, 'z'])
         pt = project2(p1, p2, p3)
-        ppoints.append((pt['pt'].x, pt['pt'].y, pt['pt'].z, pt['d'], pt['o'], pt['u'])) 
+        if pt is not None:
+            ppoints.append((pt['pt'].x, pt['pt'].y, pt['pt'].z, pt['d'], pt['o'], pt['u'])) 
 
     result = pnd.DataFrame(ppoints, columns=['x','y','z','d','o','u'])
     return result
 
 
-def cut_by_distance(line, distance):
+def cut_by_distance(line: LineString, distance: float) -> list[LineString]:
     """This line cutting function is from shapely recipes http://sgillies.net/blog/1040/shapely-recipes/
 
     Parameters:
@@ -139,7 +136,7 @@ def cut_by_distance(line, distance):
     return segments
 
 
-def cut_by_point(line, pt):
+def cut_by_point(line: LineString, pt: Point) -> list[LineString]:
     """A cut function that divides a line and inserts points at the cut location.
 
     Parameters:
@@ -167,7 +164,7 @@ def cut_by_point(line, pt):
     return segments
 
 
-def cut_by_distances(line, intersections):
+def cut_by_distances(line: LineString, intersections: list[Point]) -> MultiLineString:
     """ Cut a line at multiple points by calculating the distance of each point along the line. Uses the cut_by_distance function.
 
     Parameters:
@@ -185,7 +182,7 @@ def cut_by_distances(line, intersections):
     return segments
 
 
-def cut_by_points(line, intersections):
+def cut_by_points(line: LineString, intersections: list[Point]) -> MultiLineString:
     """Cut a line at multiple points by breaking the line and inserting each point. Uses the cut_by_point function.
 
     Parameters:
@@ -203,7 +200,7 @@ def cut_by_points(line, intersections):
     return segments
 
 
-def sign(line1, line2):
+def sign(line1: LineString, line2: LineString) -> list[int]:
     """Determine left-right orientation of a line relative to another
 
     Iterates over points in two lines to identify line intersections at identical coordinates.
@@ -233,7 +230,7 @@ def sign(line1, line2):
     return signs
 
 
-def extend(line, pt, prepend):
+def extend(line: LineString, pt: Point, prepend: bool) -> LineString:
     """Extends a LineString by one Point, which may be prepended at the start of the LineString, or appended at the end.
 
     Parameters:
@@ -256,7 +253,7 @@ def extend(line, pt, prepend):
     return newline
 
 
-def update(line, pt, idx):
+def update(line: LineString, pt: Point, idx: int) -> LineString:
     """Update a point within a LineString
 
     Parameters:
@@ -277,7 +274,7 @@ def update(line, pt, idx):
     return newline
 
 
-def close(line1, line2):
+def close(line1: LineString, line2: LineString) -> tuple[LineString, LineString]:
     try:
         # prepend
         if line1.coords[0][0] > line2.coords[0][0]:
@@ -326,7 +323,7 @@ def close(line1, line2):
     return line1, line2
 
 
-def difference(line1, line2, close_ends=False):
+def difference(line1: LineString, line2: LineString, close_ends: bool = False) -> tuple[list[Point], list[str], pnd.Series]:
     """ Create polygons from two LineString objects.
 
     Parameters:
@@ -363,7 +360,7 @@ def difference(line1, line2, close_ends=False):
     return intersections, polygontxt, cutfill
 
 
-def snap_to_points(segments, intersections):
+def snap_to_points(segments: MultiLineString, intersections: list[Point]) -> MultiLineString:
     """Snap line segment endpoints to given points
 
     Compare segment endpoints in a MultiLineString against points in a Point array to within a given precision;

@@ -15,7 +15,7 @@ import orangery as o
 from orangery.ops.correction import get_offsets
 
 
-def _default_outname(filename):
+def _default_outname(filename: str) -> str:
     dirpath = os.path.dirname(filename)
     fnsplit = os.path.splitext(os.path.basename(filename))
     outname = '{0[0]}-corr{0[1]}'.format(fnsplit)
@@ -28,7 +28,7 @@ def _default_outname(filename):
 @click.argument('codes', nargs=1, metavar='<codes_file>') # help="JSON file containing a list of survey codes"
 @click.argument('fields', nargs=1, metavar='<fields>') # help="Character string identifying the columns"
 @click.argument('point', nargs=1, metavar='<name>', required=True) # help="name of the base or reference point"
-@click.option('-o', '--output', type=click.File('wb', 0), metavar='<outfile>', help="Output file path") # default = '{0[0]}-corr{0[1]}'.format(fnsplit)
+@click.option('-o', '--output', type=click.File('wb'), metavar='<outfile>', help="Output file path") # default = '{0[0]}-corr{0[1]}'.format(fnsplit)
 @click.option('-u', '--unit', metavar='<unit>', type=click.Choice(['m','sft']), default='m', help="Distance units")
 @click.option('-s', '--system', metavar='<plane_system>', type=click.Choice(['UTM','SPC']), default='UTM', help="Plane coordinate spec type")
 @click.option('--keep-header', 'header', is_flag=True, default=True, help="Keeps the original header")
