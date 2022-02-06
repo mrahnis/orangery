@@ -55,7 +55,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc',
         'sphinx.ext.autosummary',
-        'sphinx.ext.napoleon']
+        'sphinx.ext.napoleon',
+        'sphinx_copybutton']
 
 # fpr Napoleon to use the typehints
 napoleon_use_param = True
@@ -139,7 +140,9 @@ html_theme = 'furo'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+  "prefers-color-scheme": "light"
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = []
