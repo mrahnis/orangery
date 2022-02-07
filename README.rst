@@ -35,13 +35,13 @@ To install from the Python Package Index:
 
 .. code:: console
 
-    $pip install orangery
+    pip install orangery
 
 To install from the source distribution execute the setup script in the orangery directory:
 
 .. code:: console
 
-    $python setup.py install
+    python setup.py install
 
 To install from Anaconda Cloud:
 
@@ -49,9 +49,9 @@ If you are starting from scratch the first thing to do is install the Anaconda P
 
 .. code:: console
 
-    $conda config --append channels conda-forge
-    $conda config --append channels mrahnis
-    $conda install orangery
+    conda config --append channels conda-forge
+    conda config --append channels mrahnis
+    conda install orangery
 
 To install from the source distribution:
 
@@ -59,7 +59,7 @@ Execute the setup script in the orangery directory:
 
 .. code:: console
 
-    $python setup.py install
+    python setup.py install
 
 Examples
 ========
@@ -68,7 +68,7 @@ The example scripts may be run like so:
 
 .. code:: console
 
-    $python plots.py
+    python plots.py
 
 License
 =======
