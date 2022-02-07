@@ -5,43 +5,43 @@ Orangery
 Orangery is a Python library to support analysis of topographic cross-sections, particularly on stream channels. The intent is to enable the user to write simple scripts that operate on CSV data exported from a survey data collector.
 
 .. image:: https://github.com/mrahnis/orangery/workflows/Python%20package/badge.svg
-	:target: https://github.com/mrahnis/orangery/actions?query=workflow%3A%22Python+package%22
-	:alt: Python Package
+    :target: https://github.com/mrahnis/orangery/actions?query=workflow%3A%22Python+package%22
+    :alt: Python Package
 
 .. image:: https://github.com/mrahnis/orangery/workflows/Conda%20package/badge.svg
-	:target: https://github.com/mrahnis/orangery/actions?query=workflow%3A%22Conda+package%22
-	:alt: Conda Package
+    :target: https://github.com/mrahnis/orangery/actions?query=workflow%3A%22Conda+package%22
+    :alt: Conda Package
 
 .. image:: https://readthedocs.org/projects/orangery/badge/?version=latest
-	:target: http://orangery.readthedocs.io/en/latest/?badge=latest
-	:alt: Documentation Status
+    :target: http://orangery.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 Orangery was initially a single script that allowed me to segregate, by grain size, changed areas on repeat topographic cross-sections. It can produce output plots like the one below.
 
 .. image:: https://lh3.googleusercontent.com/-3BBypwcOuqQ/U2GP63BYFII/AAAAAAAABNs/ubaKDHXSqjQ/w800-h344-no/figure_1.png
-	:width: 800
-	:height: 344
+    :width: 800
+    :height: 344
 
 Installation
 ============
 
 .. image:: https://img.shields.io/pypi/v/orangery.svg
-	:target: https://pypi.org/project/orangery/
+    :target: https://pypi.org/project/orangery/
 
 .. image:: https://anaconda.org/mrahnis/orangery/badges/version.svg
-	:target: https://anaconda.org/mrahnis/orangery
+    :target: https://anaconda.org/mrahnis/orangery
 
 To install from the Python Package Index:
 
 .. code:: console
 
-	$pip install orangery
+    $pip install orangery
 
 To install from the source distribution execute the setup script in the orangery directory:
 
 .. code:: console
 
-	$python setup.py install
+    $python setup.py install
 
 To install from Anaconda Cloud:
 
@@ -49,9 +49,9 @@ If you are starting from scratch the first thing to do is install the Anaconda P
 
 .. code:: console
 
-	$conda config --append channels conda-forge
-	$conda config --append channels mrahnis
-	$conda install orangery
+    $conda config --append channels conda-forge
+    $conda config --append channels mrahnis
+    $conda install orangery
 
 To install from the source distribution:
 
@@ -59,7 +59,7 @@ Execute the setup script in the orangery directory:
 
 .. code:: console
 
-	$python setup.py install
+    $python setup.py install
 
 Examples
 ========
@@ -68,7 +68,7 @@ The example scripts may be run like so:
 
 .. code:: console
 
-	$python plots.py
+    $python plots.py
 
 License
 =======
