@@ -33,9 +33,13 @@ Installation
 
 To install from the Python Package Index:
 
+.. code:: console
+
 	$pip install orangery
 
 To install from the source distribution execute the setup script in the orangery directory:
+
+.. code:: console
 
 	$python setup.py install
 
@@ -43,7 +47,7 @@ To install from Anaconda Cloud:
 
 If you are starting from scratch the first thing to do is install the Anaconda Python distribution, add the necessary channels to obtain the dependencies and install orangery.
 
-.. code-block:: console
+.. code:: console
 
 	$conda config --append channels conda-forge
 	$conda config --append channels mrahnis
@@ -53,7 +57,7 @@ To install from the source distribution:
 
 Execute the setup script in the orangery directory:
 
-.. code-block:: console
+.. code:: console
 
 	$python setup.py install
 
@@ -61,6 +65,8 @@ Examples
 ========
 
 The example scripts may be run like so:
+
+.. code:: console
 
 	$python plots.py
 
