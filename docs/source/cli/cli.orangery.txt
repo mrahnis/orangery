@@ -1,0 +1,15 @@
+Usage: orangery [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --version      Show the version and exit.
+  -v, --verbose  Enables verbose mode
+  --help         Show this message and exit.
+
+Commands:
+  adjust    A command-line utility to adjust a survey dataset.
+  cutfill   Displays a plot of a repeat survey with cut and fill.
+  geodetic
+  info      Displays information about a survey file or section within a...
+  section   Displays a cross-section plot.
+  segment   Prompt the user to assign materials to polygon areas listed in
+            a...

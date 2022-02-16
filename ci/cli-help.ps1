@@ -14,6 +14,9 @@ $commands = @(
 )
 
 $dst = "$($PSScriptRoot)\..\docs\source\cli"
+
+& $main --help | Out-File $(Join-Path $dst cli.${main}.txt)
+
 ForEach ($command in $commands)
 {
     Write-Host "Writing help for $command"
