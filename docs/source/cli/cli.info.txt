@@ -1,0 +1,21 @@
+Usage: orangery info <options> <file> <fields>
+
+  Displays information about a survey file or section within a survey file.
+
+  The cutfill subcommand takes four arguments:
+  <file> : survey data representing the initial condition in csv format
+  <fields> : series of characters describing the data columns
+  <name> : name of cross-section to plot
+
+  Example:
+  orangery info file_2004.csv pxyzctr --name XS-7
+
+Options:
+  --names <name col>    Name of the cross-section; default will return all
+                        names beginning with 'XS'
+
+  --codes <codes_file>  JSON file representing the usage intent of a set of
+                        survey codes
+
+  -v, --verbose         Enables verbose mode
+  --help                Show this message and exit.

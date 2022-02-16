@@ -1,0 +1,16 @@
+Usage: orangery segment <options> <areas_file> <materials_file>
+
+  Prompt the user to assign materials to polygon areas listed in a csv file.
+
+  The segment subcommand takes two arguments: A path to a csv file listing
+  cut-and-fill polygon areas and a path to a JSON file listing possible
+  materials.
+
+  The csv file listing the cut-and-fill polygon areas is created with the
+  --save option of the cutfill subcommand.
+
+  Example:
+  orangery segment XS-3-20130514-20170609.csv materials.json
+
+Options:
+  --help  Show this message and exit.

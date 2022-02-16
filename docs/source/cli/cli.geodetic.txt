@@ -1,0 +1,4 @@
+Usage: orangery geodetic [OPTIONS] LATITUDE LONGITUDE HAE
+
+Options:
+  --help  Show this message and exit.

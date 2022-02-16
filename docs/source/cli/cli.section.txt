@@ -1,0 +1,34 @@
+Usage: orangery section <options> <file_t0> <fields> <name>
+
+  Displays a cross-section plot.
+
+  The section subcommand takes three arguments:
+  <file_t0> : survey data representing the initial condition in csv format
+  <fields> : series of characters describing the data columns
+  <name> : name of cross-section to plot
+
+  Options allow to set various properties of the plot. The default is to
+  --show the plot. With the --save option the plot will be saved as an
+  image.
+
+  Example:
+  orangery section file_2004.csv pxyzctr XS-7 --reverse t0
+
+Options:
+  --codes <codes_file>      JSON file representing the usage intent of a set
+                            of survey codes
+
+  --show / --save           Show the plot or save to files; --show is the
+                            default
+
+  --units [m|sft|ft]        Unit to show in axis labels
+  --label <text>            Label to display in the legend
+  --exaggeration <int>      Vertical exaggeration of plot
+  --scale <float int>       Scale where first argument is units per-inch on
+                            the horizontal axis and second argument is output
+                            DPI
+
+  --reverse / --no-reverse  Reverse the line of section
+  --exclude <str>           Exclude a survey code from the section plot
+  -v, --verbose             Enables verbose mode
+  --help                    Show this message and exit.

@@ -1,0 +1,45 @@
+Usage: orangery cutfill <options> <file_t0> <file_t1> <fields> <name>
+
+  Displays a plot of a repeat survey with cut and fill.
+
+  The cutfill subcommand takes four arguments:
+  <file_t0> : survey data representing the initial condition in csv format
+  <file_t1> : survey data representing the final condition in csv format
+  <fields> : series of characters describing the data columns
+  <name> : name of cross-section to plot
+
+  Options allow to set various properties of the plot. The default is to
+  --show the plot. With the --save option the plot will be saved as an image
+  along with a csv file containing data about cross-sectional cut-and-fill
+  areas along the line of secion.
+
+  Example:
+  orangery cutfill file_2004.csv file_2010.csv pxyzctr XS-7 --reverse t0
+
+Options:
+  --codes <codes_file>      JSON file representing the usage intent of a set
+                            of survey codes
+
+  --show / --save           Show the plot or save to files; --show is the
+                            default
+
+  --summary / --no-summary  Print summary information; --summary is the
+                            default
+
+  --units [m|sft|ft]        Unit to show in axis labels
+  --labels <text text>      Labels to display in the legend
+  --exaggeration <int>      Vertical exaggeration of plot
+  --scale <float int>       Scale where first argument is units per-inch on
+                            the horizontal axis and second argument is output
+                            DPI
+
+  --close / --no-close      Close the line ends; --close is the default
+  --reverse [t0|t1|tx]      Reverse a line or lines of section (t0=initial,
+                            t1=final, tx=both)
+
+  --exclude <str choice>    Exclude a survey code from a line or lines of
+                            section (t0=initial, t1=final, tx=both)
+
+  --overlay PATH
+  -v, --verbose             Enables verbose mode
+  --help                    Show this message and exit.

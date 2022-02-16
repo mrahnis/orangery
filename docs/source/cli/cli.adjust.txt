@@ -1,0 +1,19 @@
+Usage: orangery adjust <options> <opusxml_file> <file> <codes_file> <fields>
+                       <name>
+
+  A command-line utility to adjust a survey dataset.
+
+  It translates coordinates by the offset between one coordinate in the
+  dataset and coordinates in an OPUS XML file.
+
+  Examples:
+  adjust opus/2010096o.10o.xml data/Topo-20100331.csv json/codebook.json pyxzctr BASE2 -u sft -s SPC --keep-header
+
+Options:
+  -o, --output <outfile>       Output file path
+  -u, --unit <unit>            Distance units
+  -s, --system <plane_system>  Plane coordinate spec type
+  --keep-header                Keeps the original header
+  --drop-header                Drops the original header
+  -v, --verbose                Enables verbose mode
+  --help                       Show this message and exit.
