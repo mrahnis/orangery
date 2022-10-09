@@ -7,6 +7,7 @@ import time
 
 import json
 import click
+import matplotlib
 import matplotlib.pyplot as plt
 
 import orangery as o
@@ -111,7 +112,6 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
     if summary:
         chg.summarize()
 
-    import matplotlib
     font = {'family':'normal','weight':'normal','size':16}
     matplotlib.rc('font', **font)
     # plot the change between two cross-sections

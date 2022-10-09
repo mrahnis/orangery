@@ -75,7 +75,7 @@ class Survey:
             columns_tmp = [c.replace('s', 'd') for c in columns]
 
             # get inverse map of the dataframe column names, then rename columns for internal use
-            self.format = collections.OrderedDict(zip(columns_tmp,self.data.columns_tmp))
+            self.format = collections.OrderedDict(zip(columns_tmp, self.data.columns))
             inv_col_map = {v:k for k, v in self.format.items()}
             self.data.rename(columns=inv_col_map, inplace=True)
         except:

@@ -6,6 +6,7 @@ import pandas as pnd
 from shapely.geometry import LineString
 
 import orangery.ops.geometry as og
+import orangery.tools.plotting as _gfx
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -23,8 +24,8 @@ class Change:
     def __init__(self, section1, section2, close_ends=False):
         self.section1 = section1
         self.section2 = section2
-        self.polygon_plot = None
-        self.annotate_plot = None
+        #self.polygon_plot = None
+        #self.annotate_plot = None
 
         try:
             self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, close_ends=close_ends)
@@ -68,9 +69,6 @@ class Change:
 
         result.to_csv(filename, header=True)
 
-# add plot method
-import orangery.tools.plotting as _gfx
 
-# Change.plot = _gfx.change_plot
 Change.polygon_plot = _gfx.polygon_plot
 Change.annotate_plot = _gfx.annotate_plot
