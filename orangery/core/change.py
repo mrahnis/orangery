@@ -24,8 +24,6 @@ class Change:
     def __init__(self, section1, section2, close_ends=False):
         self.section1 = section1
         self.section2 = section2
-        #self.polygon_plot = None
-        #self.annotate_plot = None
 
         try:
             self.intersections, self.polygons, self.cutfill = og.difference(self.section1.line, self.section2.line, close_ends=close_ends)
@@ -49,8 +47,8 @@ class Change:
         Result (float) : legnth of the cross-sectional cut and fill area 
 
         """
-        p1 = self.intersections[0]
-        p2 = self.intersections[-1]
+        p1 = self.intersections.geoms[0]
+        p2 = self.intersections.geoms[-1]
         result = p1.distance(p2)
 
         return result

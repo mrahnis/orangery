@@ -1,3 +1,6 @@
+import matplotlib.patches as patches
+
+
 def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...', fill_label=None, cut_ec='black', cut_fc='none', cut_hatch='x', cut_label=None):
     """Adds two groups of polygon patches to a matplotlib Axis.
 
@@ -43,6 +46,7 @@ def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...
 
     return ax
 
+
 def annotate_plot(self, ax=None):
     """Add annotation to a plot to identify individual polygons.
 
@@ -53,20 +57,22 @@ def annotate_plot(self, ax=None):
         ax (Axis) : patched matplotlib Axis.
 
     """
-    import matplotlib.patches as patches
-    from matplotlib.path import Path
-
     ylim = ax.get_ylim()
-    for i, intersection in enumerate(self.intersections):
-        verts = [(intersection.x, ylim[0]), (intersection.x, ylim[0]+0.05*(ylim[1]-ylim[0]))]
-        codes = [ Path.MOVETO, Path.LINETO ]
-        path = Path(verts, codes)
-        patch = patches.PathPatch(path, color='red', alpha=0.7)
+    for i, polygon in enumerate(self.polygons):
+
+        # alternating colors
+        (color:='red') if (i % 2)==0 else (color:='gray')
+
+        # for each polygon draw a rectangular patch along the x-axis
+        xmin, _, xmax, _ = polygon.bounds
+        patch = patches.Rectangle((xmin, ylim[0]), xmax-xmin, 0.05*(ylim[1]-ylim[0]), facecolor=color, alpha=0.5)
         ax.add_patch(patch)
-        if i < len(self.intersections)-1:
-            ax.text((intersection.x + self.intersections[i+1].x)/2, ylim[0]+0.02*(ylim[1]-ylim[0]), i, color='red', fontsize=8, ha='center')
+
+        # add a text label at the polygon midpoint
+        ax.text((xmin + xmax)/2, ylim[0]+0.02*(ylim[1]-ylim[0]), i, color='black', fontsize=8, ha='center')
 
     return ax
+
 
 def get_scale_factor(fig, ax, scale, axis='x'):
     """Get the scale factor needed to obtain a desired scale in x-axis units per inch.

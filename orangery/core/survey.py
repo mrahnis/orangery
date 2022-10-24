@@ -5,7 +5,7 @@ import collections
 from typing import Union
 
 import pandas as pnd
-from shapely.geometry import Point, asLineString
+from shapely.geometry import Point, LineString
 from matplotlib.lines import Line2D
 
 import orangery.ops.text as ot
@@ -162,7 +162,7 @@ class Section:
             self.data['z'] = self.data['z'] + z_adjustment
 
         self.projection = og.project_points(self.data, self.p1, self.p2)
-        self.line = asLineString(list(zip(self.projection['d'],self.projection['z'])))
+        self.line = LineString(list(zip(self.projection['d'],self.projection['z'])))
         self.date = (self.data.iloc[0]['t']).split('T')[0]
 
     def plot(self, view='section', **kwargs) -> Union[None, Line2D]:
@@ -211,7 +211,7 @@ class LevelSection:
             # xyzdou
             self.location = og.locate_points(self.data, self.p1, self.p2)
 
-        self.line = asLineString(list(zip(self.data['d'],self.data['z'])))
+        self.line = LineString(list(zip(self.data['d'],self.data['z'])))
 
     def plot(self, view='section', **kwargs):
         """Plot the d, z values of the data.

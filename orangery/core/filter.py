@@ -57,8 +57,8 @@ def endpoints(df: pnd.DataFrame, reverse: bool = False) -> tuple[Point, Point]:
         p1, p2 (Point) : first and last records in a DataFrame as Points.
 
     """
-    p1 = Point(df[:1]['x'], df[:1]['y'], df[:1]['z'])
-    p2 = Point(df[-1:]['x'], df[-1:]['y'], df[-1:]['z'])
+    p1 = Point(float(df[:1]['x']), float(df[:1]['y']), float(df[:1]['z']))
+    p2 = Point(float(df[-1:]['x']), float(df[-1:]['y']), float(df[-1:]['z']))
     if reverse == True:
         return p2, p1
     else:

@@ -109,6 +109,7 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
 
     # calculate the change
     chg = o.Change(xs1, xs2, close_ends=close)
+
     if summary:
         chg.summarize()
 

@@ -3,10 +3,13 @@ from __future__ import annotations
 import logging
 from typing import Union
 
+import numpy as np
 import pandas as pnd
 from numpy import asarray
-from shapely.geometry import Point, LineString, MultiLineString
-from shapely.ops import polygonize, linemerge
+from shapely import box, union, union_all, intersection, intersection_all, get_parts, get_coordinates
+from shapely.validation import make_valid
+from shapely.geometry import Point, LineString, MultiLineString, MultiPoint, Polygon
+from shapely.ops import polygonize, polygonize_full, linemerge, split, snap
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -148,7 +151,8 @@ def cut_by_point(line: LineString, pt: Point) -> list[LineString]:
 
     """
     distance = line.project(Point(pt))
-    if distance > 0.0 and distance < line.length:
+    offset = line.distance(Point(pt))
+    if distance > 0.0 and distance < line.length and offset < 1e-8:
         coords = list(line.coords)
         for i, c in enumerate(coords):
             cd = line.project(Point(c))
@@ -193,41 +197,11 @@ def cut_by_points(line: LineString, intersections: list[Point]) -> MultiLineStri
         segments (MultiLineString) : contains the line segments.
 
     """
-    for i in intersections:
+    for i in list(intersections.geoms):
         cutline = cut_by_point(line[-1], i)
         line = line[:-1] + cutline
     segments = MultiLineString(line)
     return segments
-
-
-def sign(line1: LineString, line2: LineString) -> list[int]:
-    """Determine left-right orientation of a line relative to another
-
-    Iterates over points in two lines to identify line intersections at identical coordinates.
-    At each intersection looks ahead and projects the next coordinate from line2 onto line1, and determines whether line2 is left or right of line1.
-    Left offsets give a negative sign representing cut; right offsets give positive sign representing fill.
-
-    Parameters:
-        line1 (LineString) : the line representing the initial condition.
-        line2 (LineString) : the line representing the final condition.
-
-    Returns:
-        signs (int array) : members are positive or negative integer one.
-
-    """
-    signs = []
-    for i in range(len(line1.coords)-1):
-        for j in range(len(line2.coords)-1):
-            if Point(line1.coords[i]).equals(Point(line2.coords[j])):
-                pp = project(
-                    Point(line1.coords[i][0], line1.coords[i][1], 0),
-                    Point(line1.coords[i+1][0], line1.coords[i+1][1], 0),
-                    Point(line2.coords[j+1][0], line2.coords[j+1][1], 0))
-                if pp['o'] < 0:
-                    signs.append(-1)
-                elif pp['o'] > 0:
-                    signs.append(1)
-    return signs
 
 
 def extend(line: LineString, pt: Point, prepend: bool) -> LineString:
@@ -274,56 +248,46 @@ def update(line: LineString, pt: Point, idx: int) -> LineString:
     return newline
 
 
+def sign(polygon: Polygon, line: LineString) -> int:
+    minx, _, maxx, _ = polygon.bounds
+    _, miny, _, maxy = (union(box(*polygon.bounds), box(*line.bounds))).bounds
+
+    midx = minx + (maxx - minx) / 2
+    test = LineString([(midx, miny), (midx, maxy)])
+
+    poly_zs = get_coordinates(intersection(test, polygon))[:,1]
+    line_zs = get_coordinates(intersection(test, line))[:,1]
+
+    if np.any(poly_zs > line_zs):
+        sign = 1
+    elif np.any(poly_zs < line_zs):
+        sign = -1
+    else:
+        sign = 0
+        print('error')
+
+    return sign
+
+
 def close(line1: LineString, line2: LineString) -> tuple[LineString, LineString]:
-    try:
-        # prepend
-        if line1.coords[0][0] > line2.coords[0][0]:
-            # prepend to line1
-            bi = line2.intersection(
-                LineString([(line1.coords[0][0], line2.bounds[1]-1), (line1.coords[0][0], line2.bounds[3]+1)]))
-            if bi.y < line1.coords[0][1]:
-                prepend = Point([bi.x, bi.y-1])
-            else:
-                prepend = Point([bi.x, bi.y+1])
-            line1 = extend(line1, prepend, True)
-        elif line1.coords[0][0] < line2.coords[0][0]:
-            # prepend to line2
-            bi = line1.intersection(
-                LineString([(line2.coords[0][0], line1.bounds[1]-1), (line2.coords[0][0], line1.bounds[3]+1)]))
-            if bi.y < line2.coords[0][1]:
-                prepend = Point([bi.x, bi.y-1])
-            else:
-                prepend = Point([bi.x, bi.y+1])
-            line2 = extend(line2, prepend, True)
-        else:
-            pass # the coordinate values are the same
-        # append
-        if line1.coords[-1][0] < line2.coords[-1][0]:
-            # append to line1
-            ei = line2.intersection(LineString([(line1.coords[-1][0], line2.bounds[1]-1), (line1.coords[-1][0], line2.bounds[3]+1)]))
-            if ei.y < line1.coords[-1][1]:
-                append = Point([ei.x, ei.y-1])
-            else:
-                append = Point([ei.x, ei.y+1])
-            line1 = extend(line1, append, False)
-        elif line1.coords[-1][0] > line2.coords[-1][0]:
-            # append to line2
-            ei = line1.intersection(LineString([(line2.coords[-1][0], line1.bounds[1]-1), (line2.coords[-1][0], line1.bounds[3]+1)]))
-            if ei.y < line2.coords[-1][1]:
-                append = Point([ei.x, ei.y-1])
-            else:
-                append = Point([ei.x, ei.y+1])
-            line2 = extend(line2, append, False)
-        else:
-            pass # the coordinate values are the same
-    except:
-        logger.error('Unable to close line ends. You may need to flip one of your sections.')
-        raise
+    """Create lines to close left and right cross-section ends
 
-    return line1, line2
+    Do something like this...
+
+    """
+    bbox1 = box(*line1.bounds)
+    bbox2 = box(*line2.bounds)
+
+    minx, _, maxx, _ = (intersection(bbox1, bbox2)).bounds
+    _, miny, _, maxy = (union(bbox1, bbox2)).bounds
+
+    left_closing = LineString([(minx, miny), (minx, maxy)])
+    right_closing = LineString([(maxx, miny), (maxx, maxy)])
+
+    return left_closing, right_closing
 
 
-def difference(line1: LineString, line2: LineString, close_ends: bool = False) -> tuple[list[Point], list[str], pnd.Series]:
+def difference(line1: LineString, line2: LineString, close_ends: bool = False) -> tuple[list[Point], list[LineString], pnd.Series]:
     """ Create polygons from two LineString objects.
 
     Parameters:
@@ -338,26 +302,48 @@ def difference(line1: LineString, line2: LineString, close_ends: bool = False) -
 
     """
     if close_ends==True:
-        line1, line2 = close(line1, line2)
+        # get the left and right bounding lines
+        left_close, right_close = close(line1, line2)
 
-    intersections = line1.intersection(line2)
+        # get the intersections on the bounding line
+        left_intersections = MultiPoint(intersection_all([[left_close, line1], [left_close, line2]], axis=1))
+        right_intersections = MultiPoint(intersection_all([[right_close, line1], [right_close, line2]], axis=1))
+        intersections = union_all([intersection(line1, line2), left_intersections, right_intersections])
 
-    segs1 = cut_by_points([line1], intersections)
-    segs2 = cut_by_points([line2], intersections)
+        # build the list of segments
+        left_segs = get_parts(split(left_close, left_intersections))
+        right_segs = get_parts(split(right_close, right_intersections))
+        segs1 = get_parts(cut_by_points([line1], intersections))
+        segs2 = get_parts(cut_by_points([line2], intersections))
+        segs = segs1.tolist() + segs2.tolist() + left_segs.tolist() + right_segs.tolist()
+    else:
+        intersections = intersection(line1, line2)
+        segs1 = get_parts(split(line1, intersections))
+        segs2 = get_parts(split(line2, intersections))
+        segs = segs1.tolist() + segs2.tolist()
 
-    polygons = polygonize([segs1, segs2])
+    # polygons = polygonize(segs)
 
-    signs = sign(linemerge(segs1), linemerge(segs2))
+    # use polygonize_full and make_valid to find the invalid geometries
+    _polygons, _cuts, _dangles, _invalid = polygonize_full(segs)
+    polygons = get_parts(_polygons).tolist()
 
-    # can't pass the polygonize generator to my class so convert the polygons into an array
-    polygontxt = []
+    for invalid in get_parts(_invalid).tolist():
+        polygons += [make_valid(Polygon(invalid.coords))]
+        #valid = make_valid(Polygon(geom.coords))
+        #print(valid)
+        # the problem is in the 2022 data at 46.8 ft
+        # the line of section doubles-back on itself zoom in to see
+        # pre-sorting the points by distance would fix but may not always desireable?
+
     areas = []
-    for i, poly in enumerate(polygons):
-        polygontxt.append(poly)
-        areas.append(poly.area*signs[i])
+    for poly in polygons:
+        s = sign(poly, line1)
+        areas.append(poly.area*s)
+
     cutfill = pnd.Series(asarray(areas), name='area')
 
-    return intersections, polygontxt, cutfill
+    return intersections, polygons, cutfill
 
 
 def snap_to_points(segments: MultiLineString, intersections: list[Point]) -> MultiLineString:
