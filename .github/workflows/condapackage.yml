@@ -39,7 +39,7 @@ jobs:
           allow-softlinks: true
           channels: conda-forge, mrahnis
           show-channel-urls: true
-          channel-priority: strict
+          channel-priority: flexible
           environment-file: conda-recipe/environment.yml
           auto-activate-base: false
           use-only-tar-bz2: true
