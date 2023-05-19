@@ -22,10 +22,11 @@ requirements:
     - setuptools
   run:
     - python
+    - numpy x.x
     - click
     - pandas
     - matplotlib
-    - shapely=2.0.*
+    - shapely 2.0.*
     - descartes
     - rasterio
     - fiona
