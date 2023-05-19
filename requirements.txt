@@ -2,5 +2,5 @@ click
 numpy
 pandas
 matplotlib
-shapely
+shapely>=2.0
 opusxml
