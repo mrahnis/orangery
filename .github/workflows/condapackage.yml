@@ -38,7 +38,7 @@ jobs:
           mamba-version: "*"
           auto-update-conda: true
           allow-softlinks: true
-          channels: conda-forge,defaults
+          channels: conda-forge,mrahnis,defaults
           show-channel-urls: true
           channel-priority: flexible
           environment-file: conda-recipe/environment.yml
@@ -48,7 +48,6 @@ jobs:
         shell: pwsh
         run: |
           conda config --set always_yes yes --set changeps1 no
-          conda config --show channels
           conda build . --python ${{ matrix.python-version }} --numpy ${{ matrix.python-version }}
           Copy-Item $env:CONDA_PREFIX\conda-bld -Destination . -Recurse
       - name: Upload package artifacts
