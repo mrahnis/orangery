@@ -123,6 +123,13 @@ def cutfill(file1, file2, fields, xs_name, codes_f, show, summary, units, labels
     # xs_overlay.plot(ax=ax, marker='None', linestyle='-', linewidth=3, color='tab:red', label=label_overlay)
     xs1.plot(ax=ax, marker='o', markersize=4, markerfacecolor='white', markeredgecolor='black', linestyle='-', color='gray', label=label_t0)
     xs2.plot(ax=ax, marker='o', markersize=4, markerfacecolor='black', markeredgecolor='black', linestyle='-', color='black', label=label_t1)
+
+    # is it callable?
+    #if hasattr(chg, 'polygon_plot') and callable(chg.polygon_plot):
+    #    print("Change.polygon_plot is callable")
+    #else:
+    #    print("Change.polygon_plot is not callable")
+
     chg.polygon_plot(ax=ax, fill_label='Fill', cut_label='Cut')
     chg.annotate_plot(ax=ax)
     ax.set_xlabel('Distance ({0})'.format(units))

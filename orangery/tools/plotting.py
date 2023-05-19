@@ -26,6 +26,7 @@ def polygon_plot(self, ax=None, fill_ec='black', fill_fc='none', fill_hatch='...
     fills = []
     hasfill = False
     for i, poly in enumerate(self.polygons):
+        # make_valid can return a MultiPolygon which has no exterior property and will fail below
         x,y = poly.exterior.xy
         if self.cutfill[i] > 0:
             if hasfill == True:

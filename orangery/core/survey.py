@@ -158,6 +158,7 @@ class Section:
 
         if reverse == True:
             self.data.sort_index(ascending=False, inplace=True) # flip sections shot right to left
+
         if z_adjustment != None:
             self.data['z'] = self.data['z'] + z_adjustment
 

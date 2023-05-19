@@ -258,13 +258,18 @@ def sign(polygon: Polygon, line: LineString) -> int:
     poly_zs = get_coordinates(intersection(test, polygon))[:,1]
     line_zs = get_coordinates(intersection(test, line))[:,1]
 
-    if np.any(poly_zs > line_zs):
-        sign = 1
-    elif np.any(poly_zs < line_zs):
-        sign = -1
+    # the comparison below fails if the test line intersects the input line more than once
+    # this situation occurs when the line at t0 doubles back on itself
+    if len(line_zs) == 1:
+        if np.any(poly_zs > line_zs):
+            sign = 1
+        elif np.any(poly_zs < line_zs):
+            sign = -1
+        else:
+            sign = 0
     else:
+        logger.warning("Invalid line LineString for t0, returning zero area, check cross section at distance {}".format(midx))
         sign = 0
-        print('error')
 
     return sign
 
@@ -330,8 +335,6 @@ def difference(line1: LineString, line2: LineString, close_ends: bool = False) -
 
     for invalid in get_parts(_invalid).tolist():
         polygons += [make_valid(Polygon(invalid.coords))]
-        #valid = make_valid(Polygon(geom.coords))
-        #print(valid)
         # the problem is in the 2022 data at 46.8 ft
         # the line of section doubles-back on itself zoom in to see
         # pre-sorting the points by distance would fix but may not always desireable?
