@@ -48,7 +48,7 @@ jobs:
         run: |
           conda info
           conda config --set always_yes yes --set changeps1 no
-          conda build . --python ${{ matrix.python-version }} --numpy ${{ matrix.numpy-version }}
+          conda build . --python 3.10 --numpy 1.24
           Copy-Item $env:CONDA_PREFIX\conda-bld -Destination . -Recurse
       - name: Upload package artifacts
         uses: actions/upload-artifact@v3
