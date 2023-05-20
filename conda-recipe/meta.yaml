@@ -18,12 +18,12 @@ build:
 
 requirements:
   build:
-    - python {{python}}
+    - python {{ python }}
     - setuptools
-    - numpy {{numpy}}.*
+    - numpy {{ numpy }}.* 
   run:
-    - python {{python}}
-    - numpy {{numpy}}.*
+    - python {{ python }}
+    - numpy {{ numpy }}.*
     - click
     - pandas
     - matplotlib
