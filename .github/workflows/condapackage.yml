@@ -17,7 +17,7 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "windows-latest"]
         python-version: ["3.8"]
-        numpy-version: ["1.19"]
+        numpy-version: ["1.24"]
     steps:
       - uses: actions/checkout@v3
       - name: Setup conda cache
