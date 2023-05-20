@@ -16,8 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "windows-latest"]
-        python-version: [3.11]
-        numpy-version: [1.24]
+        python-version: "3.8"
+        numpy-version: "1.19"
     steps:
       - uses: actions/checkout@v3
       - name: Setup conda cache
@@ -46,8 +46,6 @@ jobs:
       - name: Build conda package
         shell: pwsh
         run: |
-          conda info
-          conda update conda
           conda info
           conda config --set always_yes yes --set changeps1 no
           conda build . --python ${{ matrix.python-version }} --numpy ${{ matrix.numpy-version }}
