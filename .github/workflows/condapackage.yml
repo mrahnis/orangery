@@ -16,8 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "windows-latest"]
-        python-version: 3.8
-        numpy-version: 1.19
+        python-version: ["3.8"]
+        numpy-version: ["1.19"]
     steps:
       - uses: actions/checkout@v3
       - name: Setup conda cache
