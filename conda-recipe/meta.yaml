@@ -20,14 +20,14 @@ requirements:
   build:
     - python
     - setuptools
-    - numpy >=1.24
+    - numpy
   run:
     - python
-    - numpy >=1.24
+    - numpy
     - click
     - pandas
     - matplotlib
-    - shapely 2.0.*
+    - shapely
     - descartes
     - rasterio
     - fiona
