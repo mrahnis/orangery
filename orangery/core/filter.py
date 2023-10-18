@@ -35,7 +35,12 @@ def group(df: pnd.DataFrame, code_table: pnd.DataFrame, group: str, exclude: lis
     recs = df.loc[code_table['group'] == group]
 
     def match(codes, exclude):
-        codeset = set(codes.split(' '))
+        # it is possible for nan to show up and as a float you can't split it like a string
+        # this should be addressed by importing the column as string
+        try:
+            codeset = set(codes.split(' '))
+        except:
+            codeset = set()
         matches = codeset.intersection(exclude)
         return matches
 
@@ -57,8 +62,10 @@ def endpoints(df: pnd.DataFrame, reverse: bool = False) -> tuple[Point, Point]:
         p1, p2 (Point) : first and last records in a DataFrame as Points.
 
     """
-    p1 = Point(float(df[:1]['x']), float(df[:1]['y']), float(df[:1]['z']))
-    p2 = Point(float(df[-1:]['x']), float(df[-1:]['y']), float(df[-1:]['z']))
+    # p1 = Point(float(df[:1]['x']), float(df[:1]['y']), float(df[:1]['z']))
+    # p2 = Point(float(df[-1:]['x']), float(df[-1:]['y']), float(df[-1:]['z']))
+    p1 = Point(float(df.iloc[0]['x']), float(df.iloc[0]['y']), float(df.iloc[0]['z']))
+    p2 = Point(float(df.iloc[-1]['x']), float(df.iloc[-1]['y']), float(df.iloc[-1]['z']))
     if reverse == True:
         return p2, p1
     else:
