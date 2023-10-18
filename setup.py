@@ -28,6 +28,7 @@ setup(name='orangery',
           cutfill=orangery.cli.cutfill:cutfill
           geodetic=orangery.cli.geodetic:geodetic
           info=orangery.cli.info:info
+          planview=orangery.cli.planview:planview
           section=orangery.cli.section:section
           segment=orangery.cli.segment:segment
       ''',
