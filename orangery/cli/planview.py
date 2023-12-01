@@ -120,7 +120,7 @@ def planview(file1, file2, fields, xs_name, codes_f, show, units, labels, scale,
     if show:
         plt.show()
     else:
-        fname = xs_name + '-' + label.replace('-', '')
+        fname = xs_name + '-' + label_t0.replace('-', '') + label_t1.replace('-', '')
     
         scale_factor = get_scale_factor(fig, ax, scale[0])
         dims = fig.get_size_inches()
