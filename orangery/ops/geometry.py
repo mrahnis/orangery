@@ -6,8 +6,8 @@ from typing import Union
 import numpy as np
 import pandas as pnd
 from numpy import asarray
-from shapely import box, union, union_all, intersection, intersection_all, get_parts, get_coordinates
-from shapely.validation import make_valid
+from shapely import box, union, union_all, intersection, intersection_all, get_parts, get_coordinates, make_valid
+# from shapely.validation import make_valid
 from shapely.geometry import Point, LineString, MultiLineString, MultiPoint, Polygon
 from shapely.ops import polygonize, polygonize_full, linemerge, split, snap
 
