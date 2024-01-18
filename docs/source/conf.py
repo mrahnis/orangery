@@ -32,7 +32,7 @@ class Mock(object):
     else:
       return Mock()
 
-MOCK_MODULES = ['numpy','matplotlib','matplotlib.pyplot','matplotlib.lines','matplotlib.patches','pandas','shapely','shapely.geometry','shapely.ops', 'opusxml']
+MOCK_MODULES = ['numpy','matplotlib','matplotlib.pyplot','matplotlib.lines','matplotlib.patches','pandas','shapely','shapely.geometry','shapely.ops','shapely.validation','opusxml']
 for mod_name in MOCK_MODULES:
   sys.modules[mod_name] = Mock()
 
