@@ -51,3 +51,6 @@ examples/
 VERSION.txt
 VERSION.txt
 *.sublime-project
+# pixi environments
+.pixi
+
