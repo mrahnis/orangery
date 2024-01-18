@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orangery"
+authors = [
+  {name = "Michael Rahnis", email = "mike@topomatrix.com"},
+]
+description = "Python library to support analysis of topographic cross-sections"
+dynamic = ["version"]
+readme = "README.rst"
+license = {file = "LICENSE.txt"}
+keywords = ["cross-section, topography, survey, plotting"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3"
+]
+
+requires-python = ">=3.8"
+
+dependencies = [
+  "click",
+  "pandas",
+  "matplotlib",
+  "shapely>=2.0",
+  "opusxml",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "ruff",
+]
+dev = [
+    "numpydoc",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://topomatrix.com"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/mrahnis/orangery/orangery.git"
+Changelog = "https://github.com/mrahnis/orangery/blob/main/CHANGELOG.md"
+
+[project.scripts]
+orangery = "orangery.cli.orangery:cli"
+
+[project.entry-points."orangery.subcommands"]
+adjust = "orangery.cli.adjust:adjust"
+cutfill = "orangery.cli.cutfill:cutfill"
+geodetic = "orangery.cli.geodetic:geodetic"
+info = "orangery.cli.info:info"
+planview = "orangery.cli.planview:planview"
+section = "orangery.cli.section:section"
+segment = "orangery.cli.segment:segment"
+
+[tool.setuptools.dynamic]
+version = {attr = "orangery._version.__version__"}
+
+[tool.mypy]
+python_version = "3.8"
+files = ["orangery"]
+show_error_codes = true
+pretty = true
+strict = true
+local_partial_types = true
+warn_unreachable = true

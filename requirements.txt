@@ -1,6 +1,0 @@
-click
-numpy
-pandas
-matplotlib
-shapely>=2.0
-opusxml
