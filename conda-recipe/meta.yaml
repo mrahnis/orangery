@@ -22,17 +22,10 @@ requirements:
     - setuptools
     - numpy
   run:
-    - python
-    - numpy
-    - click
-    - pandas
-    - matplotlib
-    - shapely
-    - descartes
-    - rasterio
-    - fiona
-    - networkx
-    - opusxml
+    {% for dependency in pyproject['project']['dependencies'] %}
+    - {{ dependency.lower() }}
+    {% endfor %}
+
 test:
   imports:
     - orangery
