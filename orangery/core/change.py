@@ -59,7 +59,7 @@ class Change:
         Parameters
             filename (str) : file to output
         """
-        line = LineString(self.intersections)
+        line = LineString((self.intersections).geoms)
         xs, _ = zip(*list(line.coords))
         intervals = zip(xs[0::1], xs[1::1])
         interval_df = pnd.DataFrame(list(intervals), columns=['x0', 'x1'])
